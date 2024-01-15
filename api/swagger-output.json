@@ -431,7 +431,7 @@
         "tags": [
           "회원"
         ],
-        "summary": "회원 정보 수정 - 2차",
+        "summary": "회원 정보 수정 - 선택",
         "description": "회원 정보를 수정한다.",
         "parameters": [
           {
@@ -1236,7 +1236,7 @@
         "tags": [
           "코드"
         ],
-        "summary": "코드 한건 조회 - 2차",
+        "summary": "코드 한건 조회 - 선택",
         "description": "코드 한건을 조회한다.",
         "parameters": [
           {
@@ -2039,7 +2039,7 @@
         "tags": [
           "코드"
         ],
-        "summary": "코드 등록 - 2차",
+        "summary": "코드 등록 - 선택",
         "description": "코드를 등록합니다.<br>코드 등록을 완료한 후 코드 정보를 반환합니다.",
         "responses": {
           "201": {
@@ -2126,7 +2126,7 @@
         "tags": [
           "코드"
         ],
-        "summary": "코드 수정 - 2차",
+        "summary": "코드 수정 - 선택",
         "description": "코드를 수정한다.",
         "parameters": [
           {

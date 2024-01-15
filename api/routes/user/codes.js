@@ -49,7 +49,7 @@ router.get('/', async function(req, res, next) {
 router.get('/:_id', async function(req, res, next) {
   /*
     #swagger.tags = ['코드']
-    #swagger.summary  = '코드 한건 조회 - 2차'
+    #swagger.summary  = '코드 한건 조회 - 선택'
     #swagger.description = '코드 한건을 조회한다.'
 
     #swagger.parameters['_id'] = {

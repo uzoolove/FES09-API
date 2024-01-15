@@ -13,7 +13,7 @@ const router = express.Router();
 router.post('/', async function(req, res, next) {
   /*
     #swagger.tags = ['코드']
-    #swagger.summary  = '코드 등록 - 2차'
+    #swagger.summary  = '코드 등록 - 선택'
     #swagger.description = '코드를 등록합니다.<br>코드 등록을 완료한 후 코드 정보를 반환합니다.'
 
     #swagger.security = [{

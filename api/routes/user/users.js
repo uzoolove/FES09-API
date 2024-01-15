@@ -407,7 +407,7 @@ router.get('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
 router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
-    #swagger.summary  = '회원 정보 수정 - 2차'
+    #swagger.summary  = '회원 정보 수정 - 선택'
     #swagger.description = '회원 정보를 수정한다.'
 
     #swagger.security = [{
