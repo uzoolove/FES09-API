@@ -20,7 +20,7 @@ router.get('/', [
     #swagger.auto = false
 
     #swagger.tags = ['상품']
-    #swagger.summary  = '판매 상품 목록 조회 - 1차'
+    #swagger.summary  = '판매 상품 목록 조회 - 필수'
     #swagger.description = '자신의 판매 상품 목록을 조회한다.'
 
     #swagger.security = [{
@@ -108,7 +108,7 @@ router.get('/:_id', async function(req, res, next) {
 
   /*
     #swagger.tags = ['상품']
-    #swagger.summary  = '판매 상품 상세 조회 - 1차'
+    #swagger.summary  = '판매 상품 상세 조회 - 필수'
     #swagger.description = '자신의 판매 상품 정보를 조회한다.'
 
     #swagger.security = [{
@@ -171,7 +171,7 @@ router.post('/', [
     #swagger.auto = false
 
     #swagger.tags = ['상품']
-    #swagger.summary  = '상품 등록 - 1차'
+    #swagger.summary  = '상품 등록 - 필수'
     #swagger.description = '상품을 등록합니다.<br>상품 등록 후 상품 정보를 반환합니다.'
 
     #swagger.security = [{
@@ -242,7 +242,7 @@ router.patch('/:_id', [
 
   /*
     #swagger.tags = ['상품']
-    #swagger.summary  = '상품 수정 - 1차'
+    #swagger.summary  = '상품 수정 - 필수'
     #swagger.description = '상품을 수정한다.'
 
     #swagger.security = [{
@@ -328,7 +328,7 @@ router.delete('/:_id', async function(req, res, next) {
 
   /*
     #swagger.tags = ['상품']
-    #swagger.summary  = '상품 삭제 - 1차'
+    #swagger.summary  = '상품 삭제 - 필수'
     #swagger.description = '상품을 삭제한다.'
 
     #swagger.security = [{

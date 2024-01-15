@@ -17,7 +17,7 @@ router.get('/', [
     #swagger.auto = false
 
     #swagger.tags = ['상품']
-    #swagger.summary  = '상품 목록 조회 - 1차'
+    #swagger.summary  = '상품 목록 조회 - 필수'
     #swagger.description = '상품 목록을 조회한다.'
 
     #swagger.parameters['minPrice'] = {
@@ -149,7 +149,7 @@ router.get('/:_id', async function(req, res, next) {
 
   /*
     #swagger.tags = ['상품']
-    #swagger.summary  = '상품 상세 조회 - 1차'
+    #swagger.summary  = '상품 상세 조회 - 필수'
     #swagger.description = '상품 상세 정보를 조회한다.'
     
     #swagger.parameters['_id'] = {

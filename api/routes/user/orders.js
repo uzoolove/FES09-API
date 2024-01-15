@@ -19,7 +19,7 @@ router.post('/', [
     #swagger.auto = false
 
     #swagger.tags = ['구매']
-    #swagger.summary  = '상품 구매 - 1차'
+    #swagger.summary  = '상품 구매 - 필수'
     #swagger.description = '상품을 구매한다.'
 
     #swagger.security = [{
@@ -89,7 +89,7 @@ router.get('/', [
     #swagger.auto = false
 
     #swagger.tags = ['구매']
-    #swagger.summary  = '구매 목록 조회 - 1차'
+    #swagger.summary  = '구매 목록 조회 - 필수'
     #swagger.description = '구매 목록을 조회한다.'
     
     #swagger.security = [{

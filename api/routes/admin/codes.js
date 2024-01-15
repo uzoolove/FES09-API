@@ -90,7 +90,7 @@ router.post('/', async function(req, res, next) {
 router.put('/:_id', async function(req, res, next) {
   /*
     #swagger.tags = ['코드']
-    #swagger.summary  = '코드 수정 - 2차'
+    #swagger.summary  = '코드 수정'
     #swagger.description = '코드를 수정한다.'
 
     #swagger.security = [{
@@ -167,7 +167,7 @@ router.put('/:_id', async function(req, res, next) {
 router.delete('/:_id', async function(req, res, next) {
   /*
     #swagger.tags = ['코드']
-    #swagger.summary  = '코드 삭제 - 1차'
+    #swagger.summary  = '코드 삭제'
     #swagger.description = '코드를 삭제한다.'
 
     #swagger.security = [{

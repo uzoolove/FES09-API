@@ -13,7 +13,7 @@ router.post('/', jwtAuth.auth('user'), async function(req, res, next) {
 
   /*
     #swagger.tags = ['구매 후기']
-    #swagger.summary  = '구매 후기 등록 - 1차'
+    #swagger.summary  = '구매 후기 등록 - 필수'
     #swagger.description = '구매 후기를 등록한다.'
     
     #swagger.security = [{
