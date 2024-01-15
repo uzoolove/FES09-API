@@ -1,0 +1,3902 @@
+{
+	"info": {
+		"_postman_id": "0482e8b7-0927-4bee-93dd-37889e0c3687",
+		"name": "OpenMarket",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2112922"
+	},
+	"item": [
+		{
+			"name": "인증",
+			"item": [
+				{
+					"name": "[필수]  Access Token 재발행",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const accessToken = jsonData.accessToken;\r",
+									"    pm.environment.set(\"accessToken\", accessToken);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{refreshToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users/refresh",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "파일",
+			"item": [
+				{
+					"name": "[필수] 파일 업로드",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "attach",
+									"type": "file",
+									"src": "/D:/cloud/OneDrive-skku/03.likelion/01.frontend_plus/FESP_1st_zoom_background.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/files",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"files"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "파일 링크(img의 src 속성으로 지정)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "attach",
+									"type": "file",
+									"src": [
+										"/D:/cloud/OneDrive-skku/03.likelion/01.frontend_plus/01.class/01/04.Project/FESP01-API/api/samples/dbinit.js",
+										"/D:/cloud/OneDrive-skku/03.likelion/01.frontend_plus/01.class/01/04.Project/FESP01-API/api/samples/dbinit_3.js",
+										"/D:/cloud/OneDrive-skku/03.likelion/01.frontend_plus/01.class/01/04.Project/FESP01-API/api/samples/dbinit_4.js",
+										"/D:/cloud/OneDrive-skku/03.likelion/01.frontend_plus/01.class/01/04.Project/FESP01-API/api/samples/dbinit_6.js"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/files/sample-classic.jpg?name=레고.jpg",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"files",
+								"sample-classic.jpg"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "레고.jpg"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "파일 다운로드(브라우저에서 요청하면 파일이 다운로드 됨)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "attach",
+									"type": "file",
+									"src": [
+										"/D:/cloud/OneDrive-skku/03.likelion/01.frontend_plus/01.class/01/04.Project/FESP01-API/api/samples/dbinit.js",
+										"/D:/cloud/OneDrive-skku/03.likelion/01.frontend_plus/01.class/01/04.Project/FESP01-API/api/samples/dbinit_3.js",
+										"/D:/cloud/OneDrive-skku/03.likelion/01.frontend_plus/01.class/01/04.Project/FESP01-API/api/samples/dbinit_4.js",
+										"/D:/cloud/OneDrive-skku/03.likelion/01.frontend_plus/01.class/01/04.Project/FESP01-API/api/samples/dbinit_6.js"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/files/download/sample-classic.jpg?name=레고.jpg",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"files",
+								"download",
+								"sample-classic.jpg"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "레고.jpg"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "일반 회원",
+			"item": [
+				{
+					"name": "회원",
+					"item": [
+						{
+							"name": "[필수] 이메일 중복 체크",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/email?email=s1@market.com",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"email"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "s1@market.com"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[필수] 회원 가입",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"postman@market.com\",\r\n\t\"password\": \"11111111\",\r\n    \"name\": \"postman\",\r\n    \"phone\": \"0118889999\",\r\n    \"address\": \"서울시 강남구 역삼동 123\",\r\n    \"type\": \"user\",\r\n\t\"extra\": {\r\n        \"birthday\": \"03-23\",\r\n        \"address\": [\r\n            {\r\n                \"id\": 1,\r\n                \"name\": \"집\",\r\n                \"value\": \"서울시 강남구 역삼동 123\"\r\n            },\r\n            {\r\n                \"id\": 2,\r\n                \"name\": \"회사\",\r\n                \"value\": \"서울시 강남구 신사동 234\"\r\n            }\r\n        ]\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/users",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[필수] 일반 회원 로그인(_id=4)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (pm.response.code === 200) {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    const accessToken = jsonData.item.token.accessToken;\r",
+											"    const refreshToken = jsonData.item.token.refreshToken;\r",
+											"    pm.environment.set(\"accessToken\", accessToken);\r",
+											"    pm.environment.set(\"refreshToken\", refreshToken);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"u1@market.com\",\r\n    \"password\": \"11111111\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/users/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[필수] 회원 정보 조회(모든 속성)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/4",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "회원 정보 조회(단일 속성, email)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/4/email",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"4",
+										"email"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "회원 정보 조회(중첩 속성, extra.address)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/4/extra/address",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"4",
+										"extra",
+										"address"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "회원 정보 수정(단일 속성, phone)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone\": \"01011112222\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/users/4",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "회원 정보 수정(여러 속성, phone, name)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"phone\": \"01099998888\",\r\n    \"name\": \"네오2\",\r\n    \"type\": \"admin\",\r\n    \"password\": \"22222222\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/users/4",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "회원 정보 수정(중첩 속성, extra.address)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"extra\": {\r\n        \"birthday\": \"11-30\",\r\n        \"membershipClass\": \"MC03\",\r\n        \"address\": [\r\n            {\r\n                \"id\": 1,\r\n                \"name\": \"회사\",\r\n                \"value\": \"서울시 강남구 삼성동 111\"\r\n            },\r\n            {\r\n                \"id\": 2,\r\n                \"name\": \"학교\",\r\n                \"value\": \"서울시 강남구 역삼동 222\"\r\n            }\r\n        ]\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/users/4",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "상품",
+					"item": [
+						{
+							"name": "[필수] 상품 목록 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[필수] 상품 목록 조회(Pagination)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products?page=3&limit=3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "3",
+											"description": "페이지"
+										},
+										{
+											"key": "limit",
+											"value": "3",
+											"description": "한 페이지에 보여줄 개수(생략하면 page값이 무시되고 모든 목록 반환)"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[필수] 상품 상세 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[필수] 상품 검색(기본 검색)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products?minPrice=10000&maxPrice=60000&minShippingFees=0&maxShippingFees=3500&keyword=레고&seller_id=3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "minPrice",
+											"value": "10000"
+										},
+										{
+											"key": "maxPrice",
+											"value": "60000"
+										},
+										{
+											"key": "minShippingFees",
+											"value": "0"
+										},
+										{
+											"key": "maxShippingFees",
+											"value": "3500"
+										},
+										{
+											"key": "keyword",
+											"value": "레고",
+											"description": "문자열 포함 검색"
+										},
+										{
+											"key": "seller_id",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 검색(범위 검색, 가격이 10000 이하인 상품)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products?custom={\"price\":{\"$lte\":10000}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "custom",
+											"value": "{\"price\":{\"$lte\":10000}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 검색(범위 검색, 등록일이 \"2023.11.10\" 이후인 상품)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products?custom={\"createdAt\": {\"$gte\": \"2023.11.10\"}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "custom",
+											"value": "{\"createdAt\": {\"$gte\": \"2023.11.10\"}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 검색(범위 검색, 등록일이 \"2023.12.01\" 부터 \"2023-12.05\" 인 상품)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products?custom={\"createdAt\": {\"$gte\": \"2023.12.01\", \"$lt\": \"2023.12.06\"}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "custom",
+											"value": "{\"createdAt\": {\"$gte\": \"2023.12.01\", \"$lt\": \"2023.12.06\"}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 검색(extra 속성으로 검색, 신상품만 조회)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products?custom={\"extra.isNew\": true}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "custom",
+											"value": "{\"extra.isNew\": true}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 검색(extra 속성으로 검색, OR 검색 1)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products?custom={\"$or\":[{\"extra.isNew\":true},{\"extra.isBest\":true}]}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "custom",
+											"value": "{\"$or\":[{\"extra.isNew\":true},{\"extra.isBest\":true}]}",
+											"description": "$or는 범위 검색도 가능"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 검색(extra 속성으로 검색, OR 검색 2)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products?custom={\"extra.isNew\":{\"$in\":[true, false]},\"_id\":{\"$in\":[1,2,3]}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "custom",
+											"value": "{\"extra.isNew\":{\"$in\":[true, false]},\"_id\":{\"$in\":[1,2,3]}}",
+											"description": "$in은 equal 검색만 가능"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 검색(extra 속성으로 검색, 신상품이면서 베스트 상품 조회)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products?custom={\"extra.isNew\": true,\"extra.isBest\": true}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "custom",
+											"value": "{\"extra.isNew\": true,\"extra.isBest\": true}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 검색(extra 속성으로 검색, 카테고리가 PC03만 조회)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products?custom={\"extra.category.0\": \"PC03\"}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "custom",
+											"value": "{\"extra.category.0\": \"PC03\"}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 정렬(price 내림차순)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products?sort={\"price\": -1}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "{\"price\": -1}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 정렬(price 오름차순)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products?sort={\"price\": 1}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "{\"price\": 1}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 검색과 정렬",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/products?seller_id=2&sort={\"price\": 1}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "seller_id",
+											"value": "2"
+										},
+										{
+											"key": "sort",
+											"value": "{\"price\": 1}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "구매",
+					"item": [
+						{
+							"name": "[필수] 상품 구매",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"products\": [\r\n        {\r\n            \"_id\": 3,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"_id\": 4,\r\n            \"quantity\": 2\r\n        }\r\n    ],\r\n    \"address\": {\r\n        \"name\": \"학교\",\r\n        \"value\": \"서울시 강남구 역삼동 234\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "[필수] 구매 목록 조회",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "구매 목록의 상태값만 조회",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders/state",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders",
+										"state"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "구매 목록 조회(pagination)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders?page=1&limit=2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "구매 상세 조회",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders/3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 구매(재고 체크)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dryRun\": true,\r\n    \"products\": [\r\n        {\r\n            \"_id\": 3,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"_id\": 4,\r\n            \"quantity\": 2\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 구매(shippingFees 속성이 없을 경우 config.shippingFees 사용)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"products\": [\r\n        {\r\n            \"_id\": 14,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"_id\": 13,\r\n            \"quantity\": 2\r\n        }\r\n    ],\r\n    \"address\": {\r\n        \"name\": \"학교\",\r\n        \"value\": \"서울시 강남구 역삼동 234\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 구매(쿠폰 적용)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dryRun\": true,\r\n    \"discount\": {\r\n        \"products\": 3000,\r\n        \"shippingFees\": 1000\r\n    },\r\n    \"products\": [\r\n        {\r\n            \"_id\": 3,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"_id\": 4,\r\n            \"quantity\": 2\r\n        },\r\n        {\r\n            \"_id\": 1,\r\n            \"quantity\": 1\r\n        }\r\n    ],\r\n    \"address\": {\r\n        \"name\": \"학교\",\r\n        \"value\": \"서울시 강남구 역삼동 234\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "구매 목록 검색(기본 검색)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders?keyword=레고",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									],
+									"query": [
+										{
+											"key": "keyword",
+											"value": "레고",
+											"description": "상품명"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "구매 목록 검색(사용자 정의 검색)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders?custom={\"createdAt\": {\"$gte\": \"2023.12.05\", \"$lt\": \"2023.12.06\"}, \"cost.total\": {\"$gte\": 100000}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									],
+									"query": [
+										{
+											"key": "custom",
+											"value": "{\"createdAt\": {\"$gte\": \"2023.12.05\", \"$lt\": \"2023.12.06\"}, \"cost.total\": {\"$gte\": 100000}}",
+											"description": "구매일이 12월 5일부터 12월 6일 까지이고 결제금액이 100000원 이상\n"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "구매 목록 정렬(구매일 오름차순)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/orders?sort={\"createdAt\": 1}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "{\"createdAt\": 1}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "구매 정보 수정(반품 요청, 주문별)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"state\": \"OS110\",\r\n    \"memo\": \"2개 상품 모두 동작하지 않습니다. 반품 요청합니다.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "구매 정보 수정(반품 요청, 상품별)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"state\": \"OS110\",\r\n    \"memo\": \"레고 클래식 상품이 동작하지 않습니다. 반품 요청합니다.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders/2/products/3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders",
+										"2",
+										"products",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "장바구니",
+					"item": [
+						{
+							"name": "장바구니 상품 목록 조회(로그인 상태)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/carts",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"carts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "장바구니 상품 목록 조회(쿠폰 적용)",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"discount\": {\r\n        \"products\": 2000,\r\n        \"shippingFees\": 1000\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/carts",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"carts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "장바구니 상품 목록 조회(비로그인 상태)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"products\": [\r\n        {\r\n            \"_id\": 3,\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"_id\": 4,\r\n            \"quantity\": 2\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/carts/local",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"carts",
+										"local"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "장바구니에 상품 추가",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"product_id\": 4,\r\n    \"quantity\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/carts",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"carts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "장바구니 상품 수량 수정",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"quantity\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/carts/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"carts",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "장바구니 상품 구매",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"type\": \"cart\",\r\n    \"products\": [\r\n        {\r\n            \"_id\": 1,\r\n            \"quantity\": 2\r\n        },\r\n        {\r\n            \"_id\": 2,\r\n            \"quantity\": 1\r\n        }\r\n    ],\r\n    \"address\": {\r\n        \"name\": \"학교\",\r\n        \"value\": \"서울시 강남구 역삼동 234\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "장바구니 상품 구매(재고 체크)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dryRun\": true,\r\n    \"type\": \"cart\",\r\n    \"products\": [\r\n        {\r\n            \"_id\": 1,\r\n            \"quantity\": 2\r\n        },\r\n        {\r\n            \"_id\": 2,\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "장바구니 상품 전체 교체",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"products\": [\r\n        {\r\n            \"_id\": 3,\r\n            \"quantity\": 2\r\n        },\r\n        {\r\n            \"_id\": 4,\r\n            \"quantity\": 3\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/carts/replace",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"carts",
+										"replace"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "장바구니 상품 합치기",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"products\": [\r\n        {\r\n            \"_id\": 1,\r\n            \"quantity\": 2\r\n        },\r\n        {\r\n            \"_id\": 2,\r\n            \"quantity\": 3\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/carts",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"carts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "장바구니 상품 삭제(한건)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/carts/5",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"carts",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "장바구니 상품 삭제(여러건)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"carts\": [1, 2]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/carts",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"carts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "장바구니 비우기",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/carts/cleanup",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"carts",
+										"cleanup"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "북마크(찜하기)",
+					"item": [
+						{
+							"name": "상품 북마크 하기",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user_id\": 4,\r\n    \"product_id\": 5,\r\n    \"memo\": \"아빠 생신 선물로 사야지\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/bookmarks",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"bookmarks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "내 북마크 목록 조회",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/bookmarks",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"bookmarks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "지정한 상품에 대한 나의 북마크 한건 조회",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/bookmarks/products/3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"bookmarks",
+										"products",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "북마크 삭제",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/bookmarks/4",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"bookmarks",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "후기",
+					"item": [
+						{
+							"name": "[필수] 후기 등록",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"order_id\": 3,\r\n    \"product_id\": 4,\r\n    \"rating\": 3,\r\n    \"content\": \"배송이 너무 느려요.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/replies",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"replies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "내 후기 목록 조회",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/replies",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"replies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "후기 상세 조회",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/replies/3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"replies",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "모든 후기 목록 조회",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/replies/all",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"replies",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "판매자 후기 목록 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/replies/seller/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"replies",
+										"seller",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 후기 목록 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/replies/products/3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"replies",
+										"products",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "게시판(QnA, 공지 등)",
+					"item": [
+						{
+							"name": "게시물 목록 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/posts?type=qna",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "qna",
+											"description": "QnA 게시판"
+										},
+										{
+											"key": "type",
+											"value": "notice",
+											"description": "공지사항 게시판",
+											"disabled": true
+										},
+										{
+											"key": "type",
+											"value": "원하는값",
+											"description": "원하는 종류의 게시판은 type 속성으로 구분",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "게시물 목록 조회(검색, 상품 id)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/posts?type=qna&custom={\"product_id\":1}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "qna",
+											"description": "QnA 게시판"
+										},
+										{
+											"key": "type",
+											"value": "notice",
+											"description": "공지사항 게시판",
+											"disabled": true
+										},
+										{
+											"key": "type",
+											"value": "원하는값",
+											"description": "원하는 종류의 게시판은 type 속성으로 구분",
+											"disabled": true
+										},
+										{
+											"key": "custom",
+											"value": "{\"product_id\":1}",
+											"description": "1번 상품에 등록된 qna로 필터링"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "게시물 목록 조회(pagination)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/posts?type=qna&page=2&limit=2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "qna",
+											"description": "QnA 게시판"
+										},
+										{
+											"key": "page",
+											"value": "2"
+										},
+										{
+											"key": "limit",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "게시물 목록 조회(키워드 검색)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/posts?type=qna&keyword=배송",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "qna"
+										},
+										{
+											"key": "keyword",
+											"value": "배송"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "게시물 상세 조회",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/posts/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "내가 작성한 게시물 목록 조회(QnA)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/posts/users/4?type=qna",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts",
+										"users",
+										"4"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "qna"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "판매자의 모든 상품 게시물 목록 조회(QnA)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/posts/seller/2?type=qna",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts",
+										"seller",
+										"2"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": "qna"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "게시물 등록",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"type\": \"qna\",\r\n    \"product_id\": 1,\r\n    \"title\": \"배송은 얼마나 걸려요?\",\r\n    \"content\": \"주말에 여행가기 전까지 오면 좋겠네요.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/posts",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "게시물 등록(다른 용도로 활용)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"type\": \"coffeechat\",\r\n    \"product_id\": 1,\r\n    \"title\": \"커피쳇 들어오세요.\",\r\n    \"content\": \"http://localhost:5173/chat/a78DCoGyZ\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/posts",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "게시물 수정",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"크기가 얼마나 큰가요?\",\r\n    \"content\": \"6세 아이가 가지고 놀 수 있을 정도로 컸으면 좋겠네요.\",\r\n    \"extra\": {\r\n        \"image\": \"hello.jpg\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/posts/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "게시물 삭제",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/posts/6",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "댓글 등록",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"content\": \"답변 감사합니다.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/posts/1/replies",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts",
+										"1",
+										"replies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "댓글 수정",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"content\": \"상세정보에서 찾을수 없습니다.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/posts/1/replies/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts",
+										"1",
+										"replies",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "댓글 삭제",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/posts/1/replies/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"posts",
+										"1",
+										"replies",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "판매 회원",
+			"item": [
+				{
+					"name": "상품 관리",
+					"item": [
+						{
+							"name": "[필수] 상품 등록",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"price\": 1000,\r\n    \"shippingFees\": 3000,\r\n    \"quantity\": 600,\r\n    \"buyQuantity\": 190,\r\n    \"show\": true,\r\n    \"active\": true,\r\n    \"name\": \"ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물\",\r\n    \"mainImages\": [\"https://localhost/uploads/sample-janngu.jpg\"],\r\n    \"content\": \"<div class=\\\"product-detail\\\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>\",\r\n\t\"createdAt\": \"2023.10.12 12:34:56\",\r\n    \"updatedAt\": \"2023.10.12 12:34:56\",\r\n    \"extra\": {\r\n        \"isNew\": true,\r\n        \"isBest\": true,\r\n        \"category\": [\"PC02\", \"PC0201\"],\r\n        \"sort\": 7\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/seller/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 등록(옵션 있는 상품의 메인 정보)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"price\": 1000,\r\n    \"shippingFees\": 3000,\r\n    \"quantity\": 999999,\r\n    \"buyQuantity\": 0,\r\n    \"show\": true,\r\n    \"active\": true,\r\n    \"name\": \"샤넬 NO.6\",\r\n    \"mainImages\": [\"https://localhost/uploads/sample-janngu.jpg\"],\r\n    \"content\": \"샤넬 향수 기본정보 입니다.\",\r\n\t\"createdAt\": \"2023.10.12 12:34:56\",\r\n    \"updatedAt\": \"2023.10.12 12:34:56\",\r\n    \"extra\": {\r\n        \"depth\": 1\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/seller/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 등록(옵션 있는 상품의 옵션)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"price\": 6900,\r\n    \"shippingFees\": 3000,\r\n    \"quantity\": 1,\r\n    \"buyQuantity\": 0,\r\n    \"show\": true,\r\n    \"active\": true,\r\n    \"name\": \"새것같은 샤넬 NO.6\",\r\n    \"mainImages\": [\"https://localhost/uploads/sample-janngu.jpg\"],\r\n    \"content\": \"1주일 밖에 안썼어요...\",\r\n\t\"createdAt\": \"2023.10.12 12:34:56\",\r\n    \"updatedAt\": \"2023.10.12 12:34:56\",\r\n    \"extra\": {\r\n        \"depth\": 2,\r\n        \"parent\": 17,\r\n        \"size\": \"100m\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/seller/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "내 상품 상세 조회",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/seller/products/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"products",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "내 상품 목록 조회",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/seller/products",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 수정1",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"price\": 22000,\r\n    \"shippingFees\": 3000,\r\n    \"show\": true,\r\n    \"active\": true,\r\n    \"name\": \"ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물\",\r\n    \"mainImages\": [\"/uploads/sample-jjangu.jpg\"],\r\n    \"content\": \"<div class=\\\"product-detail\\\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>\",\r\n    \"extra.isNew\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/seller/products/6",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"products",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 수정2",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"extra\": {\r\n        \"isNew\": true,\r\n        \"isBest\": true\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/seller/products/6",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"products",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "상품 삭제",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/seller/products/6",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"products",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "내 상품 검색(기본 검색)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/seller/products?minPrice=10000&maxPrice=45000&keyword=레고&minShippingFees=0&maxShippingFees=3500",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"products"
+									],
+									"query": [
+										{
+											"key": "minPrice",
+											"value": "10000"
+										},
+										{
+											"key": "maxPrice",
+											"value": "45000"
+										},
+										{
+											"key": "keyword",
+											"value": "레고"
+										},
+										{
+											"key": "minShippingFees",
+											"value": "0"
+										},
+										{
+											"key": "maxShippingFees",
+											"value": "3500"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "내 상품 검색(extra 속성으로 검색, 신상품만 조회)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/seller/products?extra={\"extra.isNew\": true}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"products"
+									],
+									"query": [
+										{
+											"key": "extra",
+											"value": "{\"extra.isNew\": true}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "내 상품 검색(extra 속성으로 검색, 카테고리가 PC01만 조회)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/seller/products?extra={\"extra.category.0\": \"PC01\"}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"products"
+									],
+									"query": [
+										{
+											"key": "extra",
+											"value": "{\"extra.category.0\": \"PC01\"}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "내 상품 정렬(price 내림차순)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/seller/products?sort={\"price\": -1}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"products"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "{\"price\": -1}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "내 상품 정렬(price 오름차순)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/seller/products?sort={\"price\": 1}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"products"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "{\"price\": 1}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "주문 관리",
+					"item": [
+						{
+							"name": "주문 상태 수정(배송 시작, 주문별)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"state\": \"OS035\",\r\n    \"memo\": \"2건 이상 구매한 고객님에 대해 서비스로 물총을 드립니다.\",\r\n    \"delivery\": {\r\n        \"company\": \"한진 택배\",\r\n        \"trackingNumber\": \"364495958003\",\r\n        \"url\": \"https://trace.cjlogistics.com/next/tracking.html?wblNo=364495958003\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/seller/orders/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"orders",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "주문 상태 수정(배송 시작, 상품별)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"state\": \"OS035\",\r\n    \"memo\": \"레고 클래식 상품을 구매한 고객님께 서비스로 미니 레고 블럭을 드립니다.\",\r\n    \"delivery\": {\r\n        \"company\": \"한진 택배\",\r\n        \"trackingNumber\": \"364495958003\",\r\n        \"url\": \"https://trace.cjlogistics.com/next/tracking.html?wblNo=364495958003\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/seller/orders/2/products/3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"orders",
+										"2",
+										"products",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "주문 상태 수정(반품 완료, 주문별)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"state\": \"OS130\",\r\n    \"memo\": \"2건의 상품에 대해 왕복 배송비 8000원 제외되고 3영업일 이내에 환불됩니다.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/seller/orders/2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"orders",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "주문 상태 수정(반품 완료, 상품별)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"state\": \"OS130\",\r\n    \"memo\": \"레고 클래식 상품에 대해 왕복 배송비 6000원 제외되고 3영업일 이내에 환불됩니다.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/seller/orders/2/products/3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"orders",
+										"2",
+										"products",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "판매자에게 주문한 모든 주문 목록 조회",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/seller/orders",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "판매자에게 주문한 모든 주문 목록 조회(검색)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/seller/orders?state=OS020",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "state",
+											"value": "OS020",
+											"description": "결제 완료 상태"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "판매자에게 주문한 모든 주문 목록 조회(pagination)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/seller/orders?page=2&limit=2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"orders"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "2"
+										},
+										{
+											"key": "limit",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "주문 상세 조회",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/seller/orders/4",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"seller",
+										"orders",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "후기 관리",
+					"item": []
+				},
+				{
+					"name": "[필수] 판매 회원 로그인(_id=2)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const accessToken = jsonData.item.token.accessToken;\r",
+									"    const refreshToken = jsonData.item.token.refreshToken;\r",
+									"    pm.environment.set(\"accessToken\", accessToken);\r",
+									"    pm.environment.set(\"refreshToken\", refreshToken);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"s1@market.com\",\r\n    \"password\": \"11111111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "판매 회원 로그인(관리자 미승인, _id=3)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const accessToken = jsonData.item.token.accessToken;\r",
+									"    const refreshToken = jsonData.item.token.refreshToken;\r",
+									"    pm.environment.set(\"accessToken\", accessToken);\r",
+									"    pm.environment.set(\"refreshToken\", refreshToken);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"s2@market.com\",\r\n    \"password\": \"11111111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "관리자",
+			"item": [
+				{
+					"name": "회원 관리",
+					"item": [
+						{
+							"name": "회원 정보 수정(판매회원 승인)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"도우너\",\r\n    \"extra.confirm\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/users/3",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "회원 목록 조회",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/admin/users",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "회원 목록 조회(검색)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/admin/users?_id=4&email=u1@market.com&name=데이지&phone=01044445555&type=user&address=강남&custom={\"extra.membershipClass\":\"MC02\"}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"users"
+									],
+									"query": [
+										{
+											"key": "_id",
+											"value": "4",
+											"description": "일치 검색"
+										},
+										{
+											"key": "email",
+											"value": "u1@market.com",
+											"description": "일치 검색"
+										},
+										{
+											"key": "name",
+											"value": "데이지",
+											"description": "일치 검색"
+										},
+										{
+											"key": "phone",
+											"value": "01044445555",
+											"description": "일치 검색"
+										},
+										{
+											"key": "type",
+											"value": "user",
+											"description": "일치 검색"
+										},
+										{
+											"key": "address",
+											"value": "강남",
+											"description": "문자열 포함 검색"
+										},
+										{
+											"key": "custom",
+											"value": "{\"extra.membershipClass\":\"MC02\"}",
+											"description": "일치 검색"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "회원 목록 조회(검색, 미승인 회원)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/admin/users?custom={\"extra.confirm\":false}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"users"
+									],
+									"query": [
+										{
+											"key": "custom",
+											"value": "{\"extra.confirm\":false}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "회원 목록 조회(pagination)",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/admin/users?page=2&limit=2",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"users"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "2",
+											"description": "페이지"
+										},
+										{
+											"key": "limit",
+											"value": "2",
+											"description": "한 페이지에 보여줄 개수(생략하면 page값이 무시되고 모든 목록 반환)"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "코드 관리",
+					"item": [
+						{
+							"name": "코드 등록",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"_id\": \"suggestTea\",\r\n    \"title\": \"상황별 추천 차\",\r\n    \"codes\": [\r\n        {\r\n            \"sort\": 2,\r\n            \"code\": \"ST01\",\r\n            \"value\": \"울적할때\"\r\n        }, {\r\n            \"sort\": 3,\r\n            \"code\": \"ST02\",\r\n            \"value\": \"비오는날\"\r\n        }, {\r\n            \"sort\": 1,\r\n            \"code\": \"ST03\",\r\n            \"value\": \"집중할때\"\r\n        }\r\n    ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/codes",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"codes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "코드 수정",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"회원 등급\",\r\n    \"codes\": [\r\n        {\r\n            \"sort\": 1,\r\n            \"code\": \"MC01\",\r\n            \"value\": \"일반\",\r\n            \"discountRate\": 0\r\n        }, {\r\n            \"sort\": 2,\r\n            \"code\": \"MC02\",\r\n            \"value\": \"프리미엄\",\r\n            \"discountRate\": 10\r\n        }, {\r\n            \"sort\": 4,\r\n            \"code\": \"MC04\",\r\n            \"value\": \"VVIP\",\r\n            \"discountRate\": 30\r\n        }, {\r\n            \"sort\": 3,\r\n            \"code\": \"MC03\",\r\n            \"value\": \"VIP\",\r\n            \"discountRate\": 20\r\n        }\r\n    ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/codes/membershipClass",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"codes",
+										"membershipClass"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "코드 삭제",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"회원 등급\",\r\n    \"codes\": [\r\n        {\r\n            \"sort\": 1,\r\n            \"code\": \"UL01\",\r\n            \"value\": \"일반\"\r\n        }, {\r\n            \"sort\": 2,\r\n            \"code\": \"UL02\",\r\n            \"value\": \"프리미엄\"\r\n        }, {\r\n            \"sort\": 4,\r\n            \"code\": \"UL03\",\r\n            \"value\": \"VIP\"\r\n        }, {\r\n            \"sort\": 3,\r\n            \"code\": \"UL04\",\r\n            \"value\": \"VVIP\"\r\n        }\r\n    ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/admin/codes/suggestTea",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"admin",
+										"codes",
+										"suggestTea"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "주문 관리",
+					"item": []
+				},
+				{
+					"name": "관리자 로그인",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const accessToken = jsonData.item.token.accessToken;\r",
+									"    const refreshToken = jsonData.item.token.refreshToken;\r",
+									"    pm.environment.set(\"accessToken\", accessToken);\r",
+									"    pm.environment.set(\"refreshToken\", refreshToken);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@market.com\",\r\n    \"password\": \"11111111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "코드 관리",
+			"item": [
+				{
+					"name": "코드 목록 조회",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/codes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"codes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "코드 한건 조회(회원 등급)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/codes/membershipClass",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"codes",
+								"membershipClass"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "코드 한건 조회(상황별 추천 차)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/codes/suggestTea",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"codes",
+								"suggestTea"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "코드 한건 조회(검색 조건 추가, 1단계 카테고리 조회)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/codes/productCategory?depth=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"codes",
+								"productCategory"
+							],
+							"query": [
+								{
+									"key": "depth",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "코드 한건 조회(검색 조건 추가, 부모 카테고리가 PC03인 2단계 카테고리 조회)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/codes/productCategory?depth=2&parent=PC03",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"codes",
+								"productCategory"
+							],
+							"query": [
+								{
+									"key": "depth",
+									"value": "2"
+								},
+								{
+									"key": "parent",
+									"value": "PC03"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
