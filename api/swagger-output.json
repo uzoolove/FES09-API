@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "3.1.0",
+    "version": "1.0.0",
     "title": "오픈마켓 API",
-    "description": "오픈마켓 API Server입니다.<br><a href=\"https://localhost\">버전 히스토리</a>"
+    "description": "오픈마켓 API Server입니다.<br><a href=\"https://market-lion.koyeb.app\">버전별 변경사항 확인</a>"
   },
   "servers": [
     {
-      "url": "https://localhost/api",
+      "url": "https://market-lion.koyeb.app/api",
       "description": ""
     }
   ],
@@ -39,7 +39,7 @@
         "tags": [
           "회원"
         ],
-        "summary": "회원 가입 - 1차",
+        "summary": "회원 가입 - 필수",
         "description": "회원 가입을 합니다.<br>회원 가입을 완료한 후 회원 정보를 반환합니다.",
         "responses": {
           "201": {
@@ -114,7 +114,7 @@
         "tags": [
           "회원"
         ],
-        "summary": "이메일 중복 체크 - 1차",
+        "summary": "이메일 중복 체크 - 필수",
         "description": "이메일 중복 여부를 체크 합니다.",
         "parameters": [
           {
@@ -158,7 +158,7 @@
         "tags": [
           "회원"
         ],
-        "summary": "로그인 - 1차",
+        "summary": "로그인 - 필수",
         "description": "이메일과 비밀번호를 입력해 로그인을 한다.<br>응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환한다.<br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야 한다.",
         "responses": {
           "200": {
@@ -220,7 +220,7 @@
         "tags": [
           "회원"
         ],
-        "summary": "Access 토큰 재발행 - 1차",
+        "summary": "Access 토큰 재발행 - 필수",
         "description": "Authorization 헤더에 Bearer 방식의 Refresh Token을 보내서 Access Token을 재발급 한다.",
         "parameters": [
           {
@@ -277,7 +277,7 @@
         "tags": [
           "회원"
         ],
-        "summary": "회원 정보 조회(단일 속성) - 1차",
+        "summary": "회원 정보 조회(단일 속성) - 필수",
         "description": "회원 정보 중 한가지 속성을 조회한다.",
         "parameters": [
           {
@@ -360,7 +360,7 @@
         "tags": [
           "회원"
         ],
-        "summary": "회원 정보 조회(모든 속성) - 1차",
+        "summary": "회원 정보 조회(모든 속성) - 필수",
         "description": "회원 정보의 모든 속성을 조회한다.",
         "parameters": [
           {
@@ -520,7 +520,7 @@
         "tags": [
           "상품"
         ],
-        "summary": "상품 목록 조회 - 1차",
+        "summary": "상품 목록 조회 - 필수",
         "description": "상품 목록을 조회한다.",
         "parameters": [
           {
@@ -613,7 +613,7 @@
         "tags": [
           "상품"
         ],
-        "summary": "상품 상세 조회 - 1차",
+        "summary": "상품 상세 조회 - 필수",
         "description": "상품 상세 정보를 조회한다.",
         "parameters": [
           {
@@ -666,7 +666,7 @@
         "tags": [
           "구매"
         ],
-        "summary": "상품 구매 - 1차",
+        "summary": "상품 구매 - 필수",
         "description": "상품을 구매한다.",
         "responses": {
           "201": {
@@ -731,7 +731,7 @@
         "tags": [
           "구매"
         ],
-        "summary": "구매 목록 조회 - 1차",
+        "summary": "구매 목록 조회 - 필수",
         "description": "구매 목록을 조회한다.",
         "responses": {
           "default": {
@@ -826,7 +826,7 @@
         "tags": [
           "구매 후기"
         ],
-        "summary": "구매 후기 등록 - 1차",
+        "summary": "구매 후기 등록 - 필수",
         "description": "구매 후기를 등록한다.",
         "responses": {
           "200": {
@@ -923,7 +923,7 @@
         "tags": [
           "파일"
         ],
-        "summary": "파일 업로드 - 1차",
+        "summary": "파일 업로드 - 필수",
         "description": "한번에 최대 10개 까지 파일을 업로드 합니다.<br>회원 가입시 프로필 이미지를 첨부하거나 상품의 이미지를 미리 업로드 한 후 응답 받은 파일 경로를 사용하면 업로드한 파일에 접근이 가능합니다.<br>파일 업로드 완료 후 파일명과 경로를 반환합니다.",
         "responses": {
           "201": {
@@ -1641,7 +1641,7 @@
         "tags": [
           "상품"
         ],
-        "summary": "판매 상품 목록 조회 - 1차",
+        "summary": "판매 상품 목록 조회 - 필수",
         "description": "자신의 판매 상품 목록을 조회한다.",
         "responses": {
           "default": {
@@ -1658,7 +1658,7 @@
         "tags": [
           "상품"
         ],
-        "summary": "상품 등록 - 1차",
+        "summary": "상품 등록 - 필수",
         "description": "상품을 등록합니다.<br>상품 등록 후 상품 정보를 반환합니다.",
         "responses": {
           "201": {
@@ -1725,7 +1725,7 @@
         "tags": [
           "상품"
         ],
-        "summary": "판매 상품 상세 조회 - 1차",
+        "summary": "판매 상품 상세 조회 - 필수",
         "description": "자신의 판매 상품 정보를 조회한다.",
         "parameters": [
           {
@@ -1771,7 +1771,7 @@
         "tags": [
           "상품"
         ],
-        "summary": "상품 수정 - 1차",
+        "summary": "상품 수정 - 필수",
         "description": "상품을 수정한다.",
         "parameters": [
           {
@@ -1858,7 +1858,7 @@
         "tags": [
           "상품"
         ],
-        "summary": "상품 삭제 - 1차",
+        "summary": "상품 삭제 - 필수",
         "description": "상품을 삭제한다.",
         "parameters": [
           {
@@ -2126,7 +2126,7 @@
         "tags": [
           "코드"
         ],
-        "summary": "코드 수정 - 선택",
+        "summary": "코드 수정",
         "description": "코드를 수정한다.",
         "parameters": [
           {
@@ -2207,7 +2207,7 @@
         "tags": [
           "코드"
         ],
-        "summary": "코드 삭제 - 1차",
+        "summary": "코드 삭제",
         "description": "코드를 삭제한다.",
         "parameters": [
           {
