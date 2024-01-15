@@ -2,13 +2,13 @@ import swaggerAutogen from 'swagger-autogen';
 
 const doc = {
   info: {
-    version: '3.1.0',
+    version: '1.0.0',
     title: '오픈마켓 API',
-    description: '오픈마켓 API Server입니다.<br><a href="https://localhost">버전 히스토리</a>'
+    description: '오픈마켓 API Server입니다.<br><a href="https://localhost">버전별 변경사항 확인</a>'
   },
   servers: [
     {
-      url: 'https://localhost/api',
+      url: 'https://market-lion.koyeb.app/api',
       description: ''
     }
   ],
