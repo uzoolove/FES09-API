@@ -4,7 +4,7 @@ const doc = {
   info: {
     version: '1.0.0',
     title: '오픈마켓 API',
-    description: '오픈마켓 API Server입니다.<br><a href="https://localhost">버전별 변경사항 확인</a>'
+    description: '오픈마켓 API Server입니다.<br><a href="https://market-lion.koyeb.app">버전별 변경사항 확인</a>'
   },
   servers: [
     {
