@@ -15,6 +15,18 @@ router.get('/', [
   query('custom').optional().isJSON().withMessage('custom 값은 JSON 형식의 문자열이어야 합니다.'),
   query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.')
 ], validator.checkResult, async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['주문 관리']
+    #swagger.summary  = '주문 목록 조회'
+    #swagger.description = '판매중인 모든 상품의 주문 목록을 조회한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     logger.trace(req.query);
 
@@ -50,6 +62,18 @@ router.get('/', [
 
 // 주문 상세 조회
 router.get('/:_id', async function(req, res, next) {
+
+   /*
+    #swagger.tags = ['주문 관리']
+    #swagger.summary  = '주문 상세 조회'
+    #swagger.description = '주문 상세 내역을 조회한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const item = await sellerModel.findById(Number(req.params._id), req.user._id);
     if(item){
@@ -64,6 +88,18 @@ router.get('/:_id', async function(req, res, next) {
 
 // 상품별 주문 상태 수정
 router.patch('/:_id/products/:product_id', async function(req, res, next) {
+
+   /*
+    #swagger.tags = ['주문 관리']
+    #swagger.summary  = '상품별 주문 상태 수정'
+    #swagger.description = '상품 단위로 주문 상태를 수정한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const _id = Number(req.params._id);
     const product_id = Number(req.params.product_id);
@@ -90,6 +126,18 @@ router.patch('/:_id/products/:product_id', async function(req, res, next) {
 
 // 주문별 주문 상태 수정
 router.patch('/:_id', async function(req, res, next) {
+
+   /*
+    #swagger.tags = ['주문 관리']
+    #swagger.summary  = '주문별 주문 상태 수정'
+    #swagger.description = '주문 단위로 주문 상태를 수정한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const _id = Number(req.params._id);
     const order = await model.findById(_id);

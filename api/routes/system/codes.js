@@ -12,8 +12,8 @@ router.get('/', async function(req, res, next) {
   /*
     #swagger.auto = false
 
-    #swagger.tags = ['코드']
-    #swagger.summary  = '코드 목록 조회 - 선택'
+    #swagger.tags = ['코드 조회']
+    #swagger.summary  = '코드 목록 조회'
     #swagger.description = '코드 목록을 조회한다.'
 
     #swagger.responses[200] = {
@@ -48,8 +48,8 @@ router.get('/', async function(req, res, next) {
 // 코드 한건 조회
 router.get('/:_id', async function(req, res, next) {
   /*
-    #swagger.tags = ['코드']
-    #swagger.summary  = '코드 한건 조회 - 선택'
+    #swagger.tags = ['코드 조회']
+    #swagger.summary  = '코드 한건 조회'
     #swagger.description = '코드 한건을 조회한다.'
 
     #swagger.parameters['_id'] = {

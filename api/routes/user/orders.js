@@ -134,6 +134,20 @@ try{
 
 // 구매 목록의 상태값만 조회
 router.get('/state', async function(req, res, next) {
+
+  /*
+    #swagger.auto = false
+
+    #swagger.tags = ['구매']
+    #swagger.summary  = '구매 목록의 상태값 조회'
+    #swagger.description = '구매 목록의 상태값을 조회한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+
+  */
+
   try{
     const item = await model.findState(req.user._id);
     res.json({ ok: 1, item });
@@ -144,6 +158,20 @@ router.get('/state', async function(req, res, next) {
 
 // 구매 상세 조회
 router.get('/:_id', async function(req, res, next) {
+
+  /*
+    #swagger.auto = false
+
+    #swagger.tags = ['구매']
+    #swagger.summary  = '구매 상세 조회'
+    #swagger.description = '구매 상세 내역을 조회한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+
+  */
+
   try{
     const item = await model.findById(Number(req.params._id), req.user._id);
     if(item){
@@ -158,6 +186,20 @@ router.get('/:_id', async function(req, res, next) {
 
 // 상품별 주문 상태 수정
 router.patch('/:_id/products/:product_id', async function(req, res, next) {
+
+  /*
+    #swagger.auto = false
+
+    #swagger.tags = ['구매']
+    #swagger.summary  = '상품별 주문 상태 수정'
+    #swagger.description = '상품별로 주문 상태를 수정한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+
+  */
+
   try{
     logger.trace(req.query);
     const _id = Number(req.params._id);
@@ -181,6 +223,20 @@ router.patch('/:_id/products/:product_id', async function(req, res, next) {
 
 // 주문별 주문 상태 수정
 router.patch('/:_id', async function(req, res, next) {
+
+  /*
+    #swagger.auto = false
+
+    #swagger.tags = ['구매']
+    #swagger.summary  = '주문별 주문 상태 수정'
+    #swagger.description = '주문별로 주문 상태를 수정한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+
+  */
+
   try{
     logger.trace(req.query);
     const _id = Number(req.params._id);

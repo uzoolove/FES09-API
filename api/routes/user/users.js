@@ -20,7 +20,7 @@ router.post('/', [
 ], validator.checkResult, async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
-    #swagger.summary  = '회원 가입 - 필수'
+    #swagger.summary  = '회원 가입'
     #swagger.description = '회원 가입을 합니다.<br>회원 가입을 완료한 후 회원 정보를 반환합니다.'
 
     #swagger.requestBody = {
@@ -87,7 +87,7 @@ router.get('/email', [
 ], validator.checkResult, async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
-    #swagger.summary  = '이메일 중복 체크 - 필수'
+    #swagger.summary  = '이메일 중복 체크'
     #swagger.description = '이메일 중복 여부를 체크 합니다.'
 
     #swagger.parameters['email'] = {
@@ -137,7 +137,7 @@ router.post('/login', [
 ], validator.checkResult, async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
-    #swagger.summary  = '로그인 - 필수'
+    #swagger.summary  = '로그인'
     #swagger.description = '이메일과 비밀번호를 입력해 로그인을 한다.<br>응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환한다.<br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야 한다.'
 
     #swagger.requestBody = {
@@ -195,66 +195,13 @@ router.post('/login', [
   }
 });
 
-// Access Token 재발행
-router.get('/refresh', async (req, res, next) => {
-  /*
-    #swagger.tags = ['회원']
-    #swagger.summary  = 'Access 토큰 재발행 - 필수'
-    #swagger.description = 'Authorization 헤더에 Bearer 방식의 Refresh Token을 보내서 Access Token을 재발급 한다.'
-
-    #swagger.security = [{
-      "Refresh Token": []
-    }]
-
-    #swagger.parameters['authorization'] = {
-      description: "Refresh Token<br>화면 우측 상단의 자물쇠 버튼을 눌러 refreshToken을 먼저 등록하세요.<br>refreshToken은 로그인 후 발급 받을 수 있습니다.",
-      in: 'header',
-      example: '비워두세요'
-    }
-
-    #swagger.responses[200] = {
-      description: '성공',
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/accessTokenRes" }
-        }
-      }
-    }
-    #swagger.responses[401] = {
-      description: 'Refresh Token 인증 실패',
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/error401" }
-        }
-      }
-    }
-    #swagger.responses[500] = {
-      description: '서버 에러',
-      content: {
-        "application/json": {
-          schema: { $ref: '#/components/schemas/error500' }
-        }
-      }
-    }
-  */
-
-  try{
-    const refreshToken = req.headers.authorization && req.headers.authorization.split('Bearer ')[1];
-    const accessToken = await authService.refresh(refreshToken);
-  
-    res.json({ ok: 1, accessToken });
-  }catch(err){
-    next(err);
-  }
-});
-
 // 회원 조회(단일 속성)
 router.get('/:_id/*', jwtAuth.auth('user'), async function(req, res, next) {
   /*  
     #swagger.auto = false
 
     #swagger.tags = ['회원']
-    #swagger.summary  = '회원 정보 조회(단일 속성) - 필수'
+    #swagger.summary  = '회원 정보 조회(단일 속성)'
     #swagger.description = '회원 정보 중 한가지 속성을 조회한다.'
 
     #swagger.path = '/users/{_id}/{*}'
@@ -335,7 +282,7 @@ router.get('/:_id/*', jwtAuth.auth('user'), async function(req, res, next) {
 router.get('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
-    #swagger.summary  = '회원 정보 조회(모든 속성) - 필수'
+    #swagger.summary  = '회원 정보 조회(모든 속성)'
     #swagger.description = '회원 정보의 모든 속성을 조회한다.'
 
     #swagger.security = [{
@@ -407,7 +354,7 @@ router.get('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
 router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
-    #swagger.summary  = '회원 정보 수정 - 선택'
+    #swagger.summary  = '회원 정보 수정'
     #swagger.description = '회원 정보를 수정한다.'
 
     #swagger.security = [{

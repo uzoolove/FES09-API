@@ -4,12 +4,16 @@ const doc = {
   info: {
     version: '1.0.0',
     title: '오픈마켓 API',
-    description: '오픈마켓 API Server입니다.<br><a href="https://market-lion.koyeb.app">버전별 변경사항 확인</a>'
+    description: '오픈마켓 API Server입니다.<br><a href="/">버전별 변경사항 확인</a>'
   },
   servers: [
     {
+      url: 'http://localhost/api',
+      description: '로컬 테스트'
+    },
+    {
       url: 'https://market-lion.koyeb.app/api',
-      description: ''
+      description: '운영 테스트'
     }
   ],
   tags: [
@@ -18,20 +22,60 @@ const doc = {
       description: '회원 관리 기능',
     },
     {
+      name: '게시판',
+      description: '게시판(QnA, 공지 등) 관련 기능',
+    },
+    {
       name: '상품',
-      description: '상품 관리 기능',
+      description: '일반 회원 - 상품 관련 기능',
     },
     {
       name: '구매',
-      description: '구매 관리 기능',
+      description: '일반 회원 - 구매 관련 기능',
     },
     {
       name: '구매 후기',
-      description: '구매 후기 관리 기능',
+      description: '일반 회원 - 구매 후기 관련 기능',
+    },
+    {
+      name: '장바구니',
+      description: '일반 회원 - 장바구니 관련 기능',
+    },
+    {
+      name: '북마크',
+      description: '일반 회원 - 북마크(찜하기) 관련 기능',
+    },
+    {
+      name: '상품 관리',
+      description: '판매 회원 - 판매 상품 관리 기능',
+    },
+    {
+      name: '주문 관리',
+      description: '판매 회원 - 주문 관리 기능',
+    },
+    {
+      name: '후기 관리',
+      description: '판매 회원 - 후기 관리 기능',
+    },
+    {
+      name: '회원 관리',
+      description: '관리자 - 회원 관리 기능',
+    },
+    {
+      name: '코드 관리',
+      description: '관리자 - 코드 관리 기능',
     },
     {
       name: '파일',
-      description: '파일 업로드',
+      description: '시스템 - 파일 관리 기능',
+    },
+    {
+      name: '인증',
+      description: '시스템 - 인증 관리 기능',
+    },
+    {
+      name: '코드 조회',
+      description: '시스템 - 코드 조회 관리 기능',
     },
   ],
   components: {
@@ -865,7 +909,7 @@ const doc = {
 
 
 const outputFile = './swagger-output.json';
-const routes = ['./routes/user/index.js', './routes/seller/index.js', './routes/admin/index.js'];
+const routes = ['./routes/user/index.js', './routes/seller/index.js', './routes/admin/index.js', './routes/system/index.js'];
 
 
 const options = {

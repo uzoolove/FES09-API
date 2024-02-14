@@ -14,6 +14,14 @@ router.get('/', [
   query('custom').optional().isJSON().withMessage('custom 값은 JSON 형식의 문자열이어야 합니다.'),
   query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.')
 ], validator.checkResult, async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['게시판']
+    #swagger.summary  = '전체 게시물 목록'
+    #swagger.description = '전체 게시물 목록을 조회한다.'
+    
+  */
+
   try{
     let search = {};
     const keyword = req.query.keyword;
@@ -47,6 +55,18 @@ router.get('/', [
 
 // 사용자의 게시물 목록 조회
 router.get('/users/:_id', jwtAuth.auth('user'), async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['게시판']
+    #swagger.summary  = '사용자 게시물 목록'
+    #swagger.description = '사용자가 작성한 게시물 목록을 조회한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const _id = Number(req.params._id);
     if(req.user.type === 'admin' || _id === req.user._id){
@@ -70,6 +90,18 @@ router.get('/users/:_id', jwtAuth.auth('user'), async function(req, res, next) {
 
 // 판매자의 상품들에 등록된 게시물 목록 조회
 router.get('/seller/:_id', jwtAuth.auth('user'), async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['게시판']
+    #swagger.summary  = '판매자 게시물 목록'
+    #swagger.description = '판매자의 상품에 등록된 게시물 목록을 조회한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
 
     if(req.user.type === 'seller' || req.params._id === req.user._id){
@@ -93,6 +125,14 @@ router.get('/seller/:_id', jwtAuth.auth('user'), async function(req, res, next) 
 
 // 게시물 상세 조회
 router.get('/:_id', async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['게시판']
+    #swagger.summary  = '게시물 상세'
+    #swagger.description = '게시물을 상세 조회한다.'
+    
+  */
+
   try{
     const item = await model.findById(Number(req.params._id));
     if(item){
@@ -107,6 +147,18 @@ router.get('/:_id', async function(req, res, next) {
 
 // 게시물 등록
 router.post('/', jwtAuth.auth('user'), async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['게시판']
+    #swagger.summary  = '게시물 등록'
+    #swagger.description = '게시물을 등록한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const item = await model.create({ ...req.body, user: { _id: req.user._id, name: req.user.name } });
     res.json( {ok: 1, item} );
@@ -117,6 +169,18 @@ router.post('/', jwtAuth.auth('user'), async function(req, res, next) {
 
 // 게시물 수정
 router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['게시판']
+    #swagger.summary  = '게시물 수정'
+    #swagger.description = '게시물을 수정한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const _id = Number(req.params._id);
     const post = await model.findById(_id);
@@ -133,6 +197,18 @@ router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
 
 // 게시물 삭제
 router.delete('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['게시판']
+    #swagger.summary  = '게시물 삭제'
+    #swagger.description = '게시물을 삭제한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const _id = Number(req.params._id);
     const post = await model.findById(_id);
@@ -149,6 +225,18 @@ router.delete('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
 
 // 댓글 등록
 router.post('/:_id/replies', jwtAuth.auth('user'), async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['게시판']
+    #swagger.summary  = '댓글 등록'
+    #swagger.description = '게시물에 댓글을 등록한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const _id = Number(req.params._id);
     const post = await model.findById(_id);
@@ -173,6 +261,18 @@ router.post('/:_id/replies', jwtAuth.auth('user'), async function(req, res, next
 
 // 댓글 수정
 router.patch('/:_id/replies/:reply_id', jwtAuth.auth('user'), async (req, res, next) => {
+
+  /*
+    #swagger.tags = ['게시판']
+    #swagger.summary  = '댓글 수정'
+    #swagger.description = '게시물의 댓글을 수정한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const _id = Number(req.params._id);
     const reply_id = Number(req.params.reply_id);
@@ -191,6 +291,18 @@ router.patch('/:_id/replies/:reply_id', jwtAuth.auth('user'), async (req, res, n
 
 // 댓글 삭제
 router.delete('/:_id/replies/:reply_id', jwtAuth.auth('user'), async (req, res, next) => {
+
+  /*
+    #swagger.tags = ['게시판']
+    #swagger.summary  = '댓글 삭제'
+    #swagger.description = '게시물의 댓글을 삭제한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const _id = Number(req.params._id);
     const reply_id = Number(req.params.reply_id);

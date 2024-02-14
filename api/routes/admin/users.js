@@ -12,6 +12,18 @@ router.get('/', [
   query('custom').optional().isJSON().withMessage('custom 값은 JSON 형식의 문자열이어야 합니다.'),
   query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.')
 ], validator.checkResult, async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['회원 관리']
+    #swagger.summary  = '회원 목록 조회'
+    #swagger.description = '회원 목록을 조회한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     logger.trace(req.query);
 

@@ -49,7 +49,7 @@ const handleError = (err, req, res, next) => {
 router.post('/', upload.array('attach', 10), handleError, async function(req, res, next) {
   /*
     #swagger.tags = ['파일']
-    #swagger.summary  = '파일 업로드 - 필수'
+    #swagger.summary  = '파일 업로드'
     #swagger.description = '한번에 최대 10개 까지 파일을 업로드 합니다.<br>회원 가입시 프로필 이미지를 첨부하거나 상품의 이미지를 미리 업로드 한 후 응답 받은 파일 경로를 사용하면 업로드한 파일에 접근이 가능합니다.<br>파일 업로드 완료 후 파일명과 경로를 반환합니다.'
     
     #swagger.requestBody = {
@@ -127,11 +127,27 @@ router.post('/', upload.array('attach', 10), handleError, async function(req, re
 
 // 파일 링크
 router.get('/:fileName', function(req, res, next){
+
+  /*
+    #swagger.tags = ['파일']
+    #swagger.summary  = '이미지 링크'
+    #swagger.description = '업로드된 이미지를 img 태그로 지정한다.'
+    
+  */
+
   sendFile(req, res, next, 'view');
 });
 
 // 파일 다운로드
 router.get('/download/:fileName', function(req, res, next){
+
+  /*
+    #swagger.tags = ['파일']
+    #swagger.summary  = '다운로드'
+    #swagger.description = '업로드된 파일을 다운로드 한다.'
+    
+  */
+
   sendFile(req, res, next, 'download');
 });
 

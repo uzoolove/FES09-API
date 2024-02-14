@@ -9,6 +9,18 @@ const router = express.Router();
 
 // 북마크 등록
 router.post('/', async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['북마크']
+    #swagger.summary  = '북마크 등록'
+    #swagger.description = '지정한 상품을 북마크에 등록한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const bookmark = await model.findOneBy({ user_id: req.user._id, product_id: Number(req.body.product_id) });
     if(bookmark){
@@ -24,6 +36,18 @@ router.post('/', async function(req, res, next) {
 
 // 내 북마크 목록 조회
 router.get('/', async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['북마크']
+    #swagger.summary  = '북마크 목록 조회'
+    #swagger.description = '사용자의 북마크 목록을 조회한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const item = await model.findBy({ user_id: req.user._id });
     res.json({ ok: 1, item });
@@ -34,6 +58,18 @@ router.get('/', async function(req, res, next) {
 
 // 지정한 상품에 대한 나의 북마크 한건 조회
 router.get('/products/:product_id', async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['북마크']
+    #swagger.summary  = '북마크 한건 조회'
+    #swagger.description = '지정한 상품에 대한 나의 북마크 정보를 조회한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const item = await model.findOneBy({ user_id: req.user._id, product_id: Number(req.params.product_id) });
     if(item){
@@ -48,6 +84,18 @@ router.get('/products/:product_id', async function(req, res, next) {
 
 // 북마크 삭제
 router.delete('/:_id', async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['북마크']
+    #swagger.summary  = '북마크 삭제'
+    #swagger.description = '북마크를 삭제한다.'
+    
+    #swagger.security = [{
+      "Access Token": []
+    }]
+    
+  */
+
   try{
     const _id = Number(req.params._id);
     const bookmark = await model.findOneBy({ _id });
