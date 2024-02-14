@@ -5,12 +5,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FES09-API</title>
+  <script type="text/javascript">
+    window.addEventListener('DOMContentLoaded', () => {
+      const url = location.href + 'apidocs';
+      const apilink = document.querySelector('#apilink');
+      apilink.setAttribute('href', url);
+      apilink.innerHTML = url;
+    });
+  </script>
 </head>
 
 <body>
   <h1>FrontEnd School 9기 API Server</h1>
-  <p>API 문서: <a href="http://localhost/apidocs">http://localhost/apidocs</a></p>
-  <!-- <p>API 문서: <a href="https://market-lion.koyeb.app/apidocs">https://market-lion.koyeb.app/apidocs</a></p> -->
+  <p>API 문서: <a id="apilink"></a></p>
   <div>
     <h2>최신 버전: <span>v1.0.0</span></h2>
   </div>
