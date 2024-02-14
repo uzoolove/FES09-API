@@ -8,12 +8,12 @@ const doc = {
   },
   servers: [
     {
-      url: 'http://localhost/api',
-      description: '로컬 테스트'
+      url: 'https://market-lion.koyeb.app/api',
+      description: ''
     },
     {
-      url: 'https://market-lion.koyeb.app/api',
-      description: '운영 테스트'
+      url: 'http://localhost/api',
+      description: '로컬 테스트'
     }
   ],
   tags: [
