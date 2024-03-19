@@ -49,6 +49,7 @@ export const cors = {
     /frontendschool.shop$/,
     /codepen.io$/,
     /stackblitz.com$/,
+    /webcontainer.io$/,
     new RegExp(process.env.APP_HOST)
   ]
 };
