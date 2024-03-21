@@ -146,7 +146,7 @@ router.get('/:_id', async function(req, res, next) {
 });
 
 // 게시물 등록
-router.post('/', /*jwtAuth.auth('user'), */async function(req, res, next) {
+router.post('/', jwtAuth.auth('user'), async function(req, res, next) {
 
   /*
     #swagger.tags = ['게시판']
@@ -168,7 +168,7 @@ router.post('/', /*jwtAuth.auth('user'), */async function(req, res, next) {
 });
 
 // 게시물 수정
-router.patch('/:_id', /*jwtAuth.auth('user'),*/ async function(req, res, next) {
+router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
 
   /*
     #swagger.tags = ['게시판']
@@ -196,7 +196,7 @@ router.patch('/:_id', /*jwtAuth.auth('user'),*/ async function(req, res, next) {
 });
 
 // 게시물 삭제
-router.delete('/:_id', /*jwtAuth.auth('user'),*/ async function(req, res, next) {
+router.delete('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
 
   /*
     #swagger.tags = ['게시판']
@@ -224,7 +224,7 @@ router.delete('/:_id', /*jwtAuth.auth('user'),*/ async function(req, res, next) 
 });
 
 // 댓글 등록
-router.post('/:_id/replies',/* jwtAuth.auth('user'),*/ async function(req, res, next) {
+router.post('/:_id/replies', jwtAuth.auth('user'), async function(req, res, next) {
 
   /*
     #swagger.tags = ['게시판']
@@ -260,7 +260,7 @@ router.post('/:_id/replies',/* jwtAuth.auth('user'),*/ async function(req, res, 
 });
 
 // 댓글 수정
-router.patch('/:_id/replies/:reply_id', /*jwtAuth.auth('user'),*/ async (req, res, next) => {
+router.patch('/:_id/replies/:reply_id', jwtAuth.auth('user'), async (req, res, next) => {
 
   /*
     #swagger.tags = ['게시판']
