@@ -223,6 +223,33 @@ router.delete('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
   }
 });
 
+// 댓글 목록 조회
+router.get('/:_id/replies', async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['게시판']
+    #swagger.summary  = '댓글 목록'
+    #swagger.description = '지정한 게시물의 댓글 목록을 조회한다.'
+    
+  */
+
+  try{
+    // 정렬 옵션
+    let sortBy = JSON.parse(req.query.sort || '{}');
+    // 기본 정렬 옵션은 등록일의 올림차순
+    sortBy['createdAt'] = sortBy['createdAt'] || 1; // 올림차순
+
+    const page = Number(req.query.page || 1);
+    const limit = Number(req.query.limit || 0);
+
+    const result = await model.findReplies({ _id: Number(req.params._id), page, limit });
+
+    res.json({ ok: 1, ...result });
+  }catch(err){
+    next(err);
+  }
+});
+
 // 댓글 등록
 router.post('/:_id/replies', jwtAuth.auth('user'), async function(req, res, next) {
 

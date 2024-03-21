@@ -118,6 +118,35 @@ const post = {
     return result;
   },
 
+  // 댓글 목록 조회
+  async findReplies({ _id, page=1, limit=0 }){
+    logger.trace(arguments);
+    
+    const post = await this.findById(_id);
+
+    logger.trace(post);
+
+    const list = post.replies;
+
+    const skip = (page-1) * limit;
+
+    const totalCount = list.length;
+
+    list.sort((a, b) => a._id - b._id);
+    list.splice(skip);
+    
+    const result = { item: list };
+    result.pagination = {
+      page,
+      limit,
+      total: totalCount,
+      totalPages: (limit === 0) ? 1 : Math.ceil(totalCount / limit)
+    };
+
+    logger.debug(list.length);
+    return result;
+  },
+
   // 댓글 등록
   async createReply(_id, reply){
     logger.trace(arguments);
