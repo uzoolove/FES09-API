@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 import logger from '#utils/logger.js';
 import db, { nextSeq } from '#utils/dbUtil.js';
@@ -9,7 +9,7 @@ const bookmark = {
   async create(bookmark){
     logger.trace(arguments);
     bookmark._id = await nextSeq('bookmark');
-    bookmark.createdAt = moment().format('YYYY.MM.DD HH:mm:ss');
+    bookmark.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
     
     if(!bookmark.dryRun){
       await db.bookmark.insertOne(bookmark);

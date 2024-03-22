@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 import logger from '#utils/logger.js';
 import db, { nextSeq } from '#utils/dbUtil.js';
@@ -9,7 +9,7 @@ const user = {
   async create(userInfo){
     logger.trace(arguments);
     userInfo._id = await nextSeq('user');
-    userInfo.updatedAt = userInfo.createdAt = moment().format('YYYY.MM.DD HH:mm:ss');
+    userInfo.updatedAt = userInfo.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
     if(!userInfo.dryRun){
       await db.user.insertOne(userInfo);
     }
@@ -55,7 +55,7 @@ const user = {
   // 회원 정보 수정
   async update(_id, userInfo){
     logger.trace(arguments);
-    userInfo.updatedAt = moment().format('YYYY.MM.DD HH:mm:ss');
+    userInfo.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
     const result = await db.user.updateOne({ _id }, { $set: userInfo });
     logger.debug(result);
     const item = await this.findAttrListById(_id, _.mapValues(userInfo, () => 1));

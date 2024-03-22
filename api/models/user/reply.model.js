@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 import logger from '#utils/logger.js';
 import db, { nextSeq } from '#utils/dbUtil.js';
@@ -10,7 +10,7 @@ const reply = {
   async create(replyInfo){
     logger.trace(arguments);
     replyInfo._id = await nextSeq('reply');
-    replyInfo.createdAt = moment().format('YYYY.MM.DD HH:mm:ss');
+    replyInfo.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
     
     if(!replyInfo.dryRun){
       await db.reply.insertOne(replyInfo);

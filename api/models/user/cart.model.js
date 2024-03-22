@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import createError from 'http-errors';
 
 import logger from '#utils/logger.js';
@@ -11,7 +11,7 @@ const cart = {
   // 장바구니 등록
   async create(cartInfo){
     logger.trace(arguments);
-    const updatedAt = moment().format('YYYY.MM.DD HH:mm:ss');
+    const updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
 
     const beforeCart = await this.findByUser(cartInfo.user_id);
     const sameProduct = _.find(beforeCart, { product_id: cartInfo.product_id });
@@ -124,7 +124,7 @@ const cart = {
   async update(_id, quantity){
     logger.trace(arguments);
 
-    const updatedAt = moment().format('YYYY.MM.DD HH:mm:ss');
+    const updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
 
     const result = await db.cart.updateOne({ _id }, { $set: { quantity, updatedAt } });
     logger.debug(result);
@@ -163,7 +163,7 @@ const cart = {
   async add(user_id, products){
     logger.trace(arguments);
 
-    const updatedAt = moment().format('YYYY.MM.DD HH:mm:ss');
+    const updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
     const beforeCart = await this.findByUser(user_id);
 
     for(const product of products){

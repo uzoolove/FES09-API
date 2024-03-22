@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import createError from 'http-errors';
 
 import logger from '#utils/logger.js';
@@ -14,7 +14,7 @@ const buying = {
   async create(orderInfo){
     logger.trace(arguments);
     orderInfo._id = await nextSeq('order');
-    orderInfo.updatedAt = orderInfo.createdAt = moment().format('YYYY.MM.DD HH:mm:ss');
+    orderInfo.updatedAt = orderInfo.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
 
     const products = [];
 
@@ -164,7 +164,7 @@ const buying = {
   async updateState(_id, order, history){
     logger.trace(arguments);
 
-    order.updatedAt = moment().format('YYYY.MM.DD HH:mm:ss');
+    order.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
 
     const set = { state: order.state };
     if(order.delivery){
@@ -187,7 +187,7 @@ const buying = {
   async updateStateByProduct(_id, product_id, order, history){
     logger.trace(arguments);
 
-    order.updatedAt = moment().format('YYYY.MM.DD HH:mm:ss');
+    order.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
 
     const set = { 'products.$[elem].state': order.state };
     if(order.delivery){

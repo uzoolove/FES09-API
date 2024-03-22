@@ -82,7 +82,7 @@ const post = {
     post.type = post.type || 'post';
     logger.trace(post);
     post._id = await nextSeq('post');
-    post.updatedAt = post.createdAt = monent().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
+    post.updatedAt = post.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
     post.seller_id = (await productModel.findAttrById({ _id: post.product_id, attr: 'seller_id' }))?.seller_id
     if(!post.dryRun){
       await db.post.insertOne(post);
@@ -93,7 +93,7 @@ const post = {
   // 게시물 수정
   async update(_id, post){
     logger.trace(arguments);
-    post.updatedAt = monent().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
+    post.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
     if(!post.dryRun){
       await db.post.updateOne(
         { _id },
@@ -151,7 +151,7 @@ const post = {
   // 댓글 등록
   async createReply(_id, reply){
     logger.trace(arguments);
-    reply.updatedAt = reply.createdAt = monent().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
+    reply.updatedAt = reply.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
     if(!reply.dryRun){
       await db.post.updateOne({ _id }, { $push: { replies: reply } });
     }
@@ -161,7 +161,7 @@ const post = {
   // 댓글 수정
   async updateReply(_id, reply_id, reply){
     logger.trace(arguments);
-    reply.updatedAt = monent().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
+    reply.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
     const result = await db.post.updateOne(
       { _id },
       { 
