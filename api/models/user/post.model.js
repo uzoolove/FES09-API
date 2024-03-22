@@ -79,7 +79,8 @@ const post = {
 
   // 게시물 등록
   async create(post){
-    logger.trace(arguments);
+    post.type = post.type || 'post';
+    logger.trace(post);
     post._id = await nextSeq('post');
     post.updatedAt = post.createdAt = moment().format('YYYY.MM.DD HH:mm:ss');
     post.seller_id = (await productModel.findAttrById({ _id: post.product_id, attr: 'seller_id' }))?.seller_id
@@ -124,16 +125,16 @@ const post = {
     
     const post = await this.findById(_id);
 
-    logger.trace(post);
+    
 
-    const list = post.replies;
-
+    const list = post.replies || [];
+    logger.trace(list);
     const skip = (page-1) * limit;
 
     const totalCount = list.length;
 
     list.sort((a, b) => a._id - b._id);
-    list.splice(skip);
+    list.slice(skip);
     
     const result = { item: list };
     result.pagination = {
