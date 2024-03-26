@@ -52,6 +52,7 @@ const reply = {
           'product.image': { $arrayElemAt: ['$product.mainImages', 0] },
           'product.name': '$product.name',
           'user._id': '$user._id',
+          'user.profileImage': '$user.profileImage',
           'user.name': {
             $concat: [
               { $substrCP: ['$user.name', 0, 1 ] }, // 첫 번째 문자 추출
