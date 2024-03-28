@@ -45,6 +45,7 @@ const post = {
           extra: 1,
           createdAt: 1,
           updatedAt: 1,
+          repliesCount: { $cond: { if: { $isArray: '$replies' }, then: { $size: '$replies' }, else: 0 } },
           'product.name': '$product.name',
           'product.image': { $arrayElemAt: ['$product.mainImages', 0] }
         }
@@ -120,21 +121,18 @@ const post = {
   },
 
   // 댓글 목록 조회
-  async findReplies({ _id, page=1, limit=0 }){
+  async findReplies({ _id, page=1, limit=0, sortBy }){
     logger.trace(arguments);
     
     const post = await this.findById(_id);
 
-    
-
-    const list = post.replies || [];
-    logger.trace(list);
+    let list = post.replies || [];
     const skip = (page-1) * limit;
 
     const totalCount = list.length;
 
     list.sort((a, b) => a._id - b._id);
-    list.slice(skip);
+    list = list.splice(skip, limit);
     
     const result = { item: list };
     result.pagination = {
