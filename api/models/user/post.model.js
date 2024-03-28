@@ -138,7 +138,11 @@ const post = {
     const totalCount = list.length;
 
     list.sort((a, b) => a._id - b._id);
-    list = list.splice(skip, limit);
+    if(limit > 0){
+      list = list.splice(skip, limit);
+    }else{
+      list = list.splice(skip);
+    }    
     
     const result = { item: list };
     result.pagination = {
