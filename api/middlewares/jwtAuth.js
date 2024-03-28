@@ -17,7 +17,7 @@ const jwtAuth = {
               _id: payload._id,
               type: payload.type,
               name: payload.name,
-              profile: payload.profileImage
+              profile: payload.profile
             };
             next();
           }else{
