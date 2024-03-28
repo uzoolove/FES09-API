@@ -73,7 +73,12 @@ const post = {
   // 게시물 상세 조회
   async findById(_id){
     logger.trace(arguments);
-    const item = await db.post.findOne({ _id });
+    // const item = await db.post.findOne({ _id });
+    const item = await db.post.findOneAndUpdate(
+      { _id },
+      { $inc: { views: 1 } }, // views 필드를 1 증가시킴
+      { returnOriginal: false } // 업데이트된 문서 반환
+    );
     logger.debug(item);
     return item;
   },

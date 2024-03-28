@@ -160,7 +160,7 @@ router.post('/', jwtAuth.auth('user'), async function(req, res, next) {
   */
 
   try{
-    const item = await model.create({ ...req.body, user: { _id: req.user._id, name: req.user.name } });
+    const item = await model.create({ ...req.body, views: 0, user: { _id: req.user._id, name: req.user.name } });
     res.json( {ok: 1, item} );
   }catch(err){
     next(err);
