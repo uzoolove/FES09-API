@@ -45,6 +45,7 @@ const post = {
           extra: 1,
           createdAt: 1,
           updatedAt: 1,
+          views: 1,
           repliesCount: { $cond: { if: { $isArray: '$replies' }, then: { $size: '$replies' }, else: 0 } },
           'product.name': '$product.name',
           'product.image': { $arrayElemAt: ['$product.mainImages', 0] }
