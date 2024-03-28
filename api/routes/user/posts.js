@@ -236,13 +236,13 @@ router.get('/:_id/replies', async function(req, res, next) {
   try{
     // 정렬 옵션
     let sortBy = JSON.parse(req.query.sort || '{}');
-    // 기본 정렬 옵션은 등록일의 올림차순
+    // // 기본 정렬 옵션은 등록일의 올림차순
     sortBy['createdAt'] = sortBy['createdAt'] || 1; // 올림차순
 
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
 
-    const result = await model.findReplies({ _id: Number(req.params._id), page, limit });
+    const result = await model.findReplies({ _id: Number(req.params._id), page, limit, sortBy });
 
     res.json({ ok: 1, ...result });
   }catch(err){
@@ -272,10 +272,10 @@ router.post('/:_id/replies', jwtAuth.auth('user'), async function(req, res, next
       reply._id = (_.maxBy(post.replies, '_id')?._id || 0) + 1;
       reply.user = {
         _id: req.user._id,
-        name: req.user.name
+        name: req.user.name,
+        profile: req.user.profile
       };
       // reply.user_id = req.user._id;
-      
       const item = await model.createReply(_id, reply);
       res.status(201).json({ok: 1, item});
     }else{
