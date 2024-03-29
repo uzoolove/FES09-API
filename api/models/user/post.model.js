@@ -72,15 +72,21 @@ const post = {
   },
 
   // 게시물 상세 조회
-  async findById(_id){
+  async findById(_id, firstRender){
     logger.trace(arguments);
-    // const item = await db.post.findOne({ _id });
-    const item = await db.post.findOneAndUpdate(
-      { _id },
-      { $inc: { views: 1 } }, // views 필드를 1 증가시킴
-      { returnOriginal: false } // 업데이트된 문서 반환
-    );
-    logger.debug(item);
+    
+    let item;
+    if(firstRender){ // 처음 조회때만 조회수 증가(컴포넌트 마운트 이후에 react-query로 여러번 조회때마다 조회수 증가 방지)
+      item = await db.post.findOneAndUpdate(
+        { _id },
+        { $inc: { views: 1 } },
+        { returnDocument: 'after' } // 업데이트된 문서 반환
+      );
+    }else{
+      item = await db.post.findOne({ _id });
+    }
+    
+    // logger.debug(item);
     return item;
   },
 
@@ -130,7 +136,7 @@ const post = {
   async findReplies({ _id, page=1, limit=0, sortBy }){
     logger.trace(arguments);
     
-    const post = await this.findById(_id);
+    const post = await this.findById(_id, false);
 
     let list = post.replies || [];
     const skip = (page-1) * limit;
@@ -152,7 +158,6 @@ const post = {
       totalPages: (limit === 0) ? 1 : Math.ceil(totalCount / limit)
     };
 
-    logger.debug(list.length);
     return result;
   },
 
