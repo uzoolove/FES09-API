@@ -306,8 +306,8 @@ router.patch('/:_id/replies/:reply_id', jwtAuth.auth('user'), async (req, res, n
     const post = await model.findById(_id);
     const reply = _.find(post?.replies, { _id: reply_id });
     if(post && (req.user.type === 'admin' || reply?.user._id == req.user._id)){
-      await model.updateReply(_id, reply_id, req.body);
-      res.json({ ok: 1 });
+      const item = await model.updateReply(_id, reply_id, req.body);
+      res.json({ ok: 1 , item });
     }else{
       next();
     }

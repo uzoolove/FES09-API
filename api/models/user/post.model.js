@@ -175,18 +175,22 @@ const post = {
   async updateReply(_id, reply_id, reply){
     logger.trace(arguments);
     reply.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
-    const result = await db.post.updateOne(
+    const result = await db.post.findOneAndUpdate(
       { _id },
       { 
         $set: { 
-          'replies.$[elementKey].content': reply.content,
+          'replies.$[elementKey].comment': reply.comment,
           'replies.$[elementKey].updatedAt': reply.updatedAt
         } 
       },
-      { arrayFilters: [{ 'elementKey._id': reply_id }] }
+      { 
+        arrayFilters: [{ 'elementKey._id': reply_id }],
+        returnDocument: 'after' // 업데이트된 문서 반환
+      }
     );
-    logger.debug(result);
-    return result;
+    const updatedReply = result.replies.find(reply => reply._id === reply_id);
+    logger.debug(updatedReply);
+    return updatedReply;
   },
 
   // 댓글 삭제
