@@ -6,7 +6,6 @@ import validator from '#middlewares/validator.js';
 import jwtAuth from '#middlewares/jwtAuth.js';
 import userService from '#services/user.service.js';
 import authService from '#services/auth.service.js';
-import model from '#models/user/user.model.js';
 
 const router = express.Router();
 
@@ -74,7 +73,8 @@ router.post('/', [
   */
 
   try{
-    const item = await userService.signup(req.body);
+    const userModel = req.model.user;
+    const item = await userService.signup(userModel, req.body);
     res.status(201).json({ok: 1, item});
   }catch(err){
     next(err);
@@ -119,7 +119,8 @@ router.get('/email', [
   */
 
   try{
-    const user = await model.findBy({ email: req.query.email });
+    const userModel = req.model.user;
+    const user = await userModel.findBy({ email: req.query.email });
     if(user){
       res.status(409).json({ ok: 0, message: '이미 등록된 이메일입니다.' });
     }else{
@@ -183,8 +184,10 @@ router.post('/login', [
       }
     }
   */
+
   try{
-    const user = await userService.login(req.body);
+    const userModel = req.model.user;
+    const user = await userService.login(userModel, req.body);
     if(user.extra?.confirm === false){
       res.status(403).json({ ok: 0, message: '관리자의 승인이 필요합니다.' });
     }else{
@@ -264,11 +267,12 @@ router.get('/:_id/*', jwtAuth.auth('user'), async function(req, res, next) {
   */
 
   try{
+    const userModel = req.model.user;
     if(req.user.type === 'admin' || req.params._id == req.user._id){
       logger.trace(req.params);
       const attr = req.params[0].replaceAll('/', '.');
       logger.log(attr);
-      const item = await model.findAttrById(Number(req.params._id), attr);
+      const item = await userModel.findAttrById(Number(req.params._id), attr);
       res.json({ok: 1, item});
     }else{
       next(); // 404
@@ -332,9 +336,11 @@ router.get('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
       }
     }
   */
+
   try{
+    const userModel = req.model.user;
     if(req.user.type === 'admin' || req.params._id == req.user._id){
-      const result = await model.findById(Number(req.params._id));
+      const result = await userModel.findById(Number(req.params._id));
       
       if(result){
         delete result.refreshToken;
@@ -416,7 +422,9 @@ router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
       }
     }
   */
+
   try{
+    const userModel = req.model.user;
     logger.trace(req.body);
     const _id = Number(req.params._id);
     if(req.user.type === 'admin' || _id === req.user._id){
@@ -425,7 +433,7 @@ router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
         delete (req.body.extra && req.body.extra.confirm);
         delete req.body['extra.confirm'];
       }
-      const updated = await userService.update(_id, req.body);
+      const updated = await userService.update(userModel, _id, req.body);
       if(updated){
         res.json({ ok: 1, updated });
       }else{

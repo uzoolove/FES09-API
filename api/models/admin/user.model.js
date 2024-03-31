@@ -1,9 +1,14 @@
 import _ from 'lodash';
 
 import logger from '#utils/logger.js';
-import db from '#utils/dbUtil.js';
 
-const user = {
+
+class AdminUserModel{
+  constructor(db, model){
+    this.db = db;
+    this.model = model;
+  }
+  
   // 회원 목록 조회
   async find({ search={}, sortBy={}, page=1, limit=0 }){
     logger.trace(arguments);
@@ -12,8 +17,8 @@ const user = {
     const skip = (page-1) * limit;
     logger.debug(query);
 
-    const totalCount = await db.user.countDocuments(query);
-    const list = await db.user.find(query).skip(skip).limit(limit).sort(sortBy).toArray();
+    const totalCount = await this.db.user.countDocuments(query);
+    const list = await this.db.user.find(query).skip(skip).limit(limit).sort(sortBy).toArray();
     const result = { item: list };
 
     result.pagination = {
@@ -25,8 +30,8 @@ const user = {
 
     logger.debug(list.length);
     return result;
-  },
+  }
 };
   
 
-export default user;
+export default AdminUserModel;

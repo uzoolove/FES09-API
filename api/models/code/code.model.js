@@ -2,16 +2,20 @@ import _ from 'lodash';
 import createError from 'http-errors';
 
 import logger from '#utils/logger.js';
-import db from '#utils/dbUtil.js';
 
-const code = {
+class CodeModel {
+  constructor(db, model){
+    this.db = db;
+    this.model = model;
+  }
+  
   // 코드 등록
   async create(codeInfo){
     logger.trace(arguments);
 
     try{
       if(!codeInfo.dryRun){
-        await db.code.insertOne(codeInfo);
+        await this.db.code.insertOne(codeInfo);
         return codeInfo;
       }
     }catch(err){
@@ -22,7 +26,7 @@ const code = {
         throw err;
       }
     }
-  },
+  }
 
   // 코드 목록 조회
   async find(){
@@ -30,15 +34,15 @@ const code = {
     const sortBy = {
       sort: 1
     };
-    const list = await db.code.find().sort(sortBy).toArray();
+    const list = await this.db.code.find().sort(sortBy).toArray();
     logger.debug(list.length, list);
     return list;
-  },
+  }
 
   // 코드 상세 조회
   async findById(_id, search){
     logger.trace(arguments);
-    let item = await db.code.findOne({ _id });
+    let item = await this.db.code.findOne({ _id });
     if(item){
       // 검색 속성이 문자열일 경우 숫자로 변환
       // 숫자로 변환할 수 없는 문자열은 그대로 사용
@@ -48,24 +52,24 @@ const code = {
     
     logger.debug(item);
     return item;
-  },
+  }
 
   // 코드 수정
   async update(_id, code){
     logger.trace(arguments);
-    const result = await db.code.updateOne({ _id }, { $set: code });
+    const result = await this.db.code.updateOne({ _id }, { $set: code });
     logger.debug(result);
     const item = { _id, ...code };
     return item;
-  },
+  }
 
   // 코드 삭제
   async delete(_id){
     logger.trace(arguments);
-    const result = await db.code.deleteOne({ _id });
+    const result = await this.db.code.deleteOne({ _id });
     logger.debug(result);
     return result;
-  },
+  }
 };
 
-export default code;
+export default CodeModel;

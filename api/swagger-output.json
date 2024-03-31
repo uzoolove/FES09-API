@@ -1483,6 +1483,13 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "incrementView",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -1547,6 +1554,49 @@
       }
     },
     "/posts/{_id}/replies": {
+      "get": {
+        "tags": [
+          "게시판"
+        ],
+        "summary": "댓글 목록",
+        "description": "지정한 게시물의 댓글 목록을 조회한다.",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
       "post": {
         "tags": [
           "게시판"
@@ -1579,9 +1629,6 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "_id": {
-                    "example": "any"
-                  },
                   "user": {
                     "example": "any"
                   }
@@ -2495,7 +2542,7 @@
         }
       }
     },
-    "/files/{fileName}": {
+    "/files/{clientId}/{fileName}": {
       "get": {
         "tags": [
           "파일"
@@ -2503,6 +2550,14 @@
         "summary": "이미지 링크",
         "description": "업로드된 이미지를 img 태그로 지정한다.",
         "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "fileName",
             "in": "path",
@@ -2519,7 +2574,7 @@
         }
       }
     },
-    "/files/download/{fileName}": {
+    "/files/download/{clientId}/{fileName}": {
       "get": {
         "tags": [
           "파일"
@@ -2527,6 +2582,14 @@
         "summary": "다운로드",
         "description": "업로드된 파일을 다운로드 한다.",
         "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "fileName",
             "in": "path",

@@ -3,7 +3,6 @@ import _ from 'lodash';
 
 import logger from '#utils/logger.js';
 import codeUtil from '#utils/codeUtil.js';
-import model from '#models/code/code.model.js';
 
 const router = express.Router();
 
@@ -86,8 +85,9 @@ router.get('/:_id', async function(req, res, next) {
   */
 
   try{
+    const codeModel = req.model.code;
     // 검색어 포함
-    let item = await model.findById(req.params._id, req.query);
+    let item = await codeModel.findById(req.params._id, req.query);
     if(item){
       // 검색 조건이 없을 경우 중첩 객체로 변환
       if(Object.keys(req.query).length === 0 ) {

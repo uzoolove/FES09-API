@@ -5,7 +5,6 @@ import _ from 'lodash';
 import logger from '#utils/logger.js';
 import codeUtil from '#utils/codeUtil.js';
 import validator from '#middlewares/validator.js';
-import model from '#models/code/code.model.js';
 
 const router = express.Router();
 
@@ -78,7 +77,8 @@ router.post('/', async function(req, res, next) {
   */
 
   try{
-    const item = await model.create(req.body);
+    const codeModel = req.model.code;
+    const item = await codeModel.create(req.body);
     await codeUtil.initCode();
     res.status(201).json({ok: 1, item});
   }catch(err){
@@ -151,7 +151,8 @@ router.put('/:_id', async function(req, res, next) {
     }
   */
   try{
-    const result = await model.update(req.params._id, req.body);
+    const codeModel = req.model.code;
+    const result = await codeModel.update(req.params._id, req.body);
     if(result){
       await codeUtil.initCode();
       res.json({ok: 1, updated: result});  
@@ -215,7 +216,8 @@ router.delete('/:_id', async function(req, res, next) {
     }
   */
   try{
-    const result = await model.delete(req.params._id);
+    const codeModel = req.model.code;
+    const result = await codeModel.delete(req.params._id);
     if(result.deletedCount){
       await codeUtil.initCode();
       res.json({ok: 1});

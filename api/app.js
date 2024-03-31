@@ -38,7 +38,6 @@ app.use(
 
 // 404 에러
 app.use(function(req, res, next){
-  logger.log(req.url);
   const err = new Error(`${req.url} 리소스를 찾을 수 없습니다.`);
   err.status = 404;
   next(err);

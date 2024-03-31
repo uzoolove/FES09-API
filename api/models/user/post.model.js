@@ -2,10 +2,13 @@ import _ from 'lodash';
 import moment from 'moment-timezone';
 
 import logger from '#utils/logger.js';
-import db, { nextSeq } from '#utils/dbUtil.js';
-import productModel from '#models/seller/product.model.js';
 
-const post = {
+class PostModel{
+  constructor(db, model){
+    this.db = db;
+    this.model = model;
+  }
+
   // 게시물 목록 조회
   async find({ type='post', search={}, sortBy={}, page=1, limit=0 }){
     logger.trace(arguments);
@@ -14,10 +17,10 @@ const post = {
 
     const skip = (page-1) * limit;
 
-    const totalCount = await db.post.countDocuments(query);
-    // const list = await db.post.find(query).sort(sortBy).toArray();
+    const totalCount = await this.db.post.countDocuments(query);
+    // const list = await this.db.post.find(query).sort(sortBy).toArray();
 
-    let list = db.post.aggregate([
+    let list = this.db.post.aggregate([
       { $match: query },
       {
         $lookup: {
@@ -69,7 +72,7 @@ const post = {
 
     logger.debug(list.length);
     return result;
-  },
+  }
 
   // 게시물 상세 조회
   async findById(_id, firstRender){
@@ -77,38 +80,39 @@ const post = {
     
     let item;
     if(firstRender){ // 처음 조회때만 조회수 증가(컴포넌트 마운트 이후에 react-query로 여러번 조회때마다 조회수 증가 방지)
-      item = await db.post.findOneAndUpdate(
+      item = await this.db.post.findOneAndUpdate(
         { _id },
         { $inc: { views: 1 } },
         { returnDocument: 'after' } // 업데이트된 문서 반환
       );
     }else{
-      item = await db.post.findOne({ _id });
+      item = await this.db.post.findOne({ _id });
     }
     
-    // logger.debug(item);
+    logger.debug(item);
     return item;
-  },
+  }
 
   // 게시물 등록
   async create(post){
     post.type = post.type || 'post';
     logger.trace(post);
-    post._id = await nextSeq('post');
+    post._id = await this.db.nextSeq('post');
     post.updatedAt = post.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
-    post.seller_id = (await productModel.findAttrById({ _id: post.product_id, attr: 'seller_id' }))?.seller_id
+    console.log(this.model.product)
+    post.seller_id = (await this.model.sellerProduct.findAttrById({ _id: post.product_id, attr: 'seller_id' }))?.seller_id
     if(!post.dryRun){
-      await db.post.insertOne(post);
+      await this.db.post.insertOne(post);
     }
     return post;
-  },
+  }
 
   // 게시물 수정
   async update(_id, post){
     logger.trace(arguments);
     post.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
     if(!post.dryRun){
-      await db.post.updateOne(
+      await this.db.post.updateOne(
         { _id },
         { 
           $set: {
@@ -121,16 +125,16 @@ const post = {
       );
     }
     return { _id, ...post };
-  },
+  }
 
   // 게시물 삭제
   async delete(_id){
     logger.trace(arguments);
 
-    const result = await db.post.deleteOne({ _id });
+    const result = await this.db.post.deleteOne({ _id });
     logger.debug(result);
     return result;
-  },
+  }
 
   // 댓글 목록 조회
   async findReplies({ _id, page=1, limit=0, sortBy }){
@@ -158,24 +162,26 @@ const post = {
       totalPages: (limit === 0) ? 1 : Math.ceil(totalCount / limit)
     };
 
+    logger.debug(result);
     return result;
-  },
+  }
 
   // 댓글 등록
   async createReply(_id, reply){
     logger.trace(arguments);
+    reply._id = await this.db.nextSeq('reply');
     reply.updatedAt = reply.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
     if(!reply.dryRun){
-      await db.post.updateOne({ _id }, { $push: { replies: reply } });
+      await this.db.post.updateOne({ _id }, { $push: { replies: reply } });
     }
     return reply;
-  },
+  }
 
   // 댓글 수정
   async updateReply(_id, reply_id, reply){
     logger.trace(arguments);
     reply.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
-    const result = await db.post.findOneAndUpdate(
+    const result = await this.db.post.findOneAndUpdate(
       { _id },
       { 
         $set: { 
@@ -191,13 +197,13 @@ const post = {
     const updatedReply = result.replies.find(reply => reply._id === reply_id);
     logger.debug(updatedReply);
     return updatedReply;
-  },
+  }
 
   // 댓글 삭제
   async deleteReply(_id, reply_id){
     logger.trace(arguments);
 
-    const result = await db.post.updateOne(
+    const result = await this.db.post.updateOne(
       { _id },
       { $pull: { replies: { _id: reply_id }} }
     );
@@ -206,4 +212,4 @@ const post = {
   }
 };
 
-export default post;
+export default PostModel;

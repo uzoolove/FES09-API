@@ -5,8 +5,6 @@ import { query, body } from 'express-validator';
 
 import logger from '#utils/logger.js';
 import validator from '#middlewares/validator.js';
-import model from '#models/user/order.model.js';
-import sellerModel from '#models/seller/order.model.js';
 
 const router = express.Router();
 
@@ -28,6 +26,7 @@ router.get('/', [
   */
 
   try{
+    const sellerOrderModel = req.model.sellerOrder;
     logger.trace(req.query);
 
     // 검색 옵션
@@ -52,7 +51,7 @@ router.get('/', [
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
 
-    const result = await sellerModel.findBy({seller_id: req.user._id, search, sortBy, page, limit });
+    const result = await sellerOrderModel.findBy({seller_id: req.user._id, search, sortBy, page, limit });
     res.json({ ok: 1, ...result });
 
   }catch(err){
@@ -75,7 +74,8 @@ router.get('/:_id', async function(req, res, next) {
   */
 
   try{
-    const item = await sellerModel.findById(Number(req.params._id), req.user._id);
+    const sellerOrderModel = req.model.sellerOrder;
+    const item = await sellerOrderModel.findById(Number(req.params._id), req.user._id);
     if(item){
       res.json({ ok: 1, item });
     }else{
@@ -101,9 +101,10 @@ router.patch('/:_id/products/:product_id', async function(req, res, next) {
   */
 
   try{
+    const orderModel = req.model.order;
     const _id = Number(req.params._id);
     const product_id = Number(req.params.product_id);
-    const order = await model.findById(_id);
+    const order = await orderModel.findById(_id);
 
     // 주문 내역 중 내 상품만 조회
     const orderProducts = _.filter(order.products, { _id: product_id, seller_id: req.user._id });
@@ -114,7 +115,7 @@ router.patch('/:_id/products/:product_id', async function(req, res, next) {
         updated: { ...req.body },
         createdAt: moment().format('YYYY.MM.DD HH:mm:ss')
       };
-      const result = await model.updateStateByProduct(_id, product_id, req.body, history);
+      const result = await orderModel.updateStateByProduct(_id, product_id, req.body, history);
       res.json({ok: 1, updated: result});
     }else{
       next();
@@ -139,8 +140,9 @@ router.patch('/:_id', async function(req, res, next) {
   */
 
   try{
+    const orderModel = req.model.order;
     const _id = Number(req.params._id);
-    const order = await model.findById(_id);
+    const order = await orderModel.findById(_id);
 
     // 주문 내역 중 내 상품만 조회
     const orderProducts = _.filter(order.products, { seller_id: req.user._id });
@@ -151,7 +153,7 @@ router.patch('/:_id', async function(req, res, next) {
         updated: { ...req.body },
         createdAt: moment().format('YYYY.MM.DD HH:mm:ss')
       };
-      const result = await model.updateState(_id, req.body, history);
+      const result = await orderModel.updateState(_id, req.body, history);
       res.json({ok: 1, updated: result});
     }else{
       next();

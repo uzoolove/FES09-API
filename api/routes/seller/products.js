@@ -4,9 +4,6 @@ import _ from 'lodash';
 
 import logger from '#utils/logger.js';
 import validator from '#middlewares/validator.js';
-import model from '#models/user/product.model.js';
-import sellerModel from '#models/seller/product.model.js';
-import orderModel from '#models/seller/order.model.js';
 
 const router = express.Router();
 
@@ -30,6 +27,8 @@ router.get('/', [
   */
 
   try{
+    const sellerOrderModel = req.model.sellerOrder;
+    const productModel = req.model.product;
     logger.trace(req.query);
 
     // 검색 옵션
@@ -87,10 +86,10 @@ router.get('/', [
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
   
-    const result = await model.findBy({ sellerId: req.user._id, search, sortBy, page, limit });
+    const result = await productModel.findBy({ sellerId: req.user._id, search, sortBy, page, limit });
     
     for(const item of result.item){
-      const orders = await orderModel.findByProductId(item._id, req.user._id);
+      const orders = await sellerOrderModel.findByProductId(item._id, req.user._id);
       item.orders = orders.length;
       item.ordersQuantity = _.sumBy(orders, order => {
         return _.sumBy(order.products, 'quantity');
@@ -141,11 +140,12 @@ router.get('/:_id', async function(req, res, next) {
 
   */
   try{
+    const sellerOrderModel = req.model.sellerOrder;
     const _id = Number(req.params._id);
     const seller_id = req.user._id;
-    const item = await model.findById({ _id, seller_id });
+    const item = await productModel.findById({ _id, seller_id });
     if(item){
-      item.orders = await orderModel.findByProductId(_id, seller_id);
+      item.orders = await sellerOrderModel.findByProductId(_id, seller_id);
     }
    
     if(item && (item.seller_id == req.user._id || req.user.type === 'admin')){
@@ -222,9 +222,10 @@ router.post('/', [
   */
 
   try{
+    const sellerProductModel = req.model.sellerProduct;
     const newProduct = req.body;
     newProduct.seller_id = req.user._id;
-    const item = await sellerModel.create(newProduct);
+    const item = await sellerProductModel.create(newProduct);
     res.json({ok: 1, item});
   }catch(err){
     next(err);
@@ -310,10 +311,11 @@ router.patch('/:_id', [
   */
 
   try{
+    const sellerProductModel = req.model.sellerProduct;
     const _id = Number(req.params._id);
-    const product = await sellerModel.findAttrById({ _id, attr: 'seller_id', seller_id: req.user._id });
+    const product = await sellerProductModel.findAttrById({ _id, attr: 'seller_id', seller_id: req.user._id });
     if(req.user.type === 'admin' || product?.seller_id == req.user._id){
-      const result = await sellerModel.update(_id, req.body);
+      const result = await sellerProductModel.update(_id, req.body);
       res.json({ok: 1, updated: result});
     }else{
       next(); // 404
@@ -377,10 +379,11 @@ router.delete('/:_id', async function(req, res, next) {
   */
 
   try{
+    const sellerProductModel = req.model.sellerProduct;
     const _id = Number(req.params._id);
-    const product = await sellerModel.findAttrById({ _id, attr: 'seller_id', seller_id: req.user._id });
+    const product = await sellerProductModel.findAttrById({ _id, attr: 'seller_id', seller_id: req.user._id });
     if(req.user.type === 'admin' || product?.seller_id == req.user._id){
-      const result = await sellerModel.delete(_id);
+      const result = await sellerProductModel.delete(_id);
       res.json({ ok: 1 });
     }else{
       next(); // 404

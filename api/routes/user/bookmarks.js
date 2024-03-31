@@ -3,7 +3,6 @@ import { query, body } from 'express-validator';
 
 import logger from '#utils/logger.js';
 import validator from '#middlewares/validator.js';
-import model from '#models/user/bookmark.model.js';
 
 const router = express.Router();
 
@@ -20,13 +19,14 @@ router.post('/', async function(req, res, next) {
     }]
     
   */
-
+ 
   try{
-    const bookmark = await model.findOneBy({ user_id: req.user._id, product_id: Number(req.body.product_id) });
+    const bookmarkModel = req.model.bookmark;
+    const bookmark = await bookmarkModel.findOneBy({ user_id: req.user._id, product_id: Number(req.body.product_id) });
     if(bookmark){
       res.status(409).json({ ok: 0, message: '이미 등록되어 있습니다.' });
     }else{
-      const item = await model.create(req.body);
+      const item = await bookmarkModel.create(req.body);
       res.status(201).json({ ok: 1, item });
     }    
   }catch(err){
@@ -47,9 +47,10 @@ router.get('/', async function(req, res, next) {
     }]
     
   */
-
+ 
   try{
-    const item = await model.findBy({ user_id: req.user._id });
+    const bookmarkModel = req.model.bookmark;
+    const item = await bookmarkModel.findBy({ user_id: req.user._id });
     res.json({ ok: 1, item });
   }catch(err){
     next(err);
@@ -69,9 +70,10 @@ router.get('/products/:product_id', async function(req, res, next) {
     }]
     
   */
-
+ 
   try{
-    const item = await model.findOneBy({ user_id: req.user._id, product_id: Number(req.params.product_id) });
+    const bookmarkModel = req.model.bookmark;
+    const item = await bookmarkModel.findOneBy({ user_id: req.user._id, product_id: Number(req.params.product_id) });
     if(item){
       res.json({ ok: 1, item });
     }else{
@@ -97,10 +99,11 @@ router.delete('/:_id', async function(req, res, next) {
   */
 
   try{
+    const bookmarkModel = req.model.bookmark;
     const _id = Number(req.params._id);
-    const bookmark = await model.findOneBy({ _id });
+    const bookmark = await bookmarkModel.findOneBy({ _id });
     if(bookmark && (req.user._id === bookmark.user_id)){
-      const result = await model.delete(_id);
+      const result = await bookmarkModel.delete(_id);
       if(result.deletedCount){
         return res.json({ ok: 1 });
       }

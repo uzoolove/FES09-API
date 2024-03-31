@@ -4,7 +4,6 @@ import { query } from 'express-validator';
 import logger from '#utils/logger.js';
 import jwtAuth from '#middlewares/jwtAuth.js';
 import validator from '#middlewares/validator.js';
-import model from '#models/user/reply.model.js';
 
 const router = express.Router();
 
@@ -24,7 +23,8 @@ router.post('/', jwtAuth.auth('user'), async function(req, res, next) {
 
 
   try{
-    const item = await model.create({ ...req.body, user_id: req.user._id });
+    const replyModel = req.model.reply;
+    const item = await replyModel.create({ ...req.body, user_id: req.user._id });
     res.json({ok: 1, item});
   }catch(err){
     next(err);
@@ -46,7 +46,8 @@ router.get('/all', async function(req, res, next) {
   */
 
   try{
-    const item = await model.findBy();
+    const replyModel = req.model.reply;
+    const item = await replyModel.findBy();
     res.json({ok: 1, item});
   }catch(err){
     next(err);
@@ -68,7 +69,8 @@ router.get('/products/:_id', async function(req, res, next) {
   */
 
   try{
-    const item = await model.findBy({ product_id: Number(req.params._id) });
+    const replyModel = req.model.reply;
+    const item = await replyModel.findBy({ product_id: Number(req.params._id) });
     res.json({ok: 1, item});
   }catch(err){
     next(err);
@@ -90,7 +92,8 @@ router.get('/:_id', async function(req, res, next) {
   */
 
   try{
-    const item = await model.findBy({ _id: Number(req.params._id) });
+    const replyModel = req.model.reply;
+    const item = await replyModel.findBy({ _id: Number(req.params._id) });
     res.json({ok: 1, item});
   }catch(err){
     next(err);
@@ -112,7 +115,8 @@ router.get('/', jwtAuth.auth('user'), async function(req, res, next) {
   */
 
   try{
-    const item = await model.findBy( { user_id: req.user._id });
+    const replyModel = req.model.reply;
+    const item = await replyModel.findBy( { user_id: req.user._id });
     res.json({ok: 1, item});
   }catch(err){
     next(err);
@@ -134,8 +138,9 @@ router.get('/seller/:seller_id', async function(req, res, next) {
   */
 
   try{
+    const replyModel = req.model.reply;
     const seller_id = Number(req.params.seller_id);
-    const item = await model.findBySeller(seller_id);
+    const item = await replyModel.findBySeller(seller_id);
     res.json({ok: 1, item});
   }catch(err){
     next(err);

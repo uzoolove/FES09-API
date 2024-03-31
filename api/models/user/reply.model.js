@@ -2,26 +2,29 @@ import _ from 'lodash';
 import moment from 'moment-timezone';
 
 import logger from '#utils/logger.js';
-import db, { nextSeq } from '#utils/dbUtil.js';
-import orderModel from '#models/user/order.model.js';
 
-const reply = {
+class ReplyModel {
+  constructor(db, model){
+    this.db = db;
+    this.model = model;
+  }
+  
   // 후기 등록
   async create(replyInfo){
     logger.trace(arguments);
-    replyInfo._id = await nextSeq('reply');
+    replyInfo._id = await this.db.nextSeq('reply');
     replyInfo.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
     
     if(!replyInfo.dryRun){
-      await db.reply.insertOne(replyInfo);
-      await orderModel.updateReplyId(replyInfo.order_id, replyInfo.product_id, replyInfo._id);
+      await this.db.reply.insertOne(replyInfo);
+      await this.model.order.updateReplyId(replyInfo.order_id, replyInfo.product_id, replyInfo._id);
     }    
     return replyInfo;
-  },
+  }
 
   // 조건에 맞는 후기 목록 조회
   async findBy( query={} ){
-    const list = await db.reply.aggregate([
+    const list = await this.db.reply.aggregate([
       { $match: query },
       {
         $lookup: {
@@ -73,22 +76,22 @@ const reply = {
 
     logger.debug(list);
     return list;
-  },
+  }
 
   // 후기만 조회
   async findById(_id){
     logger.trace(arguments);
 
-    const item = await db.reply.findOne({ _id });
+    const item = await this.db.reply.findOne({ _id });
     logger.debug(item);
     return item;
-  },
+  }
 
   // 판매자 후기 목록 조회
   async findBySeller(seller_id){
     logger.trace(arguments);
 
-    const list = await db.product.aggregate([
+    const list = await this.db.product.aggregate([
       { $match: { seller_id } },
       {
         $lookup: {
@@ -150,7 +153,7 @@ const reply = {
 
     logger.debug(list);
     return list;
-  },
+  }
 };
 
-export default reply;
+export default ReplyModel;

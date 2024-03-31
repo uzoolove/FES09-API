@@ -3,7 +3,6 @@ import { query } from 'express-validator';
 
 import logger from '#utils/logger.js';
 import validator from '#middlewares/validator.js';
-import model from '#models/user/product.model.js';
 
 const router = express.Router();
 
@@ -79,6 +78,7 @@ router.get('/', [
   */
 
   try{
+    const productModel = req.model.product;
     logger.trace(req.query);
 
     // 검색
@@ -136,7 +136,7 @@ router.get('/', [
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
   
-    const result = await model.findBy({ search, sortBy, page, limit });
+    const result = await productModel.findBy({ search, sortBy, page, limit });
     
     res.json({ ok: 1, ...result });
   }catch(err){
@@ -186,7 +186,8 @@ router.get('/:_id', async function(req, res, next) {
   */
 
   try{
-    const item = await model.findById({ _id: Number(req.params._id) });
+    const productModel = req.model.product;
+    const item = await productModel.findById({ _id: Number(req.params._id) });
     if(item){
       res.json({ ok: 1, item });
     }else{

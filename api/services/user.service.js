@@ -3,12 +3,12 @@ import createError from 'http-errors';
 
 import logger from '../utils/logger.js';
 import authService from './auth.service.js';
-import userModel from '../models/user/user.model.js';
+
 
 const userService = {
   // 회원 가입
-  async signup(userInfo){
-    logger.trace(arguments);
+  async signup(userModel, userInfo){
+    logger.trace(userInfo);
 
     let user = await userModel.findBy({ email: userInfo.email });
     if(user){
@@ -23,7 +23,7 @@ const userService = {
   },
 
   // 로그인
-  async login({ email, password }){
+  async login(userModel, { email, password }){
     const user = await userModel.findBy({ email });
     logger.log(user);
     if(user){
@@ -43,7 +43,7 @@ const userService = {
   },
 
   // 회원정보 수정
-  async update(id, updateInfo){
+  async update(userModel, id, updateInfo){
     let password = updateInfo.password;
     if(updateInfo.password){
       const salt = await bcrypt.genSalt();

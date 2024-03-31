@@ -1,4 +1,4 @@
-import logger from '../utils/logger.js';
+import logger from '#utils/logger.js';
 import dotenv from 'dotenv';
 
 // 기본 .env 파일 로딩(package.json에서 로딩함)
@@ -16,6 +16,7 @@ export const db = {
   database: process.env.DB_DATABASE,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
+  clientIds: ['board', 'hello', 'world']
 };
 
 export const jwt = {

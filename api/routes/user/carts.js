@@ -6,7 +6,6 @@ import _ from 'lodash';
 import logger from '#utils/logger.js';
 import jwtAuth from '#middlewares/jwtAuth.js';
 import validator from '#middlewares/validator.js';
-import model from '#models/user/cart.model.js';
 
 const router = express.Router();
 
@@ -23,9 +22,9 @@ router.post('/local', [
     #swagger.description = '로그인 되지 않은 상태에서 장바구니 목록을 조회한다.'
     
   */
-
+  const cartModel = req.model.cart;
   try{
-    const item = await model.findLocalCart(req.body);
+    const item = await cartModel.findLocalCart(req.body);
     const cost = item.cost;
     delete item.cost;
     res.json({ ok: 1, item, cost });
@@ -47,10 +46,10 @@ router.get('/', jwtAuth.auth('user'), async function(req, res, next) {
     }]
     
   */
-
+  const cartModel = req.model.cart;
   try{
     const user_id = req.user._id;
-    const item = await model.findByUser(user_id, req.body.discount);
+    const item = await cartModel.findByUser(user_id, req.body.discount);
     const cost = item.cost;
     delete item.cost;
     res.json({ ok: 1, item, cost });
@@ -73,9 +72,10 @@ router.post('/', jwtAuth.auth('user'), async function(req, res, next) {
     
   */
 
+  const cartModel = req.model.cart;
   try{
     req.body.user_id = req.user._id;
-    const item = await model.create(req.body);
+    const item = await cartModel.create(req.body);
     res.status(201).json({ok: 1, item});
   }catch(err){
     next(err);
@@ -96,12 +96,12 @@ router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
     
   */
 
-
   try{
+    const cartModel = req.model.cart;
     const _id = Number(req.params._id);
-    const cart = await model.findById(_id);
+    const cart = await cartModel.findById(_id);
     if(req.user.type === 'admin' || cart?.user_id == req.user._id){
-      const updated = await model.update(_id, req.body.quantity);
+      const updated = await cartModel.update(_id, req.body.quantity);
       res.json({ ok: 1, updated });
     }else{
       next(); // 404
@@ -126,7 +126,8 @@ router.delete('/cleanup', jwtAuth.auth('user'), async function(req, res, next) {
   */
 
   try{
-    const result = await model.cleanup(req.user._id);
+    const cartModel = req.model.cart;
+    const result = await cartModel.cleanup(req.user._id);
     res.json({ ok: 1 });
   }catch(err){
     next(err);
@@ -148,10 +149,11 @@ router.delete('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
   */
 
   try{
+    const cartModel = req.model.cart;
     const _id = Number(req.params._id);
-    const cart = await model.findById(_id);
+    const cart = await cartModel.findById(_id);
     if(req.user.type === 'admin' || cart?.user_id == req.user._id){
-      await model.delete(_id);
+      await cartModel.delete(_id);
       res.json({ ok: 1 });
     }else{
       next();
@@ -176,10 +178,11 @@ router.delete('/', jwtAuth.auth('user'), async function(req, res, next) {
   */
 
   try{
-    const myCarts = await model.findByUser(req.user._id);
+    const cartModel = req.model.cart;
+    const myCarts = await cartModel.findByUser(req.user._id);
     const isMine = _.every(req.body.carts, _id => _.some(myCarts, cart => _.isEqual(cart._id, _id)));
     if(req.user.type === 'admin' || isMine){
-      await model.deleteMany(req.body.carts);
+      await cartModel.deleteMany(req.body.carts);
       res.json({ ok: 1 });
     }else{
       next(createError(422, `본인의 장바구니 상품만 삭제 가능합니다.`));
@@ -206,8 +209,9 @@ router.put('/replace', jwtAuth.auth('user'), [
   */
 
   try{
-    await model.cleanup(req.user._id);
-    const item = await model.add(req.user._id, req.body.products);
+    const cartModel = req.model.cart;
+    await cartModel.cleanup(req.user._id);
+    const item = await cartModel.add(req.user._id, req.body.products);
     res.json({ ok: 1, item});
   }catch(err){
     next(err);
@@ -231,7 +235,8 @@ router.put('/', jwtAuth.auth('user'), [
   */
 
   try{
-    const item = await model.add(req.user._id, req.body.products);
+    const cartModel = req.model.cart;
+    const item = await cartModel.add(req.user._id, req.body.products);
     res.json({ ok: 1, item});
   }catch(err){
     next(err);

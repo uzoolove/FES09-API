@@ -7,25 +7,36 @@ import shortid from 'shortid';
 import { GridFSBucket  } from 'mongodb';
 import { GridFsStorage } from '@lenne.tech/multer-gridfs-storage';
 
+import { db as DBConfig } from '#config/index.js';
 import logger from '#utils/logger.js';
-import db from '#utils/dbUtil.js';
-
+import { getDB } from '#utils/dbUtil.js';
 const router = express.Router();
-const storage = new GridFsStorage({
-  db,
-  file: (req, file) => {
-    const ext = path.extname(file.originalname);
-    const uniqueId = shortid.generate();
-    const filename = `${uniqueId}${ext}`;
-    return {
-      bucketName: 'upload',
-      filename,
-      org: file.originalname
-    };
-  }
-});
 
-const upload = multer({ storage });
+const file = (req, file) => {
+  const ext = path.extname(file.originalname);
+  const uniqueId = shortid.generate();
+  const filename = `${uniqueId}${ext}`;
+  return {
+    bucketName: 'upload',
+    filename,
+    org: file.originalname
+  };
+}
+
+const storages = {};
+for(const clientId of DBConfig.clientIds){
+  storages[clientId] = new GridFsStorage({
+    db: getDB(clientId),
+    file
+  });
+}
+
+const multerUpload = (req, res, next) => {
+  (multer({
+    // 프로젝트별로 다른 스토리지(database) 선택
+    storage: storages[req.headers['client-id']]
+  }).array('attach', 10))(req, res, next);
+};
 
 // multer 에러 처리
 const handleError = (err, req, res, next) => {
@@ -46,7 +57,7 @@ const handleError = (err, req, res, next) => {
 };
 
 // 파일 업로드
-router.post('/', upload.array('attach', 10), handleError, async function(req, res, next) {
+router.post('/', multerUpload, handleError, async function(req, res, next) {
   /*
     #swagger.tags = ['파일']
     #swagger.summary  = '파일 업로드'
@@ -126,8 +137,7 @@ router.post('/', upload.array('attach', 10), handleError, async function(req, re
 });
 
 // 파일 링크
-router.get('/:fileName', function(req, res, next){
-
+router.get('/:clientId/:fileName', function(req, res, next){
   /*
     #swagger.tags = ['파일']
     #swagger.summary  = '이미지 링크'
@@ -139,7 +149,7 @@ router.get('/:fileName', function(req, res, next){
 });
 
 // 파일 다운로드
-router.get('/download/:fileName', function(req, res, next){
+router.get('/download/:clientId/:fileName', function(req, res, next){
 
   /*
     #swagger.tags = ['파일']
@@ -154,7 +164,8 @@ router.get('/download/:fileName', function(req, res, next){
 // 파일을 클라이언트에 전송
 const sendFile = (req, res, next, mode='view') => {
   try {
-    const fileBucket = new GridFSBucket(db, {
+    console.log('sendFile', req.params.clientId);
+    const fileBucket = new GridFSBucket(getDB(req.params.clientId), {
       bucketName: 'upload',
     });
     let downloadStream = fileBucket.openDownloadStreamByName(req.params.fileName);

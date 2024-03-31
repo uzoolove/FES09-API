@@ -1,11 +1,10 @@
 import express from 'express';
 import { query } from 'express-validator';
 import _ from 'lodash';
-
+import cache from 'memory-cache';
 import logger from '#utils/logger.js';
 import jwtAuth from '#middlewares/jwtAuth.js';
 import validator from '#middlewares/validator.js';
-import model from '#models/user/post.model.js';
 
 const router = express.Router();
 
@@ -23,6 +22,7 @@ router.get('/', [
   */
 
   try{
+    const postModel = req.model.post;
     let search = {};
     const keyword = req.query.keyword;
     const custom = req.query.custom;
@@ -44,7 +44,7 @@ router.get('/', [
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
 
-    const result = await model.find({ type: req.query.type, search, sortBy, page, limit });
+    const result = await postModel.find({ type: req.query.type, search, sortBy, page, limit });
     
 
     res.json({ ok: 1, ...result });
@@ -68,6 +68,7 @@ router.get('/users/:_id', jwtAuth.auth('user'), async function(req, res, next) {
   */
 
   try{
+    const postModel = req.model.post;
     const _id = Number(req.params._id);
     if(req.user.type === 'admin' || _id === req.user._id){
       const search = { 'user._id': req.user._id };
@@ -78,7 +79,7 @@ router.get('/users/:_id', jwtAuth.auth('user'), async function(req, res, next) {
         search['$or'] = [{ title: regex }, { content: regex }];
       }
 
-      const item = await model.find({ type: req.query.type, search });
+      const item = await postModel.find({ type: req.query.type, search });
       res.json({ ok: 1, item });
     }else{
       next();
@@ -103,7 +104,7 @@ router.get('/seller/:_id', jwtAuth.auth('user'), async function(req, res, next) 
   */
 
   try{
-
+    const postModel = req.model.post;
     if(req.user.type === 'seller' || req.params._id === req.user._id){
       const search = { seller_id: req.user._id };
       const keyword = req.query.keyword;
@@ -113,7 +114,7 @@ router.get('/seller/:_id', jwtAuth.auth('user'), async function(req, res, next) 
         search['$or'] = [{ title: regex }, { content: regex }];
       }
 
-      const item = await model.find({ type: req.query.type, search });
+      const item = await postModel.find({ type: req.query.type, search });
       res.json({ ok: 1, item });
     }else{
       next();
@@ -134,7 +135,8 @@ router.get('/:_id', async function(req, res, next) {
   */
 
   try{
-    const item = await model.findById(Number(req.params._id), Boolean(req.query.incrementView));
+    const postModel = req.model.post;
+    const item = await postModel.findById(Number(req.params._id), Boolean(req.query.incrementView));
     if(item){
       res.json({ ok: 1, item });
     }else{
@@ -160,7 +162,8 @@ router.post('/', jwtAuth.auth('user'), async function(req, res, next) {
   */
 
   try{
-    const item = await model.create({ ...req.body, views: 0, user: { _id: req.user._id, name: req.user.name, profile: req.user.profile } });
+    const postModel = req.model.post;
+    const item = await postModel.create({ ...req.body, views: 0, user: { _id: req.user._id, name: req.user.name, profile: req.user.profile } });
     res.json( {ok: 1, item} );
   }catch(err){
     next(err);
@@ -182,10 +185,11 @@ router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
   */
 
   try{
+    const postModel = req.model.post;
     const _id = Number(req.params._id);
-    const post = await model.findById(_id);
+    const post = await postModel.findById(_id);
     if(post && (req.user.type === 'admin' || post.user._id == req.user._id)){
-      const updated = await model.update(_id, req.body);
+      const updated = await postModel.update(_id, req.body);
       res.json({ ok: 1, updated });
     }else{
       next();
@@ -210,10 +214,11 @@ router.delete('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
   */
 
   try{
+    const postModel = req.model.post;
     const _id = Number(req.params._id);
-    const post = await model.findById(_id);
+    const post = await postModel.findById(_id);
     if(post && (req.user.type === 'admin' || post?.user._id == req.user._id)){
-      await model.delete(_id);
+      await postModel.delete(_id);
       res.json({ ok: 1 });
     }else{
       next();
@@ -234,6 +239,7 @@ router.get('/:_id/replies', async function(req, res, next) {
   */
 
   try{
+    const postModel = req.model.post;
     // 정렬 옵션
     let sortBy = JSON.parse(req.query.sort || '{}');
     // // 기본 정렬 옵션은 등록일의 올림차순
@@ -242,7 +248,7 @@ router.get('/:_id/replies', async function(req, res, next) {
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
 
-    const result = await model.findReplies({ _id: Number(req.params._id), page, limit, sortBy });
+    const result = await postModel.findReplies({ _id: Number(req.params._id), page, limit, sortBy });
 
     res.json({ ok: 1, ...result });
   }catch(err){
@@ -265,18 +271,19 @@ router.post('/:_id/replies', jwtAuth.auth('user'), async function(req, res, next
   */
 
   try{
+    const postModel = req.model.post;
     const _id = Number(req.params._id);
-    const post = await model.findById(_id);
+    const post = await postModel.findById(_id);
     if(post){
       const reply = req.body;
-      reply._id = (_.maxBy(post.replies, '_id')?._id || 0) + 1;
+      // reply._id = (_.maxBy(post.replies, '_id')?._id || 0) + 1;
       reply.user = {
         _id: req.user._id,
         name: req.user.name,
         profile: req.user.profile
       };
       // reply.user_id = req.user._id;
-      const item = await model.createReply(_id, reply);
+      const item = await postModel.createReply(_id, reply);
       res.status(201).json({ok: 1, item});
     }else{
       next();
@@ -301,12 +308,13 @@ router.patch('/:_id/replies/:reply_id', jwtAuth.auth('user'), async (req, res, n
   */
 
   try{
+    const postModel = req.model.post;
     const _id = Number(req.params._id);
     const reply_id = Number(req.params.reply_id);
-    const post = await model.findById(_id);
+    const post = await postModel.findById(_id);
     const reply = _.find(post?.replies, { _id: reply_id });
     if(post && (req.user.type === 'admin' || reply?.user._id == req.user._id)){
-      const item = await model.updateReply(_id, reply_id, req.body);
+      const item = await postModel.updateReply(_id, reply_id, req.body);
       res.json({ ok: 1 , item });
     }else{
       next();
@@ -331,12 +339,13 @@ router.delete('/:_id/replies/:reply_id', jwtAuth.auth('user'), async (req, res, 
   */
 
   try{
+    const postModel = req.model.post;
     const _id = Number(req.params._id);
     const reply_id = Number(req.params.reply_id);
-    const post = await model.findById(_id);
+    const post = await postModel.findById(_id);
     const reply = _.find(post?.replies, { _id: reply_id });
     if(post && (req.user.type === 'admin' || reply?.user._id == req.user._id)){
-      await model.deleteReply(_id, reply_id);
+      await postModel.deleteReply(_id, reply_id);
       res.json({ ok: 1 });
     }else{
       next();

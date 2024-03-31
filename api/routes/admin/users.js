@@ -25,6 +25,7 @@ router.get('/', [
   */
 
   try{
+    const userModel = req.model.user;
     logger.trace(req.query);
 
     let search = {};
@@ -67,7 +68,7 @@ router.get('/', [
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
 
-    const result = await model.find({ search, sortBy, page, limit });
+    const result = await userModel.find({ search, sortBy, page, limit });
     res.json({ ok: 1, ...result });
   }catch(err){
     next(err);

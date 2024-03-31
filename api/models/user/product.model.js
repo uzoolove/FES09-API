@@ -1,11 +1,13 @@
 import _ from 'lodash';
 
 import logger from '#utils/logger.js';
-import db, { nextSeq } from '#utils/dbUtil.js';
-import replyModel from '#models/user/reply.model.js';
-import bookmarkModel from '#models/user/bookmark.model.js';
 
-const product = {
+class ProductModel {
+  constructor(db, model){
+    this.db = db;
+    this.model = model;
+  }
+  
   // 상품 검색
   async findBy({ sellerId, search={}, sortBy={}, page=1, limit=0, depth }){
     logger.trace(arguments);
@@ -26,16 +28,16 @@ const product = {
     const skip = (page-1) * limit;
     
     logger.debug(query);
-    const totalCount = await db.product.countDocuments(query);
-    const list = await db.product.find(query).project({ content: 0 }).skip(skip).limit(limit).sort(sortBy).toArray();
-    // const list = await db.product.find(query).project({ content: 0 }).skip(skip).limit(limit).sort(sortBy).toArray();
+    const totalCount = await this.db.product.countDocuments(query);
+    const list = await this.db.product.find(query).project({ content: 0 }).skip(skip).limit(limit).sort(sortBy).toArray();
+    // const list = await this.db.product.find(query).project({ content: 0 }).skip(skip).limit(limit).sort(sortBy).toArray();
     for(const item of list){
       if(item.extra?.depth === 2){
-        item.replies = (await replyModel.findBy({ product_id: item._id }));
+        item.replies = (await this.model.reply.findBy({ product_id: item._id }));
       }else{
-        item.replies = (await replyModel.findBy({ product_id: item._id })).length;
+        item.replies = (await this.model.reply.findBy({ product_id: item._id })).length;
       }
-      item.bookmarks = (await bookmarkModel.findByProduct(item._id)).length;
+      item.bookmarks = (await this.model.bookmark.findByProduct(item._id)).length;
       if(item.extra?.depth === 1){ // 옵션이 있는 상품일 경우
         item.options = (await this.findBy({ search: { 'extra.parent': item._id }, depth: 2 })).length;
       }
@@ -52,7 +54,7 @@ const product = {
 
     logger.debug(list.length);
     return result;
-  },
+  }
 
   // 상품 상세 조회
   async findById({ _id, seller_id }){
@@ -61,19 +63,19 @@ const product = {
     if(!seller_id){
       query.show = true;
     }
-    const item = await db.product.findOne(query);
+    const item = await this.db.product.findOne(query);
     if(item){
-      item.replies = await replyModel.findBy({ product_id: _id });
-      item.bookmarks = await bookmarkModel.findByProduct(_id);
+      item.replies = await this.model.reply.findBy({ product_id: _id });
+      item.bookmarks = await this.model.bookmark.findByProduct(_id);
       if(item.extra?.depth === 1){ // 옵션이 있는 상품일 경우
         item.options = await this.findBy({ search: { 'extra.parent': item._id }, depth: 2 });
       }
     }
     logger.debug(item);
     return item;
-  },
+  }
 
 };
   
 
-export default product;
+export default ProductModel;

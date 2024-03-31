@@ -2,25 +2,29 @@ import _ from 'lodash';
 import moment from 'moment-timezone';
 
 import logger from '#utils/logger.js';
-import db, { nextSeq } from '#utils/dbUtil.js';
 
-const bookmark = {
+class BookmarkModel {
+  constructor(db, model){
+    this.db = db;
+    this.model = model;
+  }
+  
   // 북마크 등록
   async create(bookmark){
     logger.trace(arguments);
-    bookmark._id = await nextSeq('bookmark');
+    bookmark._id = await this.db.nextSeq('bookmark');
     bookmark.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
     
     if(!bookmark.dryRun){
-      await db.bookmark.insertOne(bookmark);
+      await this.db.bookmark.insertOne(bookmark);
     }
     return bookmark;
-  },
+  }
 
   // 북마크 목록 조회
   async findBy(query){
     logger.trace(arguments);
-    const list = await db.bookmark.aggregate([
+    const list = await this.db.bookmark.aggregate([
       { $match: query },
       {
         $lookup: {
@@ -49,16 +53,16 @@ const bookmark = {
 
     logger.debug(list);    
     return list;
-  },
+  }
 
   // 상품의 북마크 목록 조회
   async findByProduct(product_id){
     logger.trace(arguments);
-    const list = await db.bookmark.find({ product_id }).toArray();
+    const list = await this.db.bookmark.find({ product_id }).toArray();
 
     logger.debug(list);    
     return list;
-  },
+  }
 
   // 지정한 검색 조건으로 북마크 한건 조회
   async findOneBy(query){
@@ -66,15 +70,15 @@ const bookmark = {
     const result = await this.findBy(query);
     logger.debug(result[0]);
     return result[0];
-  },
+  }
 
   // 북마크 삭제
   async delete(_id){
     logger.trace(arguments);
-    const result = await db.bookmark.deleteOne({ _id });
+    const result = await this.db.bookmark.deleteOne({ _id });
     logger.debug(result);
     return result;
   }
 };
 
-export default bookmark;
+export default BookmarkModel;
