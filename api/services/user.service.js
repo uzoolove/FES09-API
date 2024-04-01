@@ -1,9 +1,8 @@
 import bcrypt from 'bcrypt';
 import createError from 'http-errors';
 
-import logger from '../utils/logger.js';
-import authService from './auth.service.js';
-
+import logger from '#utils/logger.js';
+import authService from '#services/auth.service.js';
 
 const userService = {
   // 회원 가입

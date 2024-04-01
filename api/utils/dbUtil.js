@@ -57,8 +57,8 @@ for(const clientId of DBConfig.clientIds){
       client
     };
 
-    await codeUtil.initCode(db);
-    await codeUtil.initConfig(db);
+    await codeUtil.initCode(clientId, db);
+    await codeUtil.initConfig(clientId, db);
   }catch(err){
     logger.error(err);
   }

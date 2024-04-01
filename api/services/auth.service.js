@@ -3,7 +3,6 @@ import createError from 'http-errors';
 
 import logger from '../utils/logger.js';
 import { jwt as JWTConfig } from '../config/index.js';
-import userModel from '../models/user/user.model.js';
 
 const authService = {
   // JWT 토큰 생성
@@ -54,7 +53,7 @@ const authService = {
   },
 
   // AccessToken 재발행
-  async refresh(refreshToken) {
+  async refresh(userModel, refreshToken) {
     // 토큰 검증
     this.verifyToken(refreshToken, 'refresh');
     const user = await userModel.findBy({ refreshToken });

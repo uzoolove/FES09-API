@@ -26,8 +26,8 @@ for(const clientId of DBConfig.clientIds){
   models[clientId].sellerUser = new SellerOrderModel(getDB(clientId), models[clientId]);
   models[clientId].sellerProduct = new SellerProductModel(getDB(clientId), models[clientId]);
   models[clientId].bookmark = new BookmarkModel(getDB(clientId), models[clientId]);
-  models[clientId].cart = new CartModel(getDB(clientId), models[clientId]);
-  models[clientId].order = new OrderModel(getDB(clientId), models[clientId]);
+  models[clientId].cart = new CartModel(clientId, getDB(clientId), models[clientId]);
+  models[clientId].order = new OrderModel(clientId, getDB(clientId), models[clientId]);
   models[clientId].post = new PostModel(getDB(clientId), models[clientId]);
   models[clientId].product = new ProductModel(getDB(clientId), models[clientId]);
   models[clientId].reply = new ReplyModel(getDB(clientId), models[clientId]);

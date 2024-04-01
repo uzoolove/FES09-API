@@ -5,7 +5,6 @@ import logger from '#utils/logger.js';
 import validator from '#middlewares/validator.js';
 import jwtAuth from '#middlewares/jwtAuth.js';
 import userService from '#services/user.service.js';
-import authService from '#services/auth.service.js';
 
 const router = express.Router();
 

@@ -6,7 +6,8 @@ import logger from '#utils/logger.js';
 import priceUtil from '#utils/priceUtil.js';
 
 class OrderModel {
-  constructor(db, model){
+  constructor(clientId, db, model){
+    this.clientId = clientId;
     this.db = db;
     this.model = model;
   }
@@ -45,7 +46,8 @@ class OrderModel {
     }
 
     orderInfo.products = products;
-    const cost = await priceUtil.getCost({ products: orderInfo.products, clientDiscount: orderInfo.discount, user_id: orderInfo.user_id });
+    const userModel = this.model.user;
+    const cost = await priceUtil.getCost(this.clientId, this.db, userModel, { products: orderInfo.products, clientDiscount: orderInfo.discount, user_id: orderInfo.user_id });
     delete orderInfo.discount;
     orderInfo = { ...orderInfo, cost };
 

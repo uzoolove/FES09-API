@@ -79,7 +79,8 @@ router.post('/', async function(req, res, next) {
   try{
     const codeModel = req.model.code;
     const item = await codeModel.create(req.body);
-    await codeUtil.initCode();
+    const clientId = req.headers['client-id'];
+    await codeUtil.initCode(clientId);
     res.status(201).json({ok: 1, item});
   }catch(err){
     next(err);
@@ -154,7 +155,8 @@ router.put('/:_id', async function(req, res, next) {
     const codeModel = req.model.code;
     const result = await codeModel.update(req.params._id, req.body);
     if(result){
-      await codeUtil.initCode();
+      const clientId = req.headers['client-id'];
+      await codeUtil.initCode(clientId);
       res.json({ok: 1, updated: result});  
     }else{
       next();
@@ -219,7 +221,8 @@ router.delete('/:_id', async function(req, res, next) {
     const codeModel = req.model.code;
     const result = await codeModel.delete(req.params._id);
     if(result.deletedCount){
-      await codeUtil.initCode();
+      const clientId = req.headers['client-id'];
+      await codeUtil.initCode(clientId);
       res.json({ok: 1});
     }else{
       next();

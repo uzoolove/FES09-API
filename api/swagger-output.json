@@ -2152,6 +2152,15 @@
         ],
         "summary": "코드 등록",
         "description": "코드를 등록합니다.<br>코드 등록을 완료한 후 코드 정보를 반환합니다.",
+        "parameters": [
+          {
+            "name": "client-id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "201": {
             "description": "성공",
@@ -2249,6 +2258,13 @@
             },
             "description": "코드 id",
             "example": "userLevel"
+          },
+          {
+            "name": "client-id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -2330,6 +2346,13 @@
             },
             "description": "코드 id",
             "example": "userLevel"
+          },
+          {
+            "name": "client-id",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {

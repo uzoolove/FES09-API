@@ -1,22 +1,22 @@
 import _ from 'lodash';
 import logger from '#utils/logger.js';
-// import dbUtil from '#utils/dbUtil.js';
 
 const codeUtil = {
-  async initCode(db = dbUtil){
-    global.codeList = await db.code.find().toArray();
-    global.codeList.forEach(code => _.sortBy(code.codes, 'sort'));
-    global.codeFlatten = _.flatten(_.map(global.codeList, 'codes')).reduce((codes, item) => {
+  async initCode(clientId, db){
+    global[clientId] = {};
+    global[clientId].codeList = await db.code.find().toArray();
+    global[clientId].codeList.forEach(code => _.sortBy(code.codes, 'sort'));
+    global[clientId].codeFlatten = _.flatten(_.map(global[clientId].codeList, 'codes')).reduce((codes, item) => {
       return {
         ...codes,
         [item['code']]: item
       };
     }, {});
-    global.codeObj = codeUtil.generateCodeObj(global.codeList);
+    global[clientId].codeObj = codeUtil.generateCodeObj(global[clientId].codeList);
   },
 
-  async initConfig(db = dbUtil){
-    global.config = (await db.config.find().toArray()).reduce((configs, item) => {
+  async initConfig(clientId, db){
+    global[clientId].config = (await db.config.find().toArray()).reduce((configs, item) => {
       return {
         ...configs,
         [item['_id']]: item
@@ -24,28 +24,28 @@ const codeUtil = {
     }, {});
   },
 
-  getCodeList() {
-    return global.codeList;
+  // getCodeList() {
+  //   return global.codeList;
+  // },
+
+  getCodeObj(clientId) {
+    return global[clientId].codeObj;
   },
 
-  getCodeObj() {
-    return global.codeObj;
+  getCodeFlatten(clientId) {
+    return global[clientId].codeFlatten;
   },
 
-  getCodeFlatten() {
-    return global.codeFlatten;
-  },
-
-  getCode(_id) {
-    return global.codeObj[_id];
-  },
+  // getCode(_id) {
+  //   return global.codeObj[_id];
+  // },
   
-  getCodeValue(code){
-    return this.getCodeAttr(code, 'value');
-  },
+  // getCodeValue(code){
+  //   return this.getCodeAttr(code, 'value');
+  // },
 
-  getCodeAttr(code, attr){
-    return global.codeFlatten[code] && global.codeFlatten[code][attr];
+  getCodeAttr(clientId, code, attr){
+    return global[clientId].codeFlatten[code] && global[clientId].codeFlatten[code][attr];
   },
 
   // 트리 구조의 코드일 경우 자식 코드를 포함하는 중첩 구조로 변경

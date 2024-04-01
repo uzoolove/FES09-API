@@ -6,7 +6,8 @@ import logger from '#utils/logger.js';
 import priceUtil from '#utils/priceUtil.js';
 
 class CartModel {
-  constructor(db, model){
+  constructor(clientId, db, model){
+    this.clientId = clientId;
     this.db = db;
     this.model = model;
   }
@@ -64,7 +65,8 @@ class CartModel {
       }
     }
 
-    carts.cost = await priceUtil.getCost({ products, clientDiscount: discount });
+    const userModel = this.model.user;
+    carts.cost = await priceUtil.getCost(this.clientId, this.db, userModel, { products, clientDiscount: discount });
 
     logger.debug(carts);
     return carts;
@@ -109,8 +111,8 @@ class CartModel {
       }
     ]).sort({ _id: -1 }).toArray();
 
-
-    list.cost = await priceUtil.getCost({ products: _.map(list, cart => ({ _id: cart.product._id, quantity: cart.quantity })), clientDiscount: discount, user_id });
+    const userModel = this.model.user;
+    list.cost = await priceUtil.getCost(this.clientId, this.db, userModel, { products: _.map(list, cart => ({ _id: cart.product._id, quantity: cart.quantity })), clientDiscount: discount, user_id });
 
     logger.debug(list);
     return list;

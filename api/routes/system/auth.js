@@ -47,8 +47,9 @@ router.get('/refresh', async (req, res, next) => {
   */
 
   try{
+    const userModel = req.model.user;
     const refreshToken = req.headers.authorization && req.headers.authorization.split('Bearer ')[1];
-    const accessToken = await authService.refresh(refreshToken);
+    const accessToken = await authService.refresh(userModel, refreshToken);
   
     res.json({ ok: 1, accessToken });
   }catch(err){

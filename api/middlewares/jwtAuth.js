@@ -1,7 +1,7 @@
 import createError from 'http-errors';
 
-import logger from '../utils/logger.js';
-import authService from '../services/auth.service.js';
+import logger from '#utils/logger.js';
+import authService from '#services/auth.service.js';
 
 const jwtAuth = {
   // 타입별 사용자 인증
