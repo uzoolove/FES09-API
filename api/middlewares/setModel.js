@@ -23,7 +23,7 @@ for(const clientId of DBConfig.clientIds){
   models[clientId] = {};
   models[clientId].adminUser = new AdminUserModel(getDB(clientId), models[clientId]);
   models[clientId].code = new CodeModel(getDB(clientId), models[clientId]);
-  models[clientId].sellerUser = new SellerOrderModel(getDB(clientId), models[clientId]);
+  models[clientId].sellerOrder = new SellerOrderModel(getDB(clientId), models[clientId]);
   models[clientId].sellerProduct = new SellerProductModel(getDB(clientId), models[clientId]);
   models[clientId].bookmark = new BookmarkModel(getDB(clientId), models[clientId]);
   models[clientId].cart = new CartModel(clientId, getDB(clientId), models[clientId]);
