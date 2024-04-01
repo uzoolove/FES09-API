@@ -140,6 +140,7 @@ router.get('/:_id', async function(req, res, next) {
 
   */
   try{
+    const productModel = req.model.product;
     const sellerOrderModel = req.model.sellerOrder;
     const _id = Number(req.params._id);
     const seller_id = req.user._id;
