@@ -852,6 +852,86 @@ const doc = {
         ]
       },
 
+      addBookmarkBody: {
+        "memo": "다음에 재구매"
+      },
+
+      addBookmarkRes: {
+        "ok": 1,
+        "item": {
+          "type": "product",
+          "user_id": 4,
+          "target_id": 4,
+          "memo": "다음에 재구매",
+          "_id": 9,
+          "createdAt": "2024.04.08 16:47:46"
+        }
+      },
+
+      bookmarkListRes: {
+        "ok": 1,
+        "item": [
+          {
+            "_id": 9,
+            "user_id": 4,
+            "memo": "다음에 재구매",
+            "createdAt": "2024.04.08 16:47:46",
+            "product": {
+              "_id": 4,
+              "name": "레고 테크닉 42151 부가티 볼리드",
+              "price": 45000,
+              "quantity": 100,
+              "buyQuantity": 89,
+              "image": {
+                "url": "/files/sample-bugatti.png",
+                "fileName": "sample-bugatti.png",
+                "orgName": "부가티.png"
+              },
+              "extra": {
+                "isNew": false,
+                "isBest": true,
+                "category": [
+                  "PC03",
+                  "PC0303"
+                ],
+                "sort": 1
+              }
+            }
+          }
+        ]
+      },
+
+      bookmarkInfoRes: {
+        "ok": 1,
+        "item": {
+          "_id": 9,
+          "user_id": 4,
+          "memo": "다음에 재구매",
+          "createdAt": "2024.04.08 16:47:46",
+          "product": {
+            "_id": 4,
+            "name": "레고 테크닉 42151 부가티 볼리드",
+            "price": 45000,
+            "quantity": 100,
+            "buyQuantity": 89,
+            "image": {
+              "url": "/files/sample-bugatti.png",
+              "fileName": "sample-bugatti.png",
+              "orgName": "부가티.png"
+            },
+            "extra": {
+              "isNew": false,
+              "isBest": true,
+              "category": [
+                "PC03",
+                "PC0303"
+              ],
+              "sort": 1
+            }
+          }
+        }
+      },
+
       codeListRes: {
         "ok": 1,
         "item": {

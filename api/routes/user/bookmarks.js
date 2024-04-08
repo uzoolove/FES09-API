@@ -8,7 +8,7 @@ const router = express.Router();
 
 // 북마크 추가
 router.post('/:type/:target_id', [
-  param('type').matches(/^(product|post|user)$/).withMessage('북마크 구분은 product, post, user로 전달해야 합니다.'),
+  param('type').matches(/^(product|post|user)$/).withMessage('북마크 종류는 product, post, user 중 하나로 전달해야 합니다.'),
   param('target_id').isInt().withMessage('북마크 대상 id는 정수만 입력 가능합니다.'),
 ], validator.checkResult, async function(req, res, next) {
 
@@ -35,12 +35,21 @@ router.post('/:type/:target_id', [
       type: 'number',
       example: '2'
     }
+    #swagger.requestBody = {
+      description: "추가 정보<br>북마크에 추가할 아무 속성이나 지정할 수 있습니다.",
+      required: false,
+      content: {
+        "application/json": {
+          schema: { $ref: '#components/schemas/addBookmarkBody' },
+        }
+      }
+    }
 
     #swagger.responses[201] = {
       description: '성공',
       content: {
         "application/json": {
-          schema: { $ref: "#/components/schemas/createUserResWithExtra" }
+          schema: { $ref: "#/components/schemas/addBookmarkRes" }
         }
       }
     }
@@ -100,7 +109,7 @@ router.post('/:type/:target_id', [
 
 // 내 북마크 목록 조회
 router.get('/:type', [
-  param('type').matches(/^(product|post|user)$/).withMessage('북마크 구분은 product, post, user로 전달해야 합니다.'),
+  param('type').matches(/^(product|post|user)$/).withMessage('북마크 종류는 product, post, user 중 하나로 전달해야 합니다.'),
 ], validator.checkResult, async function(req, res, next) {
 
   /*
@@ -112,6 +121,39 @@ router.get('/:type', [
       "Access Token": []
     }]
     
+    #swagger.parameters['type'] = {
+      description: '북마크 종류 (product | user | post)',
+      in: 'path',
+      required: true,
+      type: 'string',
+      example: 'product'
+    }
+
+    #swagger.responses[200] = {
+      description: '성공',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/bookmarkListRes" }
+          }
+        }
+      }
+    }
+    #swagger.responses[401] = {
+      description: '인증 실패',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error401" }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
   */
  
   try{
@@ -125,7 +167,7 @@ router.get('/:type', [
 
 // 지정한 상품|사용자|게시글에 대한 나의 북마크 한건 조회
 router.get('/:type/:target_id', [
-  param('type').matches(/^(product|post|user)$/).withMessage('북마크 구분은 product, post, user로 전달해야 합니다.'),
+  param('type').matches(/^(product|post|user)$/).withMessage('북마크 종류는 product, post, user 중 하나로 전달해야 합니다.'),
   param('target_id').isInt().withMessage('북마크 대상 id는 정수만 입력 가능합니다.'),
 ], validator.checkResult, async function(req, res, next) {
 
@@ -137,6 +179,40 @@ router.get('/:type/:target_id', [
     #swagger.security = [{
       "Access Token": []
     }]
+
+    #swagger.responses[200] = {
+      description: '성공',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/bookmarkInfoRes" }
+          }
+        }
+      }
+    }
+    #swagger.responses[401] = {
+      description: '인증 실패',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error401" }
+        }
+      }
+    }
+    #swagger.responses[404] = {
+      description: '리소스가 존재하지 않음',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error404" }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
     
   */
  
@@ -167,6 +243,48 @@ router.delete('/:_id', [
       "Access Token": []
     }]
     
+    #swagger.parameters['_id'] = {
+      description: '북마크 id',
+      in: 'path',
+      required: true,
+      type: 'number',
+      example: '2'
+    }
+
+    #swagger.responses[200] = {
+      description: '성공',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/simpleOK" }
+          }
+        }
+      }
+    }
+    #swagger.responses[401] = {
+      description: '인증 실패',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error401" }
+        }
+      }
+    }
+    #swagger.responses[404] = {
+      description: '리소스가 존재하지 않음',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error404" }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
+
   */
 
   try{
