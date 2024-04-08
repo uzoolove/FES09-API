@@ -28,37 +28,43 @@ class BookmarkModel {
       { $match: query },
       {
         $lookup: {
-          from: 'product',
-          localField: 'product_id',
+          from: query.type, // product|post|user
+          localField: `target_id`,
           foreignField: '_id',
-          as: 'product'
+          as: query.type
         }
       }, 
-      { $unwind: '$product' }, 
+      { $unwind: `$${query.type}` }, 
       {
         $project: {
           _id: 1,
           user_id: 1,
-          product_id: 1,
+          // target_id: 1,
           memo: 1,
-          'product.name': '$product.name',
-          'product.price': '$product.price',
-          'product.quantity': '$product.quantity',
-          'product.buyQuantity': '$product.buyQuantity',
-          'product.image': { $arrayElemAt: ['$product.mainImages', 0] },
+          [`${query.type}._id`]: `$${query.type}._id`,
+          [`${query.type}.name`]: `$${query.type}.name`,
+          [`${query.type}.price`]: `$${query.type}.price`,
+          [`${query.type}.quantity`]: `$${query.type}.quantity`,
+          [`${query.type}.buyQuantity`]: `$${query.type}.buyQuantity`,
+          [`${query.type}.image`]: { $arrayElemAt: [`$${query.type}.mainImages`, 0] },
+          [`${query.type}.type`]: `$${query.type}.type`,
+          [`${query.type}.user`]: `$${query.type}.user`,
+          [`${query.type}.product_id`]: `$${query.type}.product_id`,
+          [`${query.type}.title`]: `$${query.type}.title`,
+          [`${query.type}.extra`]: `$${query.type}.extra`,
           createdAt: 1
         }
       }
     ]).toArray();
 
-    logger.debug(list);    
+    logger.debug(list);
     return list;
   }
 
-  // 상품의 북마크 목록 조회
+  // 북마크 목록 조회
   async findByProduct(product_id){
     logger.trace(arguments);
-    const list = await this.db.bookmark.find({ product_id }).toArray();
+    const list = await this.db.bookmark.find({ type: 'product', target_id: product_id }).toArray();
 
     logger.debug(list);    
     return list;
@@ -73,9 +79,9 @@ class BookmarkModel {
   }
 
   // 북마크 삭제
-  async delete(_id){
+  async delete(query){
     logger.trace(arguments);
-    const result = await this.db.bookmark.deleteOne({ _id });
+    const result = await this.db.bookmark.deleteOne(query);
     logger.debug(result);
     return result;
   }

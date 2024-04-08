@@ -14,12 +14,12 @@ router.post('/', [
   body('password').trim().isLength({ min: 8 }).withMessage('8자리 이상 입력해야 합니다.'),
   body('name').trim().notEmpty().withMessage('이름은 필수로 입력해야 합니다.'),
   body('phone').optional().matches(/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/).withMessage('휴대폰 형식에 맞지 않습니다.'),
-  body('type').matches(/(user|seller)/).withMessage('회원 구분은 user 또는 seller로 전달해야 합니다.')
+  body('type').matches(/^(user|seller)$/).withMessage('회원 구분은 user 또는 seller로 전달해야 합니다.')
 ], validator.checkResult, async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
     #swagger.summary  = '회원 가입'
-    #swagger.description = '회원 가입을 합니다.<br>회원 가입을 완료한 후 회원 정보를 반환합니다.<br>'
+    #swagger.description = '회원 가입을 합니다.<br>회원 가입을 완료한 후 회원 정보를 반환합니다.'
 
     #swagger.requestBody = {
       description: "회원 정보",
@@ -28,8 +28,8 @@ router.post('/', [
         "application/json": {
           schema: { $ref: '#components/schemas/createUser' },
           examples: {
-            "필수 속성만 지정한 경우": { $ref: "#/components/examples/createUser" },
-            "extra 속성을 추가한 경우": { $ref: "#/components/examples/createUserWithExtra" }
+            "기본 속성": { $ref: "#/components/examples/createUser" },
+            "extra 속성": { $ref: "#/components/examples/createUserWithExtra" }
           }
         }
       }
@@ -138,7 +138,7 @@ router.post('/login', [
   /*
     #swagger.tags = ['회원']
     #swagger.summary  = '로그인'
-    #swagger.description = '이메일과 비밀번호를 입력해 로그인을 합니다.<br>응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환합니다.<br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야 합니다.'
+    #swagger.description = '이메일과 비밀번호를 입력해 로그인을 한다.<br>응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환한다.<br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야 한다.'
 
     #swagger.requestBody = {
       description: "로그인 정보",
@@ -204,7 +204,7 @@ router.get('/:_id/*', jwtAuth.auth('user'), async function(req, res, next) {
 
     #swagger.tags = ['회원']
     #swagger.summary  = '회원 정보 조회(단일 속성)'
-    #swagger.description = '지정한 회원 속성 하나를 조회합니다.'
+    #swagger.description = '회원 정보 중 한가지 속성을 조회한다.'
 
     #swagger.path = '/users/{_id}/{*}'
     #swagger.method = 'get'
@@ -286,7 +286,7 @@ router.get('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
     #swagger.summary  = '회원 정보 조회(모든 속성)'
-    #swagger.description = '회원의 모든 속성을 조회합니다.'
+    #swagger.description = '회원 정보의 모든 속성을 조회한다.'
 
     #swagger.security = [{
       "Access Token": []
@@ -360,7 +360,7 @@ router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
     #swagger.summary  = '회원 정보 수정'
-    #swagger.description = '회원 정보를 수정합니다.'
+    #swagger.description = '회원 정보를 수정한다.'
 
     #swagger.security = [{
       "Access Token": []
