@@ -17,46 +17,71 @@ router.get('/', [
 
     #swagger.tags = ['상품']
     #swagger.summary  = '상품 목록 조회'
-    #swagger.description = '상품 목록을 조회한다.'
+    #swagger.description = '상품 목록을 조회합니다.<br>지원되는 검색 조건 이외의 속성으로 검색할 경우 custom 파라미터를 이용하면 됩니다.<br>custom 파라미터에 지정하는 값은 MongoDB 검색어로 사용되며 다음 문서를 참고하세요.<br><a target="_blank" href="https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/query-document">검색어 지정 방법</a>'
 
     #swagger.parameters['minPrice'] = {
       description: "최저 가격",
       in: 'query',
       type: 'number',
-      default: 0
+      default: 0,
+      example: 10000
     }
     #swagger.parameters['maxPrice'] = {
       description: "최고 가격",
       in: 'query',
       type: 'number',
-      default: 99999999999
+      default: 99999999999,
+      example: 50000
     }
     #swagger.parameters['minShippingFees'] = {
       description: "최저 배송비",
       in: 'query',
       type: 'number',
-      default: 0
+      default: 0,
+      example: 2500
     }
     #swagger.parameters['maxShippingFees'] = {
       description: "최고 배송비",
       in: 'query',
       type: 'number',
-      default: 99999999999
+      default: 99999999999,
+      example: 5000
     }
     #swagger.parameters['keyword'] = {
       description: "상품명 검색어",
       in: 'query',
-      type: 'string'
+      type: 'string',
+      example: '레고'
     }
     #swagger.parameters['seller_id'] = {
       description: "판매자 id",
       in: 'query',
-      type: 'number'
+      type: 'number',
+      example: 2
     }
     #swagger.parameters['custom'] = {
-      description: "custom 데이터 예시: {\&quot;extra.isNew\&quot;: true}",
+      description: "custom 검색 조건",
       in: 'query',
-      type: 'string'
+      type: 'string',
+      example: '{\"extra.isNew\": true}'
+    }
+    #swagger.parameters['page'] = {
+      description: "페이지",
+      in: 'query',
+      type: 'number',
+      example: 2
+    }
+    #swagger.parameters['limit'] = {
+      description: "한 페이지당 항목 수",
+      in: 'query',
+      type: 'number',
+      example: 10
+    }
+    #swagger.parameters['sort'] = {
+      description: "정렬(-1: 내림차순, 1: 오름차순)",
+      in: 'query',
+      type: 'string',
+      example: '{\"price\": -1}'
     }
 
     #swagger.responses[200] = {
@@ -150,7 +175,7 @@ router.get('/:_id', async function(req, res, next) {
   /*
     #swagger.tags = ['상품']
     #swagger.summary  = '상품 상세 조회'
-    #swagger.description = '상품 상세 정보를 조회한다.'
+    #swagger.description = '상품 상세 정보를 조회합니다.'
     
     #swagger.parameters['_id'] = {
       description: "상품 id",

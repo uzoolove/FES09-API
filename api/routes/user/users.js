@@ -14,7 +14,7 @@ router.post('/', [
   body('password').trim().isLength({ min: 8 }).withMessage('8자리 이상 입력해야 합니다.'),
   body('name').trim().notEmpty().withMessage('이름은 필수로 입력해야 합니다.'),
   body('phone').optional().matches(/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/).withMessage('휴대폰 형식에 맞지 않습니다.'),
-  body('type').matches(/(user|seller)/).withMessage('회원 구분은 user 또는 seller로 전달해야 합니다.')
+  body('type').matches(/^(user|seller)$/).withMessage('회원 구분은 user 또는 seller로 전달해야 합니다.')
 ], validator.checkResult, async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
