@@ -1987,7 +1987,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/createUserResWithExtra"
+                  "$ref": "#/components/schemas/addBookmarkRes"
                 }
               }
             }
@@ -2037,7 +2037,18 @@
           {
             "Access Token": []
           }
-        ]
+        ],
+        "requestBody": {
+          "description": "추가 정보<br>북마크에 추가할 아무 속성이나 지정할 수 있습니다.",
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/addBookmarkBody"
+              }
+            }
+          }
+        }
       },
       "get": {
         "tags": [
@@ -2065,7 +2076,44 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bookmarkInfoRes"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증 실패",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "리소스가 존재하지 않음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error500"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2089,12 +2137,41 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "북마크 종류 (product | user | post)",
+            "example": "product"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bookmarkListRes"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증 실패",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error500"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2118,12 +2195,51 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "북마크 id",
+            "example": "2"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/simpleOK"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증 실패",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "리소스가 존재하지 않음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error500"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -5698,6 +5814,254 @@
                 "quantity": {
                   "type": "number",
                   "example": 3
+                }
+              }
+            }
+          }
+        }
+      },
+      "addBookmarkBody": {
+        "type": "object",
+        "properties": {
+          "memo": {
+            "type": "string",
+            "example": "다음에 재구매"
+          }
+        }
+      },
+      "addBookmarkRes": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "number",
+            "example": 1
+          },
+          "item": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "example": "product"
+              },
+              "user_id": {
+                "type": "number",
+                "example": 4
+              },
+              "target_id": {
+                "type": "number",
+                "example": 4
+              },
+              "memo": {
+                "type": "string",
+                "example": "다음에 재구매"
+              },
+              "_id": {
+                "type": "number",
+                "example": 9
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2024.04.08 16:47:46"
+              }
+            }
+          }
+        }
+      },
+      "bookmarkListRes": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "number",
+            "example": 1
+          },
+          "item": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "number",
+                  "example": 9
+                },
+                "user_id": {
+                  "type": "number",
+                  "example": 4
+                },
+                "memo": {
+                  "type": "string",
+                  "example": "다음에 재구매"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2024.04.08 16:47:46"
+                },
+                "product": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "number",
+                      "example": 4
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "레고 테크닉 42151 부가티 볼리드"
+                    },
+                    "price": {
+                      "type": "number",
+                      "example": 45000
+                    },
+                    "quantity": {
+                      "type": "number",
+                      "example": 100
+                    },
+                    "buyQuantity": {
+                      "type": "number",
+                      "example": 89
+                    },
+                    "image": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "example": "/files/sample-bugatti.png"
+                        },
+                        "fileName": {
+                          "type": "string",
+                          "example": "sample-bugatti.png"
+                        },
+                        "orgName": {
+                          "type": "string",
+                          "example": "부가티.png"
+                        }
+                      }
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {
+                        "isNew": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "isBest": {
+                          "type": "boolean",
+                          "example": true
+                        },
+                        "category": {
+                          "type": "array",
+                          "example": [
+                            "PC03",
+                            "PC0303"
+                          ],
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "sort": {
+                          "type": "number",
+                          "example": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "bookmarkInfoRes": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "number",
+            "example": 1
+          },
+          "item": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "number",
+                "example": 9
+              },
+              "user_id": {
+                "type": "number",
+                "example": 4
+              },
+              "memo": {
+                "type": "string",
+                "example": "다음에 재구매"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2024.04.08 16:47:46"
+              },
+              "product": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "number",
+                    "example": 4
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "레고 테크닉 42151 부가티 볼리드"
+                  },
+                  "price": {
+                    "type": "number",
+                    "example": 45000
+                  },
+                  "quantity": {
+                    "type": "number",
+                    "example": 100
+                  },
+                  "buyQuantity": {
+                    "type": "number",
+                    "example": 89
+                  },
+                  "image": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "example": "/files/sample-bugatti.png"
+                      },
+                      "fileName": {
+                        "type": "string",
+                        "example": "sample-bugatti.png"
+                      },
+                      "orgName": {
+                        "type": "string",
+                        "example": "부가티.png"
+                      }
+                    }
+                  },
+                  "extra": {
+                    "type": "object",
+                    "properties": {
+                      "isNew": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "isBest": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "category": {
+                        "type": "array",
+                        "example": [
+                          "PC03",
+                          "PC0303"
+                        ],
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "sort": {
+                        "type": "number",
+                        "example": 1
+                      }
+                    }
+                  }
                 }
               }
             }
