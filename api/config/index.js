@@ -16,7 +16,7 @@ export const db = {
   database: process.env.DB_DATABASE,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  clientIds: ['00-sample', 'hello', 'world']
+  clientIds: ['00-sample', '01-Trip-with-me', '02-Shimm', '03-OGC', '04-make-a-cake', '05-cagong', '06-haemeogeo', '07-WeatherMate', '08-BBangradise', '09-chuno']
 };
 
 export const jwt = {
