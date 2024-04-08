@@ -18,7 +18,7 @@ class ReplyModel {
     if(!replyInfo.dryRun){
       await this.db.reply.insertOne(replyInfo);
       await this.model.order.updateReplyId(replyInfo.order_id, replyInfo.product_id, replyInfo._id);
-    }    
+    }
     return replyInfo;
   }
 

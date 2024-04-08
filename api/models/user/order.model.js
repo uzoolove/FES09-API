@@ -119,6 +119,7 @@ class OrderModel {
         $project: {
           _id: 0,
           state: 1,
+          // 'products._id': 1,
           'products.state': 1,
           // state: '$products.state',
         }
