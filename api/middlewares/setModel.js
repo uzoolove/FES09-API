@@ -35,12 +35,11 @@ for(const clientId of DBConfig.clientIds){
 };
 
 function setDBModel(req, res, next){
-  const clientId = req.headers['client-id'];
+  const clientId = req.headers['client-id'] || '00-sample';
   logger.info(`client-id: [${clientId}]`);
   if(clientId){
     if(DBConfig.clientIds.includes(clientId)){
       req.model = models[clientId];
-      req.db = 
       next();
     }else{
       res.status(403).json({ ok: 0, message: '등록되지 않은 client-id 입니다.' });
