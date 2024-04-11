@@ -250,9 +250,9 @@ const doc = {
         "name": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물",
         "mainImages": [
           {
-            "url": "/files/sample-football.jpg",
-            "fileName": "sample-football.jpg",
-            "orgName": "사커게임.png"
+            "path ": "/files/00-sample/sample-football.jpg",
+            "name ": "sample-football.jpg",
+            "originalname": "사커게임.png"
           }
         ],
         "content": "<div class=\"product-detail\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>",
@@ -269,15 +269,6 @@ const doc = {
         "price": 22000,
         "shippingFees": 3000,
         "show": true,
-        "name": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물",
-        "mainImages": [
-          {
-            "url": "/files/sample-football.jpg",
-            "fileName": "sample-football.jpg",
-            "orgName": "사커게임.png"
-          }
-        ],
-        "content": "<div class=\"product-detail\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>",
         "extra.isNew": false
       },
       productCreateRes: {
@@ -288,9 +279,9 @@ const doc = {
           "name": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물",
           "mainImages": [
             {
-              "url": "/files/sample-football.jpg",
-              "fileName": "sample-football.jpg",
-              "orgName": "사커게임.png"
+              "path ": "/files/00-sample/sample-football.jpg",
+              "name ": "sample-football.jpg",
+              "originalname": "사커게임.png"
             }
           ],
           "content": "<div class=\"product-detail\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>",
@@ -330,9 +321,9 @@ const doc = {
             "buyQuantity": 89,
             "mainImages": [
               {
-                "url": "/files/sample-bugatti.png",
-                "fileName": "sample-bugatti.png",
-                "orgName": "부가티.png"
+                "path ": "/files/00-sample/sample-bugatti.png",
+                "name ": "sample-bugatti.png",
+                "originalname": "부가티.png"
               }
             ],
             "createdAt": "2024.03.06 07:50:28",
@@ -372,9 +363,9 @@ const doc = {
           "buyQuantity": 89,
           "mainImages": [
             {
-              "url": "/files/sample-bugatti.png",
-              "fileName": "sample-bugatti.png",
-              "orgName": "부가티.png"
+              "path ": "/files/00-sample/sample-bugatti.png",
+              "name ": "sample-bugatti.png",
+              "originalname": "부가티.png"
             }
           ],
           "createdAt": "2024.03.06 07:50:28",
@@ -399,17 +390,8 @@ const doc = {
           "price": 22000,
           "shippingFees": 3000,
           "show": true,
-          "name": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물",
-          "mainImages": [
-            {
-              "url": "/files/sample-football.jpg",
-              "fileName": "sample-football.jpg",
-              "orgName": "사커게임.png"
-            }
-          ],
-          "content": "<div class=\"product-detail\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>",
           "extra.isNew": false,
-          "updatedAt": "2024.04.08 20:17:52"
+          "updatedAt": "2024.04.11 11:55:00"
         }
       },
 
@@ -1078,9 +1060,9 @@ const doc = {
             "buyQuantity": 99,
             "mainImages": [
               {
-                "url": "/files/sample-classic.jpg",
-                "fileName": "sample-classic.jpg",
-                "orgName": "레고 클래식.jpg"
+                "path ": "/files/00-sample/sample-classic.jpg",
+                "name ": "sample-classic.jpg",
+                "originalname": "레고 클래식.jpg"
               }
             ],
             "createdAt": "2024.03.04 08:50:28",
@@ -1460,7 +1442,11 @@ const doc = {
           gender: 'extra에는 프로젝트에서 필요한 아무 속성이나',
           age: '넣으면 됩니다.',
           address: ['배열도', '가능하고'],
-          profileImage: '/uploads/swagger.jpg',
+          profileImage: {
+            "path ": "/files/00-sample/profile.jpg",
+            "name ": "profile.jpg",
+            "originalname": "사커게임.png"
+          },
           obj: {
             hello: '객체로',
             hi: '넣어도 됩니다.'
@@ -1501,7 +1487,11 @@ const doc = {
             "gender": 'extra에는 프로젝트에서 필요한 아무 속성이나',
             "age": '넣으면 됩니다.',
             "address": ['배열도', '가능하고'],
-            "profileImage": '/uploads/swagger.jpg',
+            "profileImage": {
+              "path ": "/files/00-sample/profile.jpg",
+              "name ": "profile.jpg",
+              "originalname": "사커게임.png"
+            },
             "obj": {
               "hello": '객체로',
               "hi": '넣어도 됩니다.'
@@ -1763,7 +1753,7 @@ const doc = {
         "type": "community",
         "title": "여행 후기 입니다.",
         "content": "주말에 다녀온 여행지 입니다. 날씨가 맑아서 좋았어요.",
-        "image": "/files/00-sample/sample-bugatti.png"
+        "image": "sample-bugatti.png"
       },
 
       createPostQnAExample: {
