@@ -1,8 +1,8 @@
 import { MongoClient } from 'mongodb';
 
 async function getDB(clientId){
-  // const url = `mongodb://localhost`;
-  const url = `mongodb+srv://ins:ins12%24%24@openmarket.5ppv889.mongodb.net/?retryWrites=true&w=majority`;
+  const url = `mongodb://localhost`;
+  // const url = `mongodb+srv://ins:ins12%24%24@openmarket.5ppv889.mongodb.net/?retryWrites=true&w=majority`;
 
   console.log(`DB 접속 시도: ${url}`, clientId);
   
