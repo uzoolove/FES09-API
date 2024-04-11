@@ -71,6 +71,7 @@ router.post('/', multerUpload, handleError, async function(req, res, next) {
             type: "object",
             properties: {
               attach: {
+                description: '업로드할 파일',
                 type: "array",
                 items: {
                   type: "string",
@@ -86,10 +87,7 @@ router.post('/', multerUpload, handleError, async function(req, res, next) {
       description: '성공',
       content: {
         "application/json": {
-          examples: {
-            "단일 파일 업로드": { $ref: "#/components/examples/singleFileUploadRes" },
-            "여러 파일 업로드": { $ref: "#/components/examples/multiFileUploadRes" },
-          }
+          schema: { $ref: "#/components/schemas/fileUploadRes" },
         }
       }
     }
@@ -117,19 +115,19 @@ router.post('/', multerUpload, handleError, async function(req, res, next) {
   try{
     logger.debug(req.files);
     const result = { ok: 1 };
-    if(req.files.length == 1){  // 단일 파일
-      result.file = {
-        originalname: req.files[0].originalname,
-        name: req.files[0].filename,
-        path: `${process.env.API_HOST}/api/files/${req.headers['client-id']}/${req.files[0].filename}`
-      }
-    }else{  // 여러 파일
-      result.files = req.files.map(file => ({
+    // if(req.files.length == 1){  // 단일 파일
+    //   result.item = [{
+    //     originalname: req.files[0].originalname,
+    //     name: req.files[0].filename,
+    //     path: `${process.env.API_HOST}/api/files/${req.headers['client-id']}/${req.files[0].filename}`
+    //   }];
+    // }else{  // 여러 파일
+      result.item = req.files.map(file => ({
         originalname: file.originalname,
         name: file.filename,
-        path: `${process.env.API_HOST}/api/files/${req.headers['client-id']}/${file.filename}`
+        path: `/files/${req.headers['client-id']}/${file.filename}`
       }));
-    }
+    // }
     res.status(201).json(result);
   }catch(err){
     next(err);

@@ -1157,6 +1157,22 @@ const doc = {
         }
       },
 
+      fileUploadRes: {
+        "ok": 1,
+        "item": [
+          {
+            "originalname": "sample-cat.jpg",
+            "name": "nQYGBCVZZ.jpg",
+            "path": "/files/00-sample/nQYGBCVZZ.jpg"
+          },
+          {
+            "originalname": "sample-dog.jpg",
+            "name": "Gb4OJkEX2k.jpg",
+            "path": "/files/00-sample/Gb4OJkEX2k.jpg"
+          }
+        ]
+      },
+
       codeListRes: {
         "ok": 1,
         "item": {
@@ -1244,13 +1260,6 @@ const doc = {
     },
 
     examples: {
-      singleFileUploadRes: {
-        "ok": 1,
-        "file": {
-          "name": "Cmw0AOtWf.jpg",
-          "path": "/uploads/Cmw0AOtWf.jpg"
-        }
-      },
       fileUploadFieldError: {
         "ok": 0,
         "message": "첨부 파일 필드명은 attach로 지정해야 합니다."
@@ -1258,21 +1267,6 @@ const doc = {
       fileUploadLimitError: {
         "ok": 0,
         "message": "파일은 한번에 10개 까지만 업로드가 가능합니다."
-      },
-      multiFileUploadRes: {
-        "ok": 1,
-        "files": [
-          {
-            "originalname": "sample-cat.jpg",
-            "name": "nQYGBCVZZ.jpg",
-            "path": "/uploads/nQYGBCVZZ.jpg"
-          },
-          {
-            "originalname": "sample-dog.jpg",
-            "name": "Gb4OJkEX2k.jpg",
-            "path": "/uploads/Gb4OJkEX2k.jpg"
-          }
-        ]
       },
       createUserLevelCode: {
         "_id": "userLevel",
