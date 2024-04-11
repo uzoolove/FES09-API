@@ -90,7 +90,7 @@ router.get('/', [
   /*
     #swagger.tags = ['게시판']
     #swagger.summary  = '전체 게시물 목록'
-    #swagger.description = '전체 게시물 목록을 조회합니다.'
+    #swagger.description = '전체 게시물 목록을 조회합니다.<br>지원되는 검색 조건 이외의 속성으로 검색할 경우 custom 파라미터를 이용하면 됩니다.'
     
     #swagger.parameters['type'] = {
       description: "게시판 종류",

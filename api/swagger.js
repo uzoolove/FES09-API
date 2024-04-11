@@ -1119,6 +1119,43 @@ const doc = {
 
       postListRes: {},
 
+      userListRes: {
+        "ok": 1,
+        "item": [
+          {
+            "_id": 4,
+            "email": "u1@market.com",
+            "name": "데이지",
+            "phone": "01044445555",
+            "address": "서울시 강남구 논현동 222",
+            "type": "user",
+            "createdAt": "2024.03.22 11:10:45",
+            "updatedAt": "2024.03.31 23:40:45",
+            "extra": {
+              "birthday": "11-30",
+              "membershipClass": "MC02",
+              "address": [
+                {
+                  "id": 1,
+                  "name": "회사",
+                  "value": "서울시 강동구 천호동 123"
+                },
+                {
+                  "id": 2,
+                  "name": "집",
+                  "value": "서울시 강동구 성내동 234"
+                }
+              ]
+            },
+          }
+        ],
+        "pagination": {
+          "page": 1,
+          "limit": 0,
+          "total": 1,
+          "totalPages": 1
+        }
+      },
 
       codeListRes: {
         "ok": 1,
