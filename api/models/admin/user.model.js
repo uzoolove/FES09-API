@@ -18,7 +18,10 @@ class AdminUserModel{
     logger.debug(query);
 
     const totalCount = await this.db.user.countDocuments(query);
-    const list = await this.db.user.find(query).skip(skip).limit(limit).sort(sortBy).toArray();
+    const list = await this.db.user.find(query).project({
+      password: 0,
+      refreshToken: 0,
+    }).skip(skip).limit(limit).sort(sortBy).toArray();
     const result = { item: list };
 
     result.pagination = {
