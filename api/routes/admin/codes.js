@@ -6,6 +6,8 @@ import logger from '#utils/logger.js';
 import codeUtil from '#utils/codeUtil.js';
 import validator from '#middlewares/validator.js';
 
+import { getDB } from '#utils/dbUtil.js';
+
 const router = express.Router();
 
 // 코드 등록
@@ -78,9 +80,11 @@ router.post('/', async function(req, res, next) {
 
   try{
     const codeModel = req.model.code;
-    const item = await codeModel.create(req.body);
     const clientId = req.headers['client-id'];
-    await codeUtil.initCode(clientId);
+    const db = getDB(clientId);
+
+    const item = await codeModel.create(req.body);    
+    await codeUtil.initCode(clientId, db);
     res.status(201).json({ok: 1, item});
   }catch(err){
     next(err);
@@ -156,7 +160,8 @@ router.put('/:_id', async function(req, res, next) {
     const result = await codeModel.update(req.params._id, req.body);
     if(result){
       const clientId = req.headers['client-id'];
-      await codeUtil.initCode(clientId);
+      const db = getDB(clientId);
+      await codeUtil.initCode(clientId, db);
       res.json({ok: 1, updated: result});  
     }else{
       next();
@@ -222,7 +227,8 @@ router.delete('/:_id', async function(req, res, next) {
     const result = await codeModel.delete(req.params._id);
     if(result.deletedCount){
       const clientId = req.headers['client-id'];
-      await codeUtil.initCode(clientId);
+      const db = getDB(clientId);
+      await codeUtil.initCode(clientId, db);
       res.json({ok: 1});
     }else{
       next();
