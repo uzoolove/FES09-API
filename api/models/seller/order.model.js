@@ -40,7 +40,8 @@ class SellerOrderModel {
           'user.address': 0,
           'user.type': 0,
           'user.createdAt': 0,
-          'user.updatedAt': 0
+          'user.updatedAt': 0,
+          'user.refreshToken': 0
         }
       }
     ]).sort(sortBy).skip(skip);
@@ -132,7 +133,8 @@ class SellerOrderModel {
           'user.address': 0,
           'user.type': 0,
           'user.createdAt': 0,
-          'user.updatedAt': 0
+          'user.updatedAt': 0,
+          'user.refreshToken': 0
         }
       }
     ]).next();
