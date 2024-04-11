@@ -4417,15 +4417,15 @@
             "items": {
               "type": "object",
               "properties": {
-                "url": {
+                "path ": {
                   "type": "string",
-                  "example": "/files/sample-football.jpg"
+                  "example": "/files/00-sample/sample-football.jpg"
                 },
-                "fileName": {
+                "name ": {
                   "type": "string",
                   "example": "sample-football.jpg"
                 },
-                "orgName": {
+                "originalname": {
                   "type": "string",
                   "example": "사커게임.png"
                 }
@@ -4484,34 +4484,6 @@
             "type": "boolean",
             "example": true
           },
-          "name": {
-            "type": "string",
-            "example": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물"
-          },
-          "mainImages": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "url": {
-                  "type": "string",
-                  "example": "/files/sample-football.jpg"
-                },
-                "fileName": {
-                  "type": "string",
-                  "example": "sample-football.jpg"
-                },
-                "orgName": {
-                  "type": "string",
-                  "example": "사커게임.png"
-                }
-              }
-            }
-          },
-          "content": {
-            "type": "string",
-            "example": "<div class=\"product-detail\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>"
-          },
           "extra.isNew": {
             "type": "boolean",
             "example": false
@@ -4545,15 +4517,15 @@
                 "items": {
                   "type": "object",
                   "properties": {
-                    "url": {
+                    "path ": {
                       "type": "string",
-                      "example": "/files/sample-football.jpg"
+                      "example": "/files/00-sample/sample-football.jpg"
                     },
-                    "fileName": {
+                    "name ": {
                       "type": "string",
                       "example": "sample-football.jpg"
                     },
-                    "orgName": {
+                    "originalname": {
                       "type": "string",
                       "example": "사커게임.png"
                     }
@@ -4684,15 +4656,15 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "url": {
+                      "path ": {
                         "type": "string",
-                        "example": "/files/sample-bugatti.png"
+                        "example": "/files/00-sample/sample-bugatti.png"
                       },
-                      "fileName": {
+                      "name ": {
                         "type": "string",
                         "example": "sample-bugatti.png"
                       },
-                      "orgName": {
+                      "originalname": {
                         "type": "string",
                         "example": "부가티.png"
                       }
@@ -4819,15 +4791,15 @@
                 "items": {
                   "type": "object",
                   "properties": {
-                    "url": {
+                    "path ": {
                       "type": "string",
-                      "example": "/files/sample-bugatti.png"
+                      "example": "/files/00-sample/sample-bugatti.png"
                     },
-                    "fileName": {
+                    "name ": {
                       "type": "string",
                       "example": "sample-bugatti.png"
                     },
-                    "orgName": {
+                    "originalname": {
                       "type": "string",
                       "example": "부가티.png"
                     }
@@ -4903,41 +4875,13 @@
                 "type": "boolean",
                 "example": true
               },
-              "name": {
-                "type": "string",
-                "example": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물"
-              },
-              "mainImages": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "type": "string",
-                      "example": "/files/sample-football.jpg"
-                    },
-                    "fileName": {
-                      "type": "string",
-                      "example": "sample-football.jpg"
-                    },
-                    "orgName": {
-                      "type": "string",
-                      "example": "사커게임.png"
-                    }
-                  }
-                }
-              },
-              "content": {
-                "type": "string",
-                "example": "<div class=\"product-detail\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>"
-              },
               "extra.isNew": {
                 "type": "boolean",
                 "example": false
               },
               "updatedAt": {
                 "type": "string",
-                "example": "2024.04.08 20:17:52"
+                "example": "2024.04.11 11:55:00"
               }
             }
           }
@@ -6930,15 +6874,15 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "url": {
+                      "path ": {
                         "type": "string",
-                        "example": "/files/sample-classic.jpg"
+                        "example": "/files/00-sample/sample-classic.jpg"
                       },
-                      "fileName": {
+                      "name ": {
                         "type": "string",
                         "example": "sample-classic.jpg"
                       },
-                      "orgName": {
+                      "originalname": {
                         "type": "string",
                         "example": "레고 클래식.jpg"
                       }
@@ -7708,7 +7652,11 @@
               "배열도",
               "가능하고"
             ],
-            "profileImage": "/uploads/swagger.jpg",
+            "profileImage": {
+              "path ": "/files/00-sample/profile.jpg",
+              "name ": "profile.jpg",
+              "originalname": "사커게임.png"
+            },
             "obj": {
               "hello": "객체로",
               "hi": "넣어도 됩니다."
@@ -7757,7 +7705,11 @@
                 "배열도",
                 "가능하고"
               ],
-              "profileImage": "/uploads/swagger.jpg",
+              "profileImage": {
+                "path ": "/files/00-sample/profile.jpg",
+                "name ": "profile.jpg",
+                "originalname": "사커게임.png"
+              },
               "obj": {
                 "hello": "객체로",
                 "hi": "넣어도 됩니다."
@@ -8033,7 +7985,7 @@
           "type": "community",
           "title": "여행 후기 입니다.",
           "content": "주말에 다녀온 여행지 입니다. 날씨가 맑아서 좋았어요.",
-          "image": "/files/00-sample/sample-bugatti.png"
+          "image": "sample-bugatti.png"
         }
       },
       "createPostQnAExample": {
