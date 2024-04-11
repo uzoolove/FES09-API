@@ -3903,13 +3903,8 @@
             "description": "성공",
             "content": {
               "application/json": {
-                "examples": {
-                  "단일 파일 업로드": {
-                    "$ref": "#/components/examples/singleFileUploadRes"
-                  },
-                  "여러 파일 업로드": {
-                    "$ref": "#/components/examples/multiFileUploadRes"
-                  }
+                "schema": {
+                  "$ref": "#/components/schemas/fileUploadRes"
                 }
               }
             }
@@ -3948,6 +3943,7 @@
                 "type": "object",
                 "properties": {
                   "attach": {
+                    "description": "업로드할 파일",
                     "type": "array",
                     "items": {
                       "type": "string",
@@ -7195,6 +7191,35 @@
           }
         }
       },
+      "fileUploadRes": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "number",
+            "example": 1
+          },
+          "item": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "originalname": {
+                  "type": "string",
+                  "example": "sample-dog.jpg"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Gb4OJkEX2k.jpg"
+                },
+                "path": {
+                  "type": "string",
+                  "example": "/files/00-sample/Gb4OJkEX2k.jpg"
+                }
+              }
+            }
+          }
+        }
+      },
       "codeListRes": {
         "type": "object",
         "properties": {
@@ -7529,15 +7554,6 @@
       }
     },
     "examples": {
-      "singleFileUploadRes": {
-        "value": {
-          "ok": 1,
-          "file": {
-            "name": "Cmw0AOtWf.jpg",
-            "path": "/uploads/Cmw0AOtWf.jpg"
-          }
-        }
-      },
       "fileUploadFieldError": {
         "value": {
           "ok": 0,
@@ -7548,23 +7564,6 @@
         "value": {
           "ok": 0,
           "message": "파일은 한번에 10개 까지만 업로드가 가능합니다."
-        }
-      },
-      "multiFileUploadRes": {
-        "value": {
-          "ok": 1,
-          "files": [
-            {
-              "originalname": "sample-cat.jpg",
-              "name": "nQYGBCVZZ.jpg",
-              "path": "/uploads/nQYGBCVZZ.jpg"
-            },
-            {
-              "originalname": "sample-dog.jpg",
-              "name": "Gb4OJkEX2k.jpg",
-              "path": "/uploads/Gb4OJkEX2k.jpg"
-            }
-          ]
         }
       },
       "createUserLevelCode": {
