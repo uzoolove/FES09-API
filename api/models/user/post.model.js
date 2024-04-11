@@ -9,6 +9,19 @@ class PostModel{
     this.model = model;
   }
 
+  // 게시물 등록
+  async create(post){
+    post.type = post.type || 'post';
+    logger.trace(post);
+    post._id = await this.db.nextSeq('post');
+    post.updatedAt = post.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
+    post.seller_id = (await this.model.sellerProduct.findAttrById({ _id: post.product_id, attr: 'seller_id' }))?.seller_id
+    if(!post.dryRun){
+      await this.db.post.insertOne(post);
+    }
+    return post;
+  }
+
   // 게시물 목록 조회
   async find({ type='post', search={}, sortBy={}, page=1, limit=0 }){
     logger.trace(arguments);
@@ -51,6 +64,7 @@ class PostModel{
           views: 1,
           repliesCount: { $cond: { if: { $isArray: '$replies' }, then: { $size: '$replies' }, else: 0 } },
           'product.name': '$product.name',
+          // 'product.image': { $cond: { if: { $isArray: '$product.mainImages' }, then: { $arrayElemAt: ['$product.mainImages', 0] }, else: undefined } }
           'product.image': { $arrayElemAt: ['$product.mainImages', 0] }
         }
       }
@@ -91,20 +105,6 @@ class PostModel{
     
     logger.debug(item);
     return item;
-  }
-
-  // 게시물 등록
-  async create(post){
-    post.type = post.type || 'post';
-    logger.trace(post);
-    post._id = await this.db.nextSeq('post');
-    post.updatedAt = post.createdAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
-    console.log(this.model.product)
-    post.seller_id = (await this.model.sellerProduct.findAttrById({ _id: post.product_id, attr: 'seller_id' }))?.seller_id
-    if(!post.dryRun){
-      await this.db.post.insertOne(post);
-    }
-    return post;
   }
 
   // 게시물 수정

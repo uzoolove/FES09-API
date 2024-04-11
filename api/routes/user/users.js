@@ -14,7 +14,8 @@ router.post('/', [
   body('password').trim().isLength({ min: 8 }).withMessage('8자리 이상 입력해야 합니다.'),
   body('name').trim().notEmpty().withMessage('이름은 필수로 입력해야 합니다.'),
   body('phone').optional().matches(/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/).withMessage('휴대폰 형식에 맞지 않습니다.'),
-  body('type').matches(/^(user|seller)$/).withMessage('회원 구분은 user 또는 seller로 전달해야 합니다.')
+  body('type').matches(/^(user|seller)$/).withMessage('회원 구분은 user 또는 seller로 전달해야 합니다.'),
+  body('extra').optional().isObject().withMessage('extra 데이터는 객체로 전달해야 합니다.'),
 ], validator.checkResult, async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
@@ -22,7 +23,7 @@ router.post('/', [
     #swagger.description = '회원 가입을 합니다.<br>회원 가입을 완료한 후 회원 정보를 반환합니다.'
 
     #swagger.requestBody = {
-      description: "회원 정보",
+      description: "회원 정보가 저장된 객체입니다.<br>email: 이메일(필수)<br>password: 비밀번호(필수)<br>name: 이름(필수)<br>phone: 전화번호(선택)<br>address: 주소(선택)<br>type: 회원 구분(필수, 구매회원: user, 판매회원: seller)<br>extra: 추가 데이터(선택). 추가하고 싶은 아무 속성이나 지정",
       required: true,
       content: {
         "application/json": {
@@ -430,7 +431,9 @@ router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
       if(req.user.type !== 'admin'){ // 관리자가 아니라면 회원 타입과 회원 승인 정보는 수정 못함
         delete req.body.type;
         delete (req.body.extra && req.body.extra.confirm);
-        delete req.body['extra.confirm'];
+        if(req.body['extra.confirm'] === true){ // 일반 유저가 confirm 처리하지 못하도록
+          delete req.body['extra.confirm'];
+        }
       }
       const updated = await userService.update(userModel, _id, req.body);
       if(updated){

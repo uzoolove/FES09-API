@@ -180,6 +180,21 @@ router.get('/:type/:target_id', [
       "Access Token": []
     }]
 
+    #swagger.parameters['type'] = {
+      description: '북마크 종류 (product | user | post)',
+      in: 'path',
+      required: true,
+      type: 'string',
+      example: 'product'
+    }
+    #swagger.parameters['target_id'] = {
+      description: '북마크 대상 id (상품 id | 사용자 id | 게시글 id)',
+      in: 'path',
+      required: true,
+      type: 'number',
+      example: '2'
+    }
+
     #swagger.responses[200] = {
       description: '성공',
       content: {

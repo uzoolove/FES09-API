@@ -13,7 +13,9 @@ class SellerProductModel {
   async create(newProduct){
     logger.trace(arguments);
     newProduct._id = await this.db.nextSeq('product');
+    // 상품 삭제시 false로 지정됨. false로 지정되면 판매 회원의 상품 목록에도 노출되지 않음
     newProduct.active = true;
+    newProduct.buyQuantity = 0;
     newProduct.updatedAt = newProduct.createdAt = moment().format('YYYY.MM.DD HH:mm:ss');
     if(!newProduct.dryRun){
       await this.db.product.insertOne(newProduct);

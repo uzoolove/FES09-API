@@ -130,7 +130,7 @@ router.get('/', [
       example: 10
     }
     #swagger.parameters['sort'] = {
-      description: "정렬(-1: 내림차순, 1: 오름차순)",
+      description: "정렬(내림차순: -1, 오름차순: 1)",
       in: 'query',
       type: 'string',
       example: '{\"cost.total\": -1}',

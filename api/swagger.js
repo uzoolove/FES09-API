@@ -4,7 +4,7 @@ const doc = {
   info: {
     version: '1.0.0',
     title: '오픈마켓 API',
-    description: '오픈마켓 API Server입니다.<br><a href="/">버전별 변경사항 확인</a><br><br><h2>공통 사항</h2><details><summary>검색</summary>자세한 내용</details><details><summary>페이지네이션</summary>자세한 내용</details><details><summary>정렬</summary>자세한 내용</details><details><summary>dryRun</summary>자세한 내용</details>'
+    description: '오픈마켓 API Server입니다.<br><a href="/">버전별 변경사항 확인</a><br><br><h2>공통 사항</h2><details><summary>검색</summary>자세한 내용</details><details><summary>페이지네이션</summary>자세한 내용</details><details><summary>정렬</summary>자세한 내용</details><details><summary>dryRun</summary>자세한 내용</details><details><summary>주문 상태</summary>자세한 내용</details>'
   },
   servers: [
     {
@@ -245,48 +245,55 @@ const doc = {
         "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInR5cGUiOiJ1c2VyIiwiaWF0IjoxNzAwNTU1NjUzLCJleHAiOjE3MDA1NTYyNTMsImlzcyI6IkZFU1AwMSJ9.tBbQZLmwlg0y5juJ_TTkET1buZ4QFGf8RJ0G_IWIyns"
       },
       productCreate: {
-        "price": 22000,
-        "shippingFees": 3000,
-        "show": true,
-        "active": true,
+        "price": 1000,
+        "quantity": 600,
         "name": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물",
-        "mainImages": ["/uploads/sample-janngu.jpg"],
+        "mainImages": [
+          {
+            "url": "/files/sample-football.jpg",
+            "fileName": "sample-football.jpg",
+            "orgName": "사커게임.png"
+          }
+        ],
         "content": "<div class=\"product-detail\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>",
-        "createdAt": "2023.10.12 12:34:56",
-        "updatedAt": "2023.10.12 12:34:56",
         "extra": {
-          "isNew": true,
-          "isBest": true,
-          "category": ["PC02", "PC0201"],
-          "quantity": 600,
-          "buyQuantity": 190,
-          "order": 7
+            "isNew": true,
+            "isBest": true,
+            "category": ["PC02", "PC0201"],
+            "sort": 7,
+            "depth": 2
         }
       },
+
       productUpdate: {
         "price": 22000,
         "shippingFees": 3000,
         "show": true,
-        "active": true,
         "name": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물",
-        "mainImages": ["/uploads/sample-jjangu.jpg"],
+        "mainImages": [
+          {
+            "url": "/files/sample-football.jpg",
+            "fileName": "sample-football.jpg",
+            "orgName": "사커게임.png"
+          }
+        ],
         "content": "<div class=\"product-detail\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>",
-        "extra.isNew": true
+        "extra.isNew": false
       },
       productCreateRes: {
         "ok": 1,
         "item": {
-          "price": 22000,
-          "shippingFees": 3000,
-          "show": true,
-          "active": true,
+          "price": 1000,
+          "quantity": 600,
           "name": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물",
           "mainImages": [
-            "/uploads/sample-janngu.jpg"
+            {
+              "url": "/files/sample-football.jpg",
+              "fileName": "sample-football.jpg",
+              "orgName": "사커게임.png"
+            }
           ],
           "content": "<div class=\"product-detail\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>",
-          "createdAt": "2023.11.22 07:26:35",
-          "updatedAt": "2023.11.22 07:26:35",
           "extra": {
             "isNew": true,
             "isBest": true,
@@ -294,46 +301,63 @@ const doc = {
               "PC02",
               "PC0201"
             ],
-            "quantity": 600,
-            "buyQuantity": 190,
-            "order": 7
+            "sort": 7,
+            "depth": 2
           },
+          "show": true,
+          "shippingFees": 0,
           "seller_id": 2,
-          "_id": 15
+          "_id": 17,
+          "active": true,
+          "buyQuantity": 0,
+          "createdAt": "2024.04.08 20:25:39",
+          "updatedAt": "2024.04.08 20:25:39"
         }
       },
-
 
       productListRes: {
         "ok": 1,
         "item": [
           {
-            "_id": 12,
-            "seller_id": 2,
-            "price": 9000,
-            "shippingFees": 3000,
+            "_id": 4,
+            "seller_id": 3,
+            "price": 45000,
+            "shippingFees": 3500,
             "show": true,
             "active": true,
-            "name": "스키비디 토일렛 봉제 인형 (25cm-30cm) 시리즈 크리스마스 선물",
+            "name": "레고 테크닉 42151 부가티 볼리드",
+            "quantity": 100,
+            "buyQuantity": 89,
             "mainImages": [
-              "/uploads/sample-skibidi11.jpg"
+              {
+                "url": "/files/sample-bugatti.png",
+                "fileName": "sample-bugatti.png",
+                "orgName": "부가티.png"
+              }
             ],
-            "createdAt": "2023.11.10 07:07:41",
-            "updatedAt": "2023.11.16 13:07:41",
+            "createdAt": "2024.03.06 07:50:28",
+            "updatedAt": "2024.03.17 11:50:28",
             "extra": {
-              "isNew": true,
+              "isNew": false,
               "isBest": true,
               "category": [
-                "PC01",
-                "PC0103"
+                "PC03",
+                "PC0303"
               ],
-              "quantity": 999,
-              "buyQuantity": 230,
-              "order": 7
-            }
+              "sort": 1
+            },
+            "replies": 0,
+            "bookmarks": 1
           }
-        ]
+        ],
+        "pagination": {
+          "page": 1,
+          "limit": 0,
+          "total": 1,
+          "totalPages": 1
+        }
       },
+
       productInfoRes: {
         "ok": 1,
         "item": {
@@ -344,12 +368,17 @@ const doc = {
           "show": true,
           "active": true,
           "name": "레고 테크닉 42151 부가티 볼리드",
+          "quantity": 100,
+          "buyQuantity": 89,
           "mainImages": [
-            "/uploads/sample-bugatti.png"
+            {
+              "url": "/files/sample-bugatti.png",
+              "fileName": "sample-bugatti.png",
+              "orgName": "부가티.png"
+            }
           ],
-          "content": "\n        <div class=\"product-detail\">\n          <p>레고 테크닉 42151 부가티 볼리드 상세 설명</p>\n        </div>",
-          "createdAt": "2023.10.19 12:07:41",
-          "updatedAt": "2023.10.30 16:07:41",
+          "createdAt": "2024.03.06 07:50:28",
+          "updatedAt": "2024.03.17 11:50:28",
           "extra": {
             "isNew": false,
             "isBest": true,
@@ -357,42 +386,30 @@ const doc = {
               "PC03",
               "PC0303"
             ],
-            "quantity": 100,
-            "buyQuantity": 30,
-            "order": 1
+            "sort": 1
           },
-          "replies": [
-            {
-              "_id": 1,
-              "rating": 5,
-              "content": "아이가 좋아해요.",
-              "createdAt": "2023.11.17 07:07:41",
-              "userName": "제이지"
-            },
-            {
-              "_id": 2,
-              "rating": 4,
-              "content": "배송이 좀 느려요.",
-              "createdAt": "2023.11.18 18:07:41",
-              "userName": "네오"
-            }
-          ]
+          "replies": 0,
+          "bookmarks": 1
         }
       },
+
       productUpdateRes: {
         "ok": 1,
         "updated": {
           "price": 22000,
           "shippingFees": 3000,
           "show": true,
-          "active": true,
           "name": "ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물",
           "mainImages": [
-            "/uploads/sample-jjangu.jpg"
+            {
+              "url": "/files/sample-football.jpg",
+              "fileName": "sample-football.jpg",
+              "orgName": "사커게임.png"
+            }
           ],
           "content": "<div class=\"product-detail\"><p>ZOZOFO 테이블 게임 축구 보드 사커 게임기 보드게임 2인경기 완구 가족모임 미니 월드컵 스포츠 어린이 크리스마스 선물 생일 선물 상세 설명</p></div>",
-          "extra.isNew": true,
-          "updatedAt": "2023.11.22 08:30:59"
+          "extra.isNew": false,
+          "updatedAt": "2024.04.08 20:17:52"
         }
       },
 
@@ -542,6 +559,69 @@ const doc = {
         }
       },
 
+      orderInfoSellerRes: {
+        "ok": 1,
+        "item": {
+          "_id": 4,
+          "user_id": 2,
+          "state": "OS040",
+          "products": [
+            {
+              "_id": 2,
+              "seller_id": 2,
+              "state": "OS310",
+              "name": "헬로카봇 스톰다이버",
+              "image": "/files/sample-diver.jpg",
+              "quantity": 1,
+              "price": 17260,
+              "reply_id": 2
+            }
+          ],
+          "cost": {
+            "products": 17260,
+            "shippingFees": 2500,
+            "discount": {
+              "products": 0,
+              "shippingFees": 0
+            },
+            "total": 19760
+          },
+          "address": {
+            "name": "학교",
+            "value": "서울시 강남구 역삼동 234"
+          },
+          "delivery": {
+            "company": "한진 택배",
+            "trackingNumber": "364495958003",
+            "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364495958003"
+          },
+          "createdAt": "2024.04.05 03:05:48",
+          "updatedAt": "2024.04.07 20:05:48",
+          "user": {
+            "_id": 2,
+            "email": "s1@market.com",
+            "name": "네오",
+            "phone": "01022223333",
+            "extra": {
+              "birthday": "11-23",
+              "membershipClass": "MC01",
+              "addressBook": [
+                {
+                  "id": 1,
+                  "name": "회사",
+                  "value": "서울시 강남구 삼성동 567"
+                },
+                {
+                  "id": 2,
+                  "name": "학교",
+                  "value": "서울시 강남구 역삼동 234"
+                }
+              ]
+            }
+          }
+        }
+      },
+
       updateOrder: {
         "state": "OS110",
         "memo": "2개 상품 모두 동작하지 않습니다. 반품 요청합니다."
@@ -570,6 +650,57 @@ const doc = {
           "state": "OS110",
           "memo": "레고 클래식 상품이 동작하지 않습니다. 반품 요청합니다.",
           "updatedAt": "2024.04.08 07:55:34"
+        }
+      },
+
+      updateOrderProductSellerBody: {
+        "state": "OS035",
+        "memo": "레고 클래식 상품을 구매한 고객님께 서비스로 미니 레고 블럭을 드립니다.",
+        "delivery": {
+          "company": "CJ 대한통운",
+          "trackingNumber": "364746065376",
+          "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364746065376"
+        }
+      },
+
+      updateOrderProductSellerRes: {
+        "ok": 1,
+        "updated": {
+          "_id": 2,
+          "product_id": 3,
+          "state": "OS035",
+          "memo": "레고 클래식 상품을 구매한 고객님께 서비스로 미니 레고 블럭을 드립니다.",
+          "delivery": {
+            "company": "CJ 대한통운",
+            "trackingNumber": "364746065376",
+            "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364746065376"
+          },
+          "updatedAt": "2024.04.08 22:37:09"
+        }
+      },
+
+      updateOrderSellerBody: {
+        "state": "OS035",
+        "memo": "2건 이상 구매한 고객님에 대해 서비스로 물총을 드립니다.",
+        "delivery": {
+          "company": "CJ 대한통운",
+          "trackingNumber": "364746065376",
+          "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364746065376"
+        }
+      },
+
+      updateOrderSellerRes: {
+        "ok": 1,
+        "updated": {
+          "_id": 2,
+          "state": "OS035",
+          "memo": "2건 이상 구매한 고객님에 대해 서비스로 물총을 드립니다.",
+          "delivery": {
+            "company": "CJ 대한통운",
+            "trackingNumber": "364746065376",
+            "url": "https://trace.cjlogistics.com/next/tracking.html?wblNo=364746065376"
+          },
+          "updatedAt": "2024.04.08 22:53:26"
         }
       },
 
@@ -931,6 +1062,81 @@ const doc = {
           }
         }
       },
+
+      myProductListRes: {
+        "ok": 1,
+        "item": [
+          {
+            "_id": 3,
+            "seller_id": 2,
+            "price": 48870,
+            "shippingFees": 0,
+            "show": true,
+            "active": true,
+            "name": "레고 클래식 라지 조립 박스 10698",
+            "quantity": 100,
+            "buyQuantity": 99,
+            "mainImages": [
+              {
+                "url": "/files/sample-classic.jpg",
+                "fileName": "sample-classic.jpg",
+                "orgName": "레고 클래식.jpg"
+              }
+            ],
+            "createdAt": "2024.03.04 08:50:28",
+            "updatedAt": "2024.03.29 14:31:28",
+            "extra": {
+              "isNew": true,
+              "isBest": true,
+              "category": [
+                "PC01",
+                "PC0103"
+              ],
+              "sort": 3
+            },
+            "replies": 1,
+            "bookmarks": 1,
+            "orders": 1,
+            "ordersQuantity": 3
+          }
+        ],
+        "pagination": {
+          "page": 1,
+          "limit": 0,
+          "total": 1,
+          "totalPages": 1
+        }
+      },
+
+      postCreateBody: {
+        "type": "community",
+        "title": "여행 후기 입니다.",
+        "content": "주말에 다녀온 여행지 입니다. 날씨가 맑아서 좋았어요.",
+        "image": "/files/00-sample/sample-bugatti.png"
+      },
+
+      postCreateRes: {
+        "ok": 1,
+        "item": {
+          "type": "community",
+          "title": "여행 후기 입니다.",
+          "content": "주말에 다녀온 여행지 입니다. 날씨가 맑아서 좋았어요.",
+          "image": "/files/00-sample/sample-bugatti.png",
+          "views": 0,
+          "user": {
+            "_id": 4,
+            "name": "데이지"
+          },
+          "_id": 6,
+          "createdAt": "2024.04.09 08:13:00",
+          "updatedAt": "2024.04.09 08:13:00"
+        }
+      },
+
+      postListBody: {},
+
+      postListRes: {},
+
 
       codeListRes: {
         "ok": 1,
@@ -1553,7 +1759,19 @@ const doc = {
         }
       },
 
-      
+      createPostExample: {
+        "type": "community",
+        "title": "여행 후기 입니다.",
+        "content": "주말에 다녀온 여행지 입니다. 날씨가 맑아서 좋았어요.",
+        "image": "/files/00-sample/sample-bugatti.png"
+      },
+
+      createPostQnAExample: {
+        "type": "qna",
+        "product_id": 1,
+        "title": "배송은 얼마나 걸려요?",
+        "content": "주말에 여행가기 전까지 오면 좋겠네요."
+      },
 
     }
   }

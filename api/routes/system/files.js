@@ -121,13 +121,13 @@ router.post('/', multerUpload, handleError, async function(req, res, next) {
       result.file = {
         originalname: req.files[0].originalname,
         name: req.files[0].filename,
-        path: `/files/${req.files[0].filename}`
+        path: `${process.env.API_HOST}/api/files/${req.headers['client-id']}/${req.files[0].filename}`
       }
     }else{  // 여러 파일
       result.files = req.files.map(file => ({
         originalname: file.originalname,
         name: file.filename,
-        path: `/files/${file.filename}`
+        path: `${process.env.API_HOST}/api/files/${req.headers['client-id']}/${file.filename}`
       }));
     }
     res.status(201).json(result);
@@ -164,14 +164,14 @@ router.get('/download/:clientId/:fileName', function(req, res, next){
 // 파일을 클라이언트에 전송
 const sendFile = (req, res, next, mode='view') => {
   try {
-    console.log('sendFile', req.params.clientId);
+    logger.debug('sendFile', req.params.clientId);
     const fileBucket = new GridFSBucket(getDB(req.params.clientId), {
       bucketName: 'upload',
     });
     let downloadStream = fileBucket.openDownloadStreamByName(req.params.fileName);
 
     downloadStream.on('open', function (data) {
-      console.log('open', data)
+      logger.debug('open', data);
     });
 
     downloadStream.on('data', function (data) {
