@@ -198,6 +198,71 @@ router.post('/login', [
   }
 });
 
+// 로그인
+router.get('/login/kakao', async function(req, res, next) {
+  /*
+    #swagger.tags = ['회원']
+    #swagger.summary  = '로그인'
+    #swagger.description = '이메일과 비밀번호를 입력해 로그인을 한다.<br>응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환한다.<br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야 한다.'
+
+    #swagger.requestBody = {
+      description: "로그인 정보",
+      required: true,
+      content: {
+        "application/json": {
+          schema: { $ref: '#components/schemas/login' },
+        }
+      }
+    }
+
+    #swagger.responses[200] = {
+      description: '로그인 성공',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/loginRes" }
+        }
+      }
+    }
+    #swagger.responses[403] = {
+      description: '로그인 실패',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error403" }
+        }
+      }
+    }
+    #swagger.responses[422] = {
+      description: '입력값 검증 오류',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error422' }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
+  */
+
+  try{
+
+    logger.trace(req.query.code);
+    const userModel = req.model.user;
+    const user = {
+      _id: 111,
+    };
+
+    res.redirect('http://localhost:5173/users/signup');
+  }catch(err){
+    next(err);
+  }
+});
+
 // 회원 조회(단일 속성)
 router.get('/:_id/*', jwtAuth.auth('user'), async function(req, res, next) {
   /*  
