@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "오픈마켓 API",
-    "description": "오픈마켓 API Server입니다.<br><a href=\"/\">버전별 변경사항 확인</a><br><br><h2>공통 사항</h2><details><summary>검색</summary>자세한 내용</details><details><summary>페이지네이션</summary>자세한 내용</details><details><summary>정렬</summary>자세한 내용</details><details><summary>dryRun</summary>자세한 내용</details><details><summary>주문 상태</summary>자세한 내용</details>"
+    "description": "오픈마켓 API Server입니다.<br>\n      <a href=\"/\">버전별 변경사항 확인</a><br><br>\n      <h2>공통 사항</h2>\n      <details><summary>검색</summary>자세한 내용</details>\n      <details><summary>페이지네이션</summary>자세한 내용</details>\n      <details><summary>정렬</summary>자세한 내용</details>\n      <details><summary>dryRun</summary>자세한 내용</details>\n      <details><summary>custom 파라미터</summary>자세한 내용</details>\n      <details><summary>주문 상태</summary>자세한 내용</details>\n      <details><summary>공통 에러 메세지</summary>자세한 내용</details>\n    "
   },
   "servers": [
     {
@@ -204,6 +204,77 @@
         ],
         "summary": "로그인",
         "description": "이메일과 비밀번호를 입력해 로그인을 한다.<br>응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환한다.<br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야 한다.",
+        "responses": {
+          "200": {
+            "description": "로그인 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loginRes"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "로그인 실패",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error403"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "입력값 검증 오류",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error422"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error500"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "로그인 정보",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#components/schemas/login"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/login/kakao": {
+      "get": {
+        "tags": [
+          "회원"
+        ],
+        "summary": "로그인",
+        "description": "이메일과 비밀번호를 입력해 로그인을 한다.<br>응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환한다.<br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야 한다.",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "로그인 성공",
@@ -2258,8 +2329,8 @@
         "tags": [
           "게시판"
         ],
-        "summary": "게시물 등록",
-        "description": "게시물을 등록한다.",
+        "summary": "게시글 등록",
+        "description": "게시글을 등록한다.",
         "responses": {
           "200": {
             "description": "OK"
@@ -2311,7 +2382,7 @@
           }
         ],
         "requestBody": {
-          "description": "게시물 정보가 저장된 객체입니다.<br>모든 속성은 선택사항이고 필요에 맞게 아무 속성이나 추가하면 됩니다.<br>title, content는 게시물 키워드 검색에 사용되는 속성입니다.<br>type: 게시판 종류(선택, 생략시 post). 게시판을 구분할 수 있는 이름<br>product_id: 상품 id(선택). 상품과 관련된 게시물일 경우 필요<br>title: 제목(선택)<br>content: 내용(선택)",
+          "description": "게시글 정보가 저장된 객체입니다.<br>모든 속성은 선택사항이고 필요에 맞게 아무 속성이나 추가하면 됩니다.<br>title, content는 게시글 키워드 검색에 사용되는 속성입니다.<br>type: 게시판 종류(선택, 생략시 post). 게시판을 구분할 수 있는 이름<br>product_id: 상품 id(선택). 상품과 관련된 게시글일 경우 필요<br>title: 제목(선택)<br>content: 내용(선택)",
           "required": true,
           "content": {
             "application/json": {
@@ -2334,8 +2405,8 @@
         "tags": [
           "게시판"
         ],
-        "summary": "전체 게시물 목록",
-        "description": "전체 게시물 목록을 조회합니다.<br>지원되는 검색 조건 이외의 속성으로 검색할 경우 custom 파라미터를 이용하면 됩니다.",
+        "summary": "전체 게시글 목록",
+        "description": "전체 게시글 목록을 조회합니다.<br>지원되는 검색 조건 이외의 속성으로 검색할 경우 custom 파라미터를 이용하면 됩니다.",
         "parameters": [
           {
             "name": "type",
@@ -2423,8 +2494,8 @@
         "tags": [
           "게시판"
         ],
-        "summary": "사용자 게시물 목록",
-        "description": "사용자가 작성한 게시물 목록을 조회한다.",
+        "summary": "사용자가 작성한 게시글 목록",
+        "description": "사용자가 작성한 게시글 목록을 조회합니다.",
         "parameters": [
           {
             "name": "_id",
@@ -2432,25 +2503,62 @@
             "required": true,
             "schema": {
               "type": "string"
+            },
+            "description": "사용자 id",
+            "example": 4
+          },
+          {
+            "name": "type",
+            "description": "게시판 종류",
+            "in": "query",
+            "default": "post",
+            "example": "qna",
+            "schema": {
+              "type": "string"
             }
           },
           {
             "name": "keyword",
+            "description": "검색어<br>제목과 내용 검색에 사용되는 키워드",
             "in": "query",
+            "example": "배송",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "custom",
+            "description": "custom 검색 조건",
+            "in": "query",
+            "example": "{'createdAt': {'$gte': '2024.04', '$lt': '2024.05'}}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "description": "페이지",
+            "in": "query",
+            "example": 2,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "한 페이지당 항목 수",
+            "in": "query",
+            "example": 10,
+            "schema": {
+              "type": "number"
             }
           },
           {
             "name": "sort",
+            "description": "정렬(내림차순: -1, 오름차순: 1)",
             "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "type",
-            "in": "query",
+            "example": "{'createdAt': 1}",
+            "default": "{'createdAt': -1}",
             "schema": {
               "type": "string"
             }
@@ -2458,14 +2566,26 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/postListRes"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error500"
+                }
+              }
+            }
           }
-        },
-        "security": [
-          {
-            "Access Token": []
-          }
-        ]
+        }
       }
     },
     "/posts/seller/{_id}": {
@@ -2473,8 +2593,8 @@
         "tags": [
           "게시판"
         ],
-        "summary": "판매자 게시물 목록",
-        "description": "판매자의 상품에 등록된 게시물 목록을 조회한다.",
+        "summary": "판매자의 상품에 등록된 게시글 목록",
+        "description": "판매자의 상품에 등록된 게시글 목록을 조회합니다.",
         "parameters": [
           {
             "name": "_id",
@@ -2482,32 +2602,79 @@
             "required": true,
             "schema": {
               "type": "string"
+            },
+            "description": "판매자 id",
+            "example": 2
+          },
+          {
+            "name": "product_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "product_id",
+            "description": "상품 id",
+            "in": "path",
+            "example": 1,
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "type",
+            "description": "게시판 종류",
+            "in": "query",
+            "default": "post",
+            "example": "qna",
+            "schema": {
+              "type": "string"
             }
           },
           {
             "name": "keyword",
+            "description": "검색어<br>제목과 내용 검색에 사용되는 키워드",
             "in": "query",
+            "example": "배송",
             "schema": {
               "type": "string"
             }
           },
           {
             "name": "custom",
+            "description": "custom 검색 조건",
             "in": "query",
+            "example": "{'createdAt': {'$gte': '2024.04', '$lt': '2024.05'}}",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "description": "페이지",
+            "in": "query",
+            "example": 2,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "한 페이지당 항목 수",
+            "in": "query",
+            "example": 10,
+            "schema": {
+              "type": "number"
             }
           },
           {
             "name": "sort",
+            "description": "정렬(내림차순: -1, 오름차순: 1)",
             "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "type",
-            "in": "query",
+            "example": "{'createdAt': 1}",
+            "default": "{'createdAt': -1}",
             "schema": {
               "type": "string"
             }
@@ -2515,14 +2682,26 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/postListRes"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error500"
+                }
+              }
+            }
           }
-        },
-        "security": [
-          {
-            "Access Token": []
-          }
-        ]
+        }
       }
     },
     "/posts/{_id}": {
@@ -2530,8 +2709,8 @@
         "tags": [
           "게시판"
         ],
-        "summary": "게시물 상세",
-        "description": "게시물을 상세 조회한다.",
+        "summary": "게시글 상세",
+        "description": "게시글을 상세 조회합니다.",
         "parameters": [
           {
             "name": "_id",
@@ -2539,19 +2718,41 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "incrementView",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            },
+            "description": "게시글 id",
+            "example": 1
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/postDetailRes"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "리소스가 존재하지 않음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error500"
+                }
+              }
+            }
           }
         }
       },
@@ -2559,8 +2760,8 @@
         "tags": [
           "게시판"
         ],
-        "summary": "게시물 수정",
-        "description": "게시물을 수정한다.",
+        "summary": "게시글 수정",
+        "description": "게시글을 수정한다.",
         "parameters": [
           {
             "name": "_id",
@@ -2568,26 +2769,80 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "게시글 id",
+            "example": 1
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "샘플": {
+                    "$ref": "#/components/examples/updatePostRes"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증 실패",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "게시글이 존재하지 않거나 접근 권한이 없음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error500"
+                }
+              }
+            }
           }
         },
         "security": [
           {
             "Access Token": []
           }
-        ]
+        ],
+        "requestBody": {
+          "description": "수정할 게시글 정보",
+          "required": true,
+          "content": {
+            "application/json": {
+              "examples": {
+                "샘플": {
+                  "$ref": "#/components/examples/updatePostBody"
+                }
+              }
+            }
+          }
+        }
       },
       "delete": {
         "tags": [
           "게시판"
         ],
-        "summary": "게시물 삭제",
-        "description": "게시물을 삭제한다.",
+        "summary": "게시글 삭제",
+        "description": "게시글을 삭제합니다.",
         "parameters": [
           {
             "name": "_id",
@@ -2595,12 +2850,51 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "게시글 id",
+            "example": "2"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/simpleOK"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증 실패",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error401"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "게시글이 존재하지 않거나 접근 권한이 없음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error500"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -2616,7 +2910,7 @@
           "게시판"
         ],
         "summary": "댓글 목록",
-        "description": "지정한 게시물의 댓글 목록을 조회한다.",
+        "description": "지정한 게시글의 댓글 목록을 조회합니다.",
         "parameters": [
           {
             "name": "_id",
@@ -2624,25 +2918,34 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            },
+            "description": "게시글 id",
+            "example": 1
           },
           {
             "name": "page",
+            "description": "페이지",
             "in": "query",
+            "example": 2,
             "schema": {
-              "type": "string"
+              "type": "number"
             }
           },
           {
             "name": "limit",
+            "description": "한 페이지당 항목 수",
             "in": "query",
+            "example": 10,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "description": "정렬(내림차순: -1, 오름차순: 1)",
+            "in": "query",
+            "example": "{'createdAt': 1}",
+            "default": "{'createdAt': -1}",
             "schema": {
               "type": "string"
             }
@@ -2650,7 +2953,26 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "샘플": {
+                    "$ref": "#/components/examples/listReplyRes"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error500"
+                }
+              }
+            }
           }
         }
       },
@@ -2659,7 +2981,7 @@
           "게시판"
         ],
         "summary": "댓글 등록",
-        "description": "게시물에 댓글을 등록한다.",
+        "description": "게시글에 댓글을 등록한다.",
         "parameters": [
           {
             "name": "_id",
@@ -2702,7 +3024,7 @@
           "게시판"
         ],
         "summary": "댓글 수정",
-        "description": "게시물의 댓글을 수정한다.",
+        "description": "게시글의 댓글을 수정한다.",
         "parameters": [
           {
             "name": "_id",
@@ -2737,7 +3059,7 @@
           "게시판"
         ],
         "summary": "댓글 삭제",
-        "description": "게시물의 댓글을 삭제한다.",
+        "description": "게시글의 댓글을 삭제한다.",
         "parameters": [
           {
             "name": "_id",
@@ -3510,22 +3832,13 @@
         ],
         "summary": "코드 등록",
         "description": "코드를 등록합니다.<br>코드 등록을 완료한 후 코드 정보를 반환합니다.",
-        "parameters": [
-          {
-            "name": "client-id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "responses": {
           "201": {
             "description": "성공",
             "content": {
               "application/json": {
                 "examples": {
-                  "회원 등급 코드": {
+                  "판매 회원 승인 코드": {
                     "$ref": "#/components/examples/createCodeRes"
                   }
                 }
@@ -3587,11 +3900,8 @@
                 "$ref": "#components/schemas/createCode"
               },
               "examples": {
-                "회원 등급 코드": {
-                  "$ref": "#/components/examples/createUserLevelCode"
-                },
-                "카테고리 코드": {
-                  "$ref": "#/components/examples/createCategoryCode"
+                "판매 회원 승인 코드": {
+                  "$ref": "#/components/examples/createSellerConfirmBody"
                 }
               }
             }
@@ -3605,7 +3915,7 @@
           "코드 관리"
         ],
         "summary": "코드 수정",
-        "description": "코드를 수정한다.",
+        "description": "코드를 수정합니다.",
         "parameters": [
           {
             "name": "_id",
@@ -3615,14 +3925,7 @@
               "type": "string"
             },
             "description": "코드 id",
-            "example": "userLevel"
-          },
-          {
-            "name": "client-id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
+            "example": "membershipClass"
           }
         ],
         "responses": {
@@ -3632,7 +3935,7 @@
               "application/json": {
                 "examples": {
                   "회원 등급에 VVIP 추가": {
-                    "$ref": "#/components/examples/updateUserLevelCodeRes"
+                    "$ref": "#/components/examples/updateMembershipClassCodeRes"
                   }
                 }
               }
@@ -3681,7 +3984,7 @@
             "application/json": {
               "examples": {
                 "회원 등급에 VVIP 추가": {
-                  "$ref": "#/components/examples/updateUserLevelCode"
+                  "$ref": "#/components/examples/updateMembershipClassCode"
                 }
               }
             }
@@ -3693,7 +3996,7 @@
           "코드 관리"
         ],
         "summary": "코드 삭제",
-        "description": "코드를 삭제한다.",
+        "description": "코드를 삭제합니다.",
         "parameters": [
           {
             "name": "_id",
@@ -3703,14 +4006,7 @@
               "type": "string"
             },
             "description": "코드 id",
-            "example": "userLevel"
-          },
-          {
-            "name": "client-id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
+            "example": "membershipClass"
           }
         ],
         "responses": {
@@ -3963,7 +4259,7 @@
           "파일"
         ],
         "summary": "이미지 링크",
-        "description": "업로드된 이미지를 img 태그로 지정한다.",
+        "description": "업로드된 이미지를 img 태그의 src 속성으로 지정할때 사용합니다.",
         "parameters": [
           {
             "name": "clientId",
@@ -3971,7 +4267,9 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "각 팀별로 부여받은 client-id",
+            "example": "00-sample"
           },
           {
             "name": "fileName",
@@ -3979,12 +4277,47 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "업로드된 파일명<br>파일 업로드 결과로 응답 받은 name 값",
+            "example": "sample-bugatti.png"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "성공시 지정한 파일의 바이너리 데이터가 응답됨",
+            "content": {
+              "application/octet-stream": {}
+            }
+          },
+          "403": {
+            "description": "등록된 clientId가 아닐 경우",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorClientId403"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "리소스가 존재하지 않음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error500"
+                }
+              }
+            }
           }
         }
       }
@@ -3995,7 +4328,7 @@
           "파일"
         ],
         "summary": "다운로드",
-        "description": "업로드된 파일을 다운로드 한다.",
+        "description": "지정한 파일을 다운로드 합니다.",
         "parameters": [
           {
             "name": "clientId",
@@ -4003,7 +4336,9 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "각 팀별로 부여받은 client-id",
+            "example": "00-sample"
           },
           {
             "name": "fileName",
@@ -4011,12 +4346,47 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "업로드된 파일명<br>파일 업로드 결과로 응답 받은 name 값",
+            "example": "sample-bugatti.png"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "성공시 지정한 파일의 바이너리 데이터가 응답됨",
+            "content": {
+              "application/octet-stream": {}
+            }
+          },
+          "403": {
+            "description": "등록된 clientId가 아닐 경우",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errorClientId403"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "리소스가 존재하지 않음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error404"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error500"
+                }
+              }
+            }
           }
         }
       }
@@ -4027,7 +4397,7 @@
           "인증"
         ],
         "summary": "Access 토큰 재발행",
-        "description": "Authorization 헤더에 Bearer 방식의 Refresh Token을 보내서 Access Token을 재발급 한다.",
+        "description": "Authorization 헤더에 Bearer 방식의 Refresh Token을 보내서 Access Token을 재발급 합니다.",
         "parameters": [
           {
             "name": "authorization",
@@ -4125,7 +4495,7 @@
               "type": "string"
             },
             "description": "코드 id",
-            "example": "userLevel"
+            "example": "membershipClass"
           }
         ],
         "responses": {
@@ -4241,6 +4611,19 @@
           "message": {
             "type": "string",
             "example": "아이디와 패스워드를 확인하시기 바랍니다."
+          }
+        }
+      },
+      "errorClientId403": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "number",
+            "example": 0
+          },
+          "message": {
+            "type": "string",
+            "example": "등록되지 않은 client-id 입니다."
           }
         }
       },
@@ -7017,7 +7400,7 @@
           },
           "image": {
             "type": "string",
-            "example": "/files/00-sample/sample-bugatti.png"
+            "example": "sample-bugatti.png"
           }
         }
       },
@@ -7045,7 +7428,7 @@
               },
               "image": {
                 "type": "string",
-                "example": "/files/00-sample/sample-bugatti.png"
+                "example": "sample-bugatti.png"
               },
               "views": {
                 "type": "number",
@@ -7080,13 +7463,214 @@
           }
         }
       },
-      "postListBody": {
-        "type": "object",
-        "properties": {}
-      },
       "postListRes": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "ok": {
+            "type": "number",
+            "example": 1
+          },
+          "item": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "type": {
+                  "type": "string",
+                  "example": "qna"
+                },
+                "product_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "seller_id": {
+                  "type": "number",
+                  "example": 2
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "number",
+                      "example": 4
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "데이지"
+                    }
+                  }
+                },
+                "title": {
+                  "type": "string",
+                  "example": "크기가 얼만만한가요?"
+                },
+                "content": {
+                  "type": "string",
+                  "example": "아이가 6살인데 가지고 놀기 적당한 크기인가요?"
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2024.04.08 21:08:10"
+                },
+                "updatedAt": {
+                  "type": "string",
+                  "example": "2024.04.08 21:08:10"
+                },
+                "product": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "캥거루 스턴트 독 로봇완구"
+                    },
+                    "image": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "example": "/files/sample-dog.jpg"
+                        },
+                        "fileName": {
+                          "type": "string",
+                          "example": "sample-dog.jpg"
+                        },
+                        "orgName": {
+                          "type": "string",
+                          "example": "스턴트 독.jpg"
+                        }
+                      }
+                    }
+                  }
+                },
+                "repliesCount": {
+                  "type": "number",
+                  "example": 3
+                }
+              }
+            }
+          },
+          "pagination": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "number",
+                "example": 1
+              },
+              "limit": {
+                "type": "number",
+                "example": 0
+              },
+              "total": {
+                "type": "number",
+                "example": 3
+              },
+              "totalPages": {
+                "type": "number",
+                "example": 1
+              }
+            }
+          }
+        }
+      },
+      "postDetailRes": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "number",
+            "example": 1
+          },
+          "item": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "number",
+                "example": 1
+              },
+              "type": {
+                "type": "string",
+                "example": "qna"
+              },
+              "product_id": {
+                "type": "number",
+                "example": 1
+              },
+              "seller_id": {
+                "type": "number",
+                "example": 2
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "number",
+                    "example": 4
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "데이지"
+                  }
+                }
+              },
+              "title": {
+                "type": "string",
+                "example": "크기가 얼만만한가요?"
+              },
+              "content": {
+                "type": "string",
+                "example": "아이가 6살인데 가지고 놀기 적당한 크기인가요?"
+              },
+              "replies": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "number",
+                      "example": 3
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "number",
+                          "example": 2
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "네오"
+                        }
+                      }
+                    },
+                    "content": {
+                      "type": "string",
+                      "example": "높이 60cm 입니다."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024.04.09 14:08:10"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2024.04.10 03:08:10"
+                    }
+                  }
+                }
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2024.04.08 21:08:10"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2024.04.08 21:08:10"
+              }
+            }
+          }
+        }
       },
       "userListRes": {
         "type": "object",
@@ -7300,12 +7884,12 @@
                   }
                 }
               },
-              "userLevel": {
+              "membershipClass": {
                 "type": "object",
                 "properties": {
                   "_id": {
                     "type": "string",
-                    "example": "userLevel"
+                    "example": "membershipClass"
                   },
                   "title": {
                     "type": "string",
@@ -7322,11 +7906,15 @@
                         },
                         "code": {
                           "type": "string",
-                          "example": "UL01"
+                          "example": "MC01"
                         },
                         "value": {
                           "type": "string",
                           "example": "일반"
+                        },
+                        "discountRate": {
+                          "type": "number",
+                          "example": 0
                         }
                       }
                     }
@@ -7347,16 +7935,16 @@
           "item": {
             "type": "object",
             "properties": {
-              "productCategory": {
+              "membershipClass": {
                 "type": "object",
                 "properties": {
                   "_id": {
                     "type": "string",
-                    "example": "productCategory"
+                    "example": "membershipClass"
                   },
                   "title": {
                     "type": "string",
-                    "example": "상품 카테고리"
+                    "example": "회원 등급"
                   },
                   "codes": {
                     "type": "array",
@@ -7365,99 +7953,19 @@
                       "properties": {
                         "sort": {
                           "type": "number",
-                          "example": 2
+                          "example": 1
                         },
                         "code": {
                           "type": "string",
-                          "example": "PC01"
+                          "example": "MC01"
                         },
                         "value": {
                           "type": "string",
-                          "example": "어린이"
+                          "example": "일반"
                         },
-                        "depth": {
+                        "discountRate": {
                           "type": "number",
-                          "example": 1
-                        }
-                      }
-                    }
-                  },
-                  "nestedCodes": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "sort": {
-                          "type": "number",
-                          "example": 2
-                        },
-                        "code": {
-                          "type": "string",
-                          "example": "PC01"
-                        },
-                        "value": {
-                          "type": "string",
-                          "example": "어린이"
-                        },
-                        "depth": {
-                          "type": "number",
-                          "example": 1
-                        },
-                        "sub": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "sort": {
-                                "type": "number",
-                                "example": 1
-                              },
-                              "code": {
-                                "type": "string",
-                                "example": "PC0102"
-                              },
-                              "value": {
-                                "type": "string",
-                                "example": "보드게임"
-                              },
-                              "parent": {
-                                "type": "string",
-                                "example": "PC01"
-                              },
-                              "depth": {
-                                "type": "number",
-                                "example": 2
-                              },
-                              "sub": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "sort": {
-                                      "type": "number",
-                                      "example": 1
-                                    },
-                                    "code": {
-                                      "type": "string",
-                                      "example": "PC010202"
-                                    },
-                                    "value": {
-                                      "type": "string",
-                                      "example": "3~4인용"
-                                    },
-                                    "parent": {
-                                      "type": "string",
-                                      "example": "PC0102"
-                                    },
-                                    "depth": {
-                                      "type": "number",
-                                      "example": 3
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
+                          "example": 0
                         }
                       }
                     }
@@ -7566,80 +8074,88 @@
           "message": "파일은 한번에 10개 까지만 업로드가 가능합니다."
         }
       },
-      "createUserLevelCode": {
+      "createSellerConfirmBody": {
         "value": {
-          "_id": "userLevel",
-          "title": "회원 등급",
+          "_id": "joinState",
+          "title": "판매 회원 승인 코드",
           "codes": [
             {
-              "sort": 1,
-              "code": "UL01",
-              "value": "일반"
-            },
-            {
               "sort": 2,
-              "code": "UL02",
-              "value": "프리미엄"
+              "code": "JS01",
+              "value": "보류"
             },
             {
               "sort": 3,
-              "code": "UL03",
-              "value": "VIP"
+              "code": "JS02",
+              "value": "거부"
+            },
+            {
+              "sort": 1,
+              "code": "JS03",
+              "value": "승인"
             }
           ]
         }
       },
-      "updateUserLevelCode": {
+      "updateMembershipClassCode": {
         "value": {
           "title": "회원 등급",
           "codes": [
             {
               "sort": 1,
-              "code": "UL01",
-              "value": "일반"
+              "code": "MC01",
+              "value": "일반",
+              "discountRate": 0
             },
             {
               "sort": 2,
-              "code": "UL02",
-              "value": "프리미엄"
+              "code": "MC02",
+              "value": "프리미엄",
+              "discountRate": 10
             },
             {
               "sort": 3,
-              "code": "UL03",
-              "value": "VIP"
+              "code": "MC03",
+              "value": "VIP",
+              "discountRate": 20
             },
             {
               "sort": 4,
-              "code": "UL04",
-              "value": "VVIP"
+              "code": "MC04",
+              "value": "VVIP",
+              "discountRate": 30
             }
           ]
         }
       },
-      "updateUserLevelCodeRes": {
+      "updateMembershipClassCodeRes": {
         "value": {
-          "_id": "userLevel",
+          "_id": "membershipClass",
           "title": "회원 등급",
           "codes": [
             {
               "sort": 1,
-              "code": "UL01",
-              "value": "일반"
+              "code": "MC01",
+              "value": "일반",
+              "discountRate": 0
             },
             {
               "sort": 2,
-              "code": "UL02",
-              "value": "프리미엄"
+              "code": "MC02",
+              "value": "프리미엄",
+              "discountRate": 10
             },
             {
               "sort": 3,
-              "code": "UL03",
-              "value": "VIP"
+              "code": "MC03",
+              "value": "VIP",
+              "discountRate": 20
             },
             {
               "sort": 4,
-              "code": "UL04",
-              "value": "VVIP"
+              "code": "MC04",
+              "value": "VVIP",
+              "discountRate": 30
             }
           ]
         }
@@ -7647,7 +8163,7 @@
       "createCategoryCode": {
         "value": {
           "_id": "productCategory",
-          "title": "상품 카테고리",
+          "title": "상품 카테고리 코드",
           "codes": [
             {
               "sort": 1,
@@ -7745,23 +8261,23 @@
         "value": {
           "ok": 1,
           "item": {
-            "_id": "userLevel",
-            "title": "회원 등급",
+            "_id": "joinState",
+            "title": "판매 회원 승인 코드",
             "codes": [
               {
-                "sort": 1,
-                "code": "UL01",
-                "value": "일반"
-              },
-              {
                 "sort": 2,
-                "code": "UL02",
-                "value": "프리미엄"
+                "code": "JS01",
+                "value": "보류"
               },
               {
                 "sort": 3,
-                "code": "UL03",
-                "value": "VIP"
+                "code": "JS02",
+                "value": "거부"
+              },
+              {
+                "sort": 1,
+                "code": "JS03",
+                "value": "승인"
               }
             ]
           }
@@ -8134,6 +8650,52 @@
           "product_id": 1,
           "title": "배송은 얼마나 걸려요?",
           "content": "주말에 여행가기 전까지 오면 좋겠네요."
+        }
+      },
+      "updatePostBody": {
+        "value": {
+          "title": "크기가 얼마나 큰가요?",
+          "content": "6세 아이가 가지고 놀 수 있을 정도로 컸으면 좋겠네요.",
+          "extra": {
+            "image": "sample-hulk.png"
+          }
+        }
+      },
+      "updatePostRes": {
+        "value": {
+          "ok": 1,
+          "updated": {
+            "_id": 1,
+            "title": "크기가 얼마나 큰가요?",
+            "content": "6세 아이가 가지고 놀 수 있을 정도로 컸으면 좋겠네요.",
+            "extra": {
+              "image": "sample-hulk.png"
+            },
+            "updatedAt": "2024.04.12 09:28:41"
+          }
+        }
+      },
+      "listReplyRes": {
+        "value": {
+          "ok": 1,
+          "item": [
+            {
+              "_id": 3,
+              "user": {
+                "_id": 2,
+                "name": "네오"
+              },
+              "content": "높이 60cm 입니다.",
+              "createdAt": "2024.04.09 14:08:10",
+              "updatedAt": "2024.04.10 03:08:10"
+            }
+          ],
+          "pagination": {
+            "page": 2,
+            "limit": 2,
+            "total": 3,
+            "totalPages": 2
+          }
         }
       }
     }
