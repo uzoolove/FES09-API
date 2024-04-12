@@ -34,7 +34,7 @@ for(const clientId of DBConfig.clientIds){
 const multerUpload = (req, res, next) => {
   (multer({
     // 프로젝트별로 다른 스토리지(database) 선택
-    storage: storages[req.headers['client-id']]
+    storage: storages[req.clientId]
   }).array('attach', 10))(req, res, next);
 };
 
@@ -115,19 +115,13 @@ router.post('/', multerUpload, handleError, async function(req, res, next) {
   try{
     logger.debug(req.files);
     const result = { ok: 1 };
-    // if(req.files.length == 1){  // 단일 파일
-    //   result.item = [{
-    //     originalname: req.files[0].originalname,
-    //     name: req.files[0].filename,
-    //     path: `${process.env.API_HOST}/api/files/${req.headers['client-id']}/${req.files[0].filename}`
-    //   }];
-    // }else{  // 여러 파일
-      result.item = req.files.map(file => ({
-        originalname: file.originalname,
-        name: file.filename,
-        path: `/files/${req.headers['client-id']}/${file.filename}`
-      }));
-    // }
+
+    result.item = req.files.map(file => ({
+      originalname: file.originalname,
+      name: file.filename,
+      path: `/files/${req.clientId}/${file.filename}`
+    }));
+
     res.status(201).json(result);
   }catch(err){
     next(err);
@@ -139,8 +133,55 @@ router.get('/:clientId/:fileName', function(req, res, next){
   /*
     #swagger.tags = ['파일']
     #swagger.summary  = '이미지 링크'
-    #swagger.description = '업로드된 이미지를 img 태그로 지정한다.'
+    #swagger.description = '업로드된 이미지를 img 태그의 src 속성으로 지정할때 사용합니다.'
     
+    #swagger.parameters['clientId'] = {
+      description: '각 팀별로 부여받은 client-id',
+      in: 'path',
+      required: true,
+      type: 'string',
+      example: '00-sample'
+    }
+    #swagger.parameters['fileName'] = {
+      description: '업로드된 파일명<br>파일 업로드 결과로 응답 받은 name 값',
+      in: 'path',
+      required: true,
+      type: 'string',
+      example: 'sample-bugatti.png'
+    }
+
+    #swagger.responses[200] = {
+      description: '성공시 지정한 파일의 바이너리 데이터가 응답됨',
+      content: {
+        "application/octet-stream": {}
+      }
+    }
+
+    #swagger.responses[403] = {
+      description: '등록된 clientId가 아닐 경우',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/errorClientId403" }
+        }
+      }
+    }
+
+    #swagger.responses[404] = {
+      description: '리소스가 존재하지 않음',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error404" }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
   */
 
   sendFile(req, res, next, 'view');
@@ -152,8 +193,55 @@ router.get('/download/:clientId/:fileName', function(req, res, next){
   /*
     #swagger.tags = ['파일']
     #swagger.summary  = '다운로드'
-    #swagger.description = '업로드된 파일을 다운로드 한다.'
+    #swagger.description = '지정한 파일을 다운로드 합니다.'
     
+    #swagger.parameters['clientId'] = {
+      description: '각 팀별로 부여받은 client-id',
+      in: 'path',
+      required: true,
+      type: 'string',
+      example: '00-sample'
+    }
+    #swagger.parameters['fileName'] = {
+      description: '업로드된 파일명<br>파일 업로드 결과로 응답 받은 name 값',
+      in: 'path',
+      required: true,
+      type: 'string',
+      example: 'sample-bugatti.png'
+    }
+
+    #swagger.responses[200] = {
+      description: '성공시 지정한 파일의 바이너리 데이터가 응답됨',
+      content: {
+        "application/octet-stream": {}
+      }
+    }
+
+    #swagger.responses[403] = {
+      description: '등록된 clientId가 아닐 경우',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/errorClientId403" }
+        }
+      }
+    }
+
+    #swagger.responses[404] = {
+      description: '리소스가 존재하지 않음',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error404" }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
   */
 
   sendFile(req, res, next, 'download');
@@ -162,32 +250,37 @@ router.get('/download/:clientId/:fileName', function(req, res, next){
 // 파일을 클라이언트에 전송
 const sendFile = (req, res, next, mode='view') => {
   try {
-    logger.debug('sendFile', req.params.clientId);
-    const fileBucket = new GridFSBucket(getDB(req.params.clientId), {
-      bucketName: 'upload',
-    });
-    let downloadStream = fileBucket.openDownloadStreamByName(req.params.fileName);
-
-    downloadStream.on('open', function (data) {
-      logger.debug('open', data);
-    });
-
-    downloadStream.on('data', function (data) {
-      if(mode === 'download' && !res.getHeader('Content-Disposition')){
-        const orgName = req.query.name || req.params.fileName;
-        const disposition = `attachment; filename="${encodeURIComponent(orgName)}"`;
-        res.setHeader('Content-Disposition', disposition);
-      }
-      return res.write(data);
-    });
-
-    downloadStream.on('error', function (err) {
-      next(createError(404, `${req.params.fileName} 파일이 존재하지 않습니다.`));
-    });
-
-    downloadStream.on('end', () => {
-      return res.end();
-    });
+    const clientId = req.params.clientId;
+    if(DBConfig.clientIds.includes(clientId)){
+      const fileBucket = new GridFSBucket(getDB(clientId), {
+        bucketName: 'upload',
+      });
+      let downloadStream = fileBucket.openDownloadStreamByName(req.params.fileName);
+  
+      downloadStream.on('open', function (data) {
+        logger.debug('open', data);
+      });
+  
+      downloadStream.on('data', function (data) {
+        if(mode === 'download' && !res.getHeader('Content-Disposition')){
+          const orgName = req.query.name || req.params.fileName;
+          const disposition = `attachment; filename="${encodeURIComponent(orgName)}"`;
+          res.setHeader('Content-Disposition', disposition);
+        }
+        return res.write(data);
+      });
+  
+      downloadStream.on('error', function (err) {
+        next(createError(404, `${clientId}/${req.params.fileName} 파일이 존재하지 않습니다.`));
+      });
+  
+      downloadStream.on('end', () => {
+        return res.end();
+      });
+    }else{
+      res.status(403).json({ ok: 0, message: '등록되지 않은 client-id 입니다.' });
+    }
+    
   } catch (err) {
     next(err)
   }

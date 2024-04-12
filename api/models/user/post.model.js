@@ -9,7 +9,7 @@ class PostModel{
     this.model = model;
   }
 
-  // 게시물 등록
+  // 게시글 등록
   async create(post){
     post.type = post.type || 'post';
     logger.trace(post);
@@ -22,7 +22,7 @@ class PostModel{
     return post;
   }
 
-  // 게시물 목록 조회
+  // 게시글 목록 조회
   async find({ type='post', search={}, sortBy={}, page=1, limit=0 }){
     logger.trace(arguments);
     const query = { type, ...search };
@@ -88,26 +88,26 @@ class PostModel{
     return result;
   }
 
-  // 게시물 상세 조회
-  async findById(_id, firstRender){
+  // 게시글 상세 조회
+  async findById(_id, justView){
     logger.trace(arguments);
     
     let item;
-    if(firstRender){ // 처음 조회때만 조회수 증가(컴포넌트 마운트 이후에 react-query로 여러번 조회때마다 조회수 증가 방지)
+    if(justView){ // 처음 조회때만 조회수 증가(댓글 목록 조회를 위해 호출될 경우 조회수 증가 방지)
+      item = await this.db.post.findOne({ _id });
+    }else{
       item = await this.db.post.findOneAndUpdate(
         { _id },
         { $inc: { views: 1 } },
         { returnDocument: 'after' } // 업데이트된 문서 반환
       );
-    }else{
-      item = await this.db.post.findOne({ _id });
     }
     
     logger.debug(item);
     return item;
   }
 
-  // 게시물 수정
+  // 게시글 수정
   async update(_id, post){
     logger.trace(arguments);
     post.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
@@ -127,7 +127,7 @@ class PostModel{
     return { _id, ...post };
   }
 
-  // 게시물 삭제
+  // 게시글 삭제
   async delete(_id){
     logger.trace(arguments);
 
@@ -140,7 +140,7 @@ class PostModel{
   async findReplies({ _id, page=1, limit=0, sortBy }){
     logger.trace(arguments);
     
-    const post = await this.findById(_id, false);
+    const post = await this.findById(_id, true);
 
     let list = post.replies || [];
     const skip = (page-1) * limit;

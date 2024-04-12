@@ -28,8 +28,7 @@ router.post('/', async function(req, res, next) {
         "application/json": {
           schema: { $ref: '#components/schemas/createCode' },
           examples: {
-            "회원 등급 코드": { $ref: "#/components/examples/createUserLevelCode" },
-            "카테고리 코드": { $ref: "#/components/examples/createCategoryCode" }
+            "판매 회원 승인 코드": { $ref: "#/components/examples/createSellerConfirmBody" },
           }
         }
       }
@@ -39,7 +38,7 @@ router.post('/', async function(req, res, next) {
       content: {
         "application/json": {
           examples: {
-            "회원 등급 코드": { $ref: "#/components/examples/createCodeRes" }
+            "판매 회원 승인 코드": { $ref: "#/components/examples/createCodeRes" }
           }
         }
       }
@@ -80,7 +79,7 @@ router.post('/', async function(req, res, next) {
 
   try{
     const codeModel = req.model.code;
-    const clientId = req.headers['client-id'];
+    const clientId = req.clientId;
     const db = getDB(clientId);
 
     const item = await codeModel.create(req.body);    
@@ -96,7 +95,7 @@ router.put('/:_id', async function(req, res, next) {
   /*
     #swagger.tags = ['코드 관리']
     #swagger.summary  = '코드 수정'
-    #swagger.description = '코드를 수정한다.'
+    #swagger.description = '코드를 수정합니다.'
 
     #swagger.security = [{
       "Access Token": []
@@ -106,7 +105,7 @@ router.put('/:_id', async function(req, res, next) {
       description: "코드 id",
       in: 'path',
       type: 'string',
-      example: 'userLevel'
+      example: 'membershipClass'
     }
 
     #swagger.requestBody = {
@@ -115,7 +114,7 @@ router.put('/:_id', async function(req, res, next) {
       content: {
         "application/json": {
           examples: {
-            "회원 등급에 VVIP 추가": { $ref: "#/components/examples/updateUserLevelCode" }
+            "회원 등급에 VVIP 추가": { $ref: "#/components/examples/updateMembershipClassCode" }
           }
         }
       }
@@ -125,7 +124,7 @@ router.put('/:_id', async function(req, res, next) {
       content: {
         "application/json": {
           examples: {
-            "회원 등급에 VVIP 추가": { $ref: "#/components/examples/updateUserLevelCodeRes" }
+            "회원 등급에 VVIP 추가": { $ref: "#/components/examples/updateMembershipClassCodeRes" }
           }
         }
       }
@@ -159,7 +158,7 @@ router.put('/:_id', async function(req, res, next) {
     const codeModel = req.model.code;
     const result = await codeModel.update(req.params._id, req.body);
     if(result){
-      const clientId = req.headers['client-id'];
+      const clientId = req.clientId;
       const db = getDB(clientId);
       await codeUtil.initCode(clientId, db);
       res.json({ok: 1, updated: result});  
@@ -176,7 +175,7 @@ router.delete('/:_id', async function(req, res, next) {
   /*
     #swagger.tags = ['코드 관리']
     #swagger.summary  = '코드 삭제'
-    #swagger.description = '코드를 삭제한다.'
+    #swagger.description = '코드를 삭제합니다.'
 
     #swagger.security = [{
       "Access Token": []
@@ -186,7 +185,7 @@ router.delete('/:_id', async function(req, res, next) {
       description: "코드 id",
       in: 'path',
       type: 'string',
-      example: 'userLevel'
+      example: 'membershipClass'
     }
 
     #swagger.responses[200] = {
@@ -226,7 +225,7 @@ router.delete('/:_id', async function(req, res, next) {
     const codeModel = req.model.code;
     const result = await codeModel.delete(req.params._id);
     if(result.deletedCount){
-      const clientId = req.headers['client-id'];
+      const clientId = req.clientId;
       const db = getDB(clientId);
       await codeUtil.initCode(clientId, db);
       res.json({ok: 1});

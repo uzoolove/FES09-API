@@ -4,7 +4,17 @@ const doc = {
   info: {
     version: '1.0.0',
     title: '오픈마켓 API',
-    description: '오픈마켓 API Server입니다.<br><a href="/">버전별 변경사항 확인</a><br><br><h2>공통 사항</h2><details><summary>검색</summary>자세한 내용</details><details><summary>페이지네이션</summary>자세한 내용</details><details><summary>정렬</summary>자세한 내용</details><details><summary>dryRun</summary>자세한 내용</details><details><summary>주문 상태</summary>자세한 내용</details>'
+    description: `오픈마켓 API Server입니다.<br>
+      <a href="/">버전별 변경사항 확인</a><br><br>
+      <h2>공통 사항</h2>
+      <details><summary>검색</summary>자세한 내용</details>
+      <details><summary>페이지네이션</summary>자세한 내용</details>
+      <details><summary>정렬</summary>자세한 내용</details>
+      <details><summary>dryRun</summary>자세한 내용</details>
+      <details><summary>custom 파라미터</summary>자세한 내용</details>
+      <details><summary>주문 상태</summary>자세한 내용</details>
+      <details><summary>공통 에러 메세지</summary>자세한 내용</details>
+    `
   },
   servers: [
     {
@@ -186,6 +196,10 @@ const doc = {
       error403: {
         "ok": 0,
         "message": "아이디와 패스워드를 확인하시기 바랍니다."
+      },
+      errorClientId403: {
+        "ok": 0,
+        "message": "등록되지 않은 client-id 입니다."
       },
       error404: {
         "ok": 0,
@@ -1094,7 +1108,7 @@ const doc = {
         "type": "community",
         "title": "여행 후기 입니다.",
         "content": "주말에 다녀온 여행지 입니다. 날씨가 맑아서 좋았어요.",
-        "image": "/files/00-sample/sample-bugatti.png"
+        "image": "sample-bugatti.png"
       },
 
       postCreateRes: {
@@ -1103,7 +1117,7 @@ const doc = {
           "type": "community",
           "title": "여행 후기 입니다.",
           "content": "주말에 다녀온 여행지 입니다. 날씨가 맑아서 좋았어요.",
-          "image": "/files/00-sample/sample-bugatti.png",
+          "image": "sample-bugatti.png",
           "views": 0,
           "user": {
             "_id": 4,
@@ -1115,9 +1129,90 @@ const doc = {
         }
       },
 
-      postListBody: {},
+      postListRes: {
+        "ok": 1,
+        "item": [
+          {
+            "_id": 1,
+            "type": "qna",
+            "product_id": 1,
+            "seller_id": 2,
+            "user": {
+              "_id": 4,
+              "name": "데이지"
+            },
+            "title": "크기가 얼만만한가요?",
+            "content": "아이가 6살인데 가지고 놀기 적당한 크기인가요?",
+            "createdAt": "2024.04.08 21:08:10",
+            "updatedAt": "2024.04.08 21:08:10",
+            "product": {
+              "name": "캥거루 스턴트 독 로봇완구",
+              "image": {
+                "url": "/files/sample-dog.jpg",
+                "fileName": "sample-dog.jpg",
+                "orgName": "스턴트 독.jpg"
+              }
+            },
+            "repliesCount": 3
+          }
+        ],
+        "pagination": {
+          "page": 1,
+          "limit": 0,
+          "total": 3,
+          "totalPages": 1
+        }
+      },
 
-      postListRes: {},
+      postDetailRes: {
+        "ok": 1,
+        "item": {
+          "_id": 1,
+          "type": "qna",
+          "product_id": 1,
+          "seller_id": 2,
+          "user": {
+            "_id": 4,
+            "name": "데이지"
+          },
+          "title": "크기가 얼만만한가요?",
+          "content": "아이가 6살인데 가지고 놀기 적당한 크기인가요?",
+          "replies": [
+            {
+              "_id": 1,
+              "user": {
+                "_id": 2,
+                "name": "네오"
+              },
+              "content": "크기는 상품 상세정보에 나와 있습니다.",
+              "createdAt": "2024.04.09 03:08:10",
+              "updatedAt": "2024.04.09 21:08:10"
+            },
+            {
+              "_id": 2,
+              "user": {
+                "_id": 4,
+                "name": "데이지"
+              },
+              "content": "어디있나 모르겠어요.",
+              "createdAt": "2024.04.09 13:08:10",
+              "updatedAt": "2024.04.09 22:08:10"
+            },
+            {
+              "_id": 3,
+              "user": {
+                "_id": 2,
+                "name": "네오"
+              },
+              "content": "높이 60cm 입니다.",
+              "createdAt": "2024.04.09 14:08:10",
+              "updatedAt": "2024.04.10 03:08:10"
+            }
+          ],
+          "createdAt": "2024.04.08 21:08:10",
+          "updatedAt": "2024.04.08 21:08:10"
+        }
+      },
 
       userListRes: {
         "ok": 1,
@@ -1199,14 +1294,15 @@ const doc = {
               }
             ]
           },
-          "userLevel": {
-            "_id": "userLevel",
+          "membershipClass": {
+            "_id": "membershipClass",
             "title": "회원 등급",
             "codes": [
               {
                 "sort": 1,
-                "code": "UL01",
-                "value": "일반"
+                "code": "MC01",
+                "value": "일반",
+                "discountRate": 0
               }
             ]
           }
@@ -1216,42 +1312,16 @@ const doc = {
       codeDetailRes: {
         "ok": 1,
         "item": {
-          "productCategory": {
-            "_id": "productCategory",
-            "title": "상품 카테고리",
+          "membershipClass": {
+            "_id": "membershipClass",
+            "title": "회원 등급",
             "codes": [
               {
-                "sort": 2,
-                "code": "PC01",
-                "value": "어린이",
-                "depth": 1,
-              }
-            ],
-            "nestedCodes": [
-              {
-                "sort": 2,
-                "code": "PC01",
-                "value": "어린이",
-                "depth": 1,
-                "sub": [
-                  {
-                    "sort": 1,
-                    "code": "PC0102",
-                    "value": "보드게임",
-                    "parent": "PC01",
-                    "depth": 2,
-                    "sub": [
-                      {
-                        "sort": 1,
-                        "code": "PC010202",
-                        "value": "3~4인용",
-                        "parent": "PC0102",
-                        "depth": 3
-                      }
-                    ]
-                  }
-                ]
-              }
+                "sort": 1,
+                "code": "MC01",
+                "value": "일반",
+                "discountRate": 0
+              },
             ]
           }
         }
@@ -1268,73 +1338,81 @@ const doc = {
         "ok": 0,
         "message": "파일은 한번에 10개 까지만 업로드가 가능합니다."
       },
-      createUserLevelCode: {
-        "_id": "userLevel",
+      createSellerConfirmBody: {
+        "_id": "joinState",
+        "title": "판매 회원 승인 코드",
+        "codes": [
+          {
+            "sort": 2,
+            "code": "JS01",
+            "value": "보류"
+          }, {
+            "sort": 3,
+            "code": "JS02",
+            "value": "거부"
+          }, {
+            "sort": 1,
+            "code": "JS03",
+            "value": "승인"
+          }
+        ]
+     },
+      updateMembershipClassCode: {
         "title": "회원 등급",
         "codes": [
           {
             "sort": 1,
-            "code": "UL01",
-            "value": "일반"
+            "code": "MC01",
+            "value": "일반",
+            "discountRate": 0
           }, {
             "sort": 2,
-            "code": "UL02",
-            "value": "프리미엄"
+            "code": "MC02",
+            "value": "프리미엄",
+            "discountRate": 10
           }, {
             "sort": 3,
-            "code": "UL03",
-            "value": "VIP"
+            "code": "MC03",
+            "value": "VIP",
+            "discountRate": 20
+          }, {
+            "sort": 4,
+            "code": "MC04",
+            "value": "VVIP",
+            "discountRate": 30
           }
         ]
       },
-      updateUserLevelCode: {
+      updateMembershipClassCodeRes: {
+        "_id": "membershipClass",
         "title": "회원 등급",
         "codes": [
           {
             "sort": 1,
-            "code": "UL01",
-            "value": "일반"
+            "code": "MC01",
+            "value": "일반",
+            "discountRate": 0
           }, {
             "sort": 2,
-            "code": "UL02",
-            "value": "프리미엄"
+            "code": "MC02",
+            "value": "프리미엄",
+            "discountRate": 10
           }, {
             "sort": 3,
-            "code": "UL03",
-            "value": "VIP"
+            "code": "MC03",
+            "value": "VIP",
+            "discountRate": 20
           }, {
             "sort": 4,
-            "code": "UL04",
-            "value": "VVIP"
-          }
-        ]
-      },
-      updateUserLevelCodeRes: {
-        "_id": "userLevel",
-        "title": "회원 등급",
-        "codes": [
-          {
-            "sort": 1,
-            "code": "UL01",
-            "value": "일반"
-          }, {
-            "sort": 2,
-            "code": "UL02",
-            "value": "프리미엄"
-          }, {
-            "sort": 3,
-            "code": "UL03",
-            "value": "VIP"
-          }, {
-            "sort": 4,
-            "code": "UL04",
-            "value": "VVIP"
+            "code": "MC04",
+            "value": "VVIP",
+            "discountRate": 30
           }
         ]
       },
       createCategoryCode: {
         "_id": "productCategory",
-        "title": "상품 카테고리",
+        "title": "상품 카테고리 코드",
         "codes": [
           {
             "sort": 1,
@@ -1431,23 +1509,23 @@ const doc = {
       createCodeRes: {
         "ok": 1,
         "item": {
-          "_id": "userLevel",
-          "title": "회원 등급",
+          "_id": "joinState",
+          "title": "판매 회원 승인 코드",
           "codes": [
             {
-              "sort": 1,
-              "code": "UL01",
-              "value": "일반"
-            },
-            {
               "sort": 2,
-              "code": "UL02",
-              "value": "프리미엄"
+              "code": "JS01",
+              "value": "보류"
             },
             {
               "sort": 3,
-              "code": "UL03",
-              "value": "VIP"
+              "code": "JS02",
+              "value": "거부"
+            },
+            {
+              "sort": 1,
+              "code": "JS03",
+              "value": "승인"
             }
           ]
         }
@@ -1792,6 +1870,49 @@ const doc = {
         "product_id": 1,
         "title": "배송은 얼마나 걸려요?",
         "content": "주말에 여행가기 전까지 오면 좋겠네요."
+      },
+
+      updatePostBody: {
+        "title": "크기가 얼마나 큰가요?",
+        "content": "6세 아이가 가지고 놀 수 있을 정도로 컸으면 좋겠네요.",
+        "extra": {
+          "image": "sample-hulk.png"
+        }
+      },
+
+      updatePostRes: {
+        "ok": 1,
+        "updated": {
+          "_id": 1,
+          "title": "크기가 얼마나 큰가요?",
+          "content": "6세 아이가 가지고 놀 수 있을 정도로 컸으면 좋겠네요.",
+          "extra": {
+            "image": "sample-hulk.png"
+          },
+          "updatedAt": "2024.04.12 09:28:41"
+        }
+      },
+
+      listReplyRes: {
+        "ok": 1,
+        "item": [
+          {
+            "_id": 3,
+            "user": {
+              "_id": 2,
+              "name": "네오"
+            },
+            "content": "높이 60cm 입니다.",
+            "createdAt": "2024.04.09 14:08:10",
+            "updatedAt": "2024.04.10 03:08:10"
+          }
+        ],
+        "pagination": {
+          "page": 2,
+          "limit": 2,
+          "total": 3,
+          "totalPages": 2
+        }
       },
 
     }

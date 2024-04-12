@@ -34,7 +34,7 @@ router.get('/', async function(req, res, next) {
   */
 
   try{
-    const clientId = req.headers['client-id'];
+    const clientId = req.clientId;
     const item = {
       nested: codeUtil.getCodeObj(clientId),
       flatten: codeUtil.getCodeFlatten(clientId)
@@ -56,7 +56,7 @@ router.get('/:_id', async function(req, res, next) {
       description: "코드 id",
       in: 'path',
       type: 'string',
-      example: 'userLevel'
+      example: 'membershipClass'
     }
 
     #swagger.responses[200] = {
