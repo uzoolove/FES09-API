@@ -8,7 +8,7 @@ router.get('/refresh', async (req, res, next) => {
   /*
     #swagger.tags = ['인증']
     #swagger.summary  = 'Access 토큰 재발행'
-    #swagger.description = 'Authorization 헤더에 Bearer 방식의 Refresh Token을 보내서 Access Token을 재발급 한다.'
+    #swagger.description = 'Authorization 헤더에 Bearer 방식의 Refresh Token을 보내서 Access Token을 재발급 합니다.'
 
     #swagger.security = [{
       "Refresh Token": []

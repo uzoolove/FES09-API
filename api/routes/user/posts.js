@@ -8,7 +8,7 @@ import validator from '#middlewares/validator.js';
 
 const router = express.Router();
 
-// 게시물 등록
+// 게시글 등록
 router.post('/', jwtAuth.auth('user'), [
   body('title').optional().trim().isLength({ min: 2 }).withMessage('제목은 2글자 이상 입력해야 합니다.'),
   body('content').optional().trim().isLength({ min: 2 }).withMessage('내용은 2글자 이상 입력해야 합니다.'),
@@ -16,15 +16,15 @@ router.post('/', jwtAuth.auth('user'), [
 
   /*
     #swagger.tags = ['게시판']
-    #swagger.summary  = '게시물 등록'
-    #swagger.description = '게시물을 등록한다.'
+    #swagger.summary  = '게시글 등록'
+    #swagger.description = '게시글을 등록한다.'
     
     #swagger.security = [{
       "Access Token": []
     }]
 
     #swagger.requestBody = {
-      description: "게시물 정보가 저장된 객체입니다.<br>모든 속성은 선택사항이고 필요에 맞게 아무 속성이나 추가하면 됩니다.<br>title, content는 게시물 키워드 검색에 사용되는 속성입니다.<br>type: 게시판 종류(선택, 생략시 post). 게시판을 구분할 수 있는 이름<br>product_id: 상품 id(선택). 상품과 관련된 게시물일 경우 필요<br>title: 제목(선택)<br>content: 내용(선택)",
+      description: "게시글 정보가 저장된 객체입니다.<br>모든 속성은 선택사항이고 필요에 맞게 아무 속성이나 추가하면 됩니다.<br>title, content는 게시글 키워드 검색에 사용되는 속성입니다.<br>type: 게시판 종류(선택, 생략시 post). 게시판을 구분할 수 있는 이름<br>product_id: 상품 id(선택). 상품과 관련된 게시글일 경우 필요<br>title: 제목(선택)<br>content: 내용(선택)",
       required: true,
       content: {
         "application/json": {
@@ -81,7 +81,7 @@ router.post('/', jwtAuth.auth('user'), [
   }
 });
 
-// 게시물 목록 조회
+// 게시글 목록 조회
 router.get('/', [
   query('custom').optional().isJSON().withMessage('custom 값은 JSON 형식의 문자열이어야 합니다.'),
   query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.')
@@ -89,8 +89,8 @@ router.get('/', [
 
   /*
     #swagger.tags = ['게시판']
-    #swagger.summary  = '전체 게시물 목록'
-    #swagger.description = '전체 게시물 목록을 조회합니다.<br>지원되는 검색 조건 이외의 속성으로 검색할 경우 custom 파라미터를 이용하면 됩니다.'
+    #swagger.summary  = '전체 게시글 목록'
+    #swagger.description = '전체 게시글 목록을 조회합니다.<br>지원되는 검색 조건 이외의 속성으로 검색할 경우 custom 파라미터를 이용하면 됩니다.'
     
     #swagger.parameters['type'] = {
       description: "게시판 종류",
@@ -181,69 +181,203 @@ router.get('/', [
   }
 });
 
-// 사용자의 게시물 목록 조회
-router.get('/users/:_id', jwtAuth.auth('user'), async function(req, res, next) {
+// 사용자가 작성한 게시글 목록 조회
+router.get('/users/:_id', [
+  query('custom').optional().isJSON().withMessage('custom 값은 JSON 형식의 문자열이어야 합니다.'),
+  query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.')
+], validator.checkResult, async function(req, res, next) {
 
   /*
     #swagger.tags = ['게시판']
-    #swagger.summary  = '사용자 게시물 목록'
-    #swagger.description = '사용자가 작성한 게시물 목록을 조회한다.'
+    #swagger.summary  = '사용자가 작성한 게시글 목록'
+    #swagger.description = '사용자가 작성한 게시글 목록을 조회합니다.'
     
-    #swagger.security = [{
-      "Access Token": []
-    }]
-    
+    #swagger.parameters['_id'] = {
+      description: "사용자 id",
+      in: 'path',
+      type: 'number',
+      example: 4
+    }    
+    #swagger.parameters['type'] = {
+      description: "게시판 종류",
+      in: 'query',
+      type: 'string',
+      default: 'post',
+      example: 'qna'
+    }
+    #swagger.parameters['keyword'] = {
+      description: "검색어<br>제목과 내용 검색에 사용되는 키워드",
+      in: 'query',
+      type: 'string',
+      example: '배송'
+    }
+    #swagger.parameters['custom'] = {
+      description: "custom 검색 조건",
+      in: 'query',
+      type: 'string',
+      example: '{\"createdAt\": {\"$gte\": \"2024.04\", \"$lt\": \"2024.05\"}}'
+    }
+    #swagger.parameters['page'] = {
+      description: "페이지",
+      in: 'query',
+      type: 'number',
+      example: 2
+    }
+    #swagger.parameters['limit'] = {
+      description: "한 페이지당 항목 수",
+      in: 'query',
+      type: 'number',
+      example: 10
+    }
+    #swagger.parameters['sort'] = {
+      description: "정렬(내림차순: -1, 오름차순: 1)",
+      in: 'query',
+      type: 'string',
+      example: '{\"createdAt\": 1}',
+      default: '{\"createdAt\": -1}'
+    }
+
+    #swagger.responses[200] = {
+      description: '성공',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/postListRes" }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
   */
 
   try{
     const postModel = req.model.post;
     const _id = Number(req.params._id);
-    if(req.user.type === 'admin' || _id === req.user._id){
-      const search = { 'user._id': req.user._id };
-      const keyword = req.query.keyword;
 
-      if(keyword){
-        const regex = new RegExp(keyword, 'i');
-        search['$or'] = [{ title: regex }, { content: regex }];
-      }
+    let search = { 'user._id': _id };
+    const keyword = req.query.keyword;
+    const custom = req.query.custom;
 
-      // 정렬 옵션
-      let sortBy = JSON.parse(req.query.sort || '{}');
-      // 기본 정렬 옵션은 등록일의 내림차순
-      sortBy['createdAt'] = sortBy['createdAt'] || -1; // 내림차순
-
-      const item = await postModel.find({ type: req.query.type, search, sortBy });
-      res.json({ ok: 1, item });
-    }else{
-      next();
+    if(keyword){
+      const regex = new RegExp(keyword, 'i');
+      search['$or'] = [{ title: regex }, { content: regex }];
     }
+
+    if(custom){
+      search = { ...search, ...JSON.parse(custom) };
+    }
+
+    // 정렬 옵션
+    let sortBy = JSON.parse(req.query.sort || '{}');
+    // 기본 정렬 옵션은 등록일의 내림차순
+    sortBy['createdAt'] = sortBy['createdAt'] || -1; // 내림차순
+
+    const item = await postModel.find({ type: req.query.type, search, sortBy });
+    res.json({ ok: 1, item });
+
   }catch(err){
     next(err);
   }
 });
 
-// 판매자의 상품들에 등록된 게시물 목록 조회
-router.get('/seller/:_id', jwtAuth.auth('user'), async function(req, res, next) {
+// 판매자의 상품에 등록된 게시글 목록 조회
+router.get('/seller/:_id', [
+  query('custom').optional().isJSON().withMessage('custom 값은 JSON 형식의 문자열이어야 합니다.'),
+  query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.')
+], validator.checkResult, async function(req, res, next) {
 
   /*
     #swagger.tags = ['게시판']
-    #swagger.summary  = '판매자 게시물 목록'
-    #swagger.description = '판매자의 상품에 등록된 게시물 목록을 조회한다.'
+    #swagger.summary  = '판매자의 상품에 등록된 게시글 목록'
+    #swagger.description = '판매자의 상품에 등록된 게시글 목록을 조회합니다.'
     
-    #swagger.security = [{
-      "Access Token": []
-    }]
-    
+    #swagger.parameters['_id'] = {
+      description: "판매자 id",
+      in: 'path',
+      type: 'number',
+      example: 2
+    }
+    #swagger.parameters['product_id'] = {
+      description: "상품 id",
+      in: 'path',
+      type: 'number',
+      example: 1
+    }
+    #swagger.parameters['type'] = {
+      description: "게시판 종류",
+      in: 'query',
+      type: 'string',
+      default: 'post',
+      example: 'qna'
+    }
+    #swagger.parameters['keyword'] = {
+      description: "검색어<br>제목과 내용 검색에 사용되는 키워드",
+      in: 'query',
+      type: 'string',
+      example: '배송'
+    }
+    #swagger.parameters['custom'] = {
+      description: "custom 검색 조건",
+      in: 'query',
+      type: 'string',
+      example: '{\"createdAt\": {\"$gte\": \"2024.04\", \"$lt\": \"2024.05\"}}'
+    }
+    #swagger.parameters['page'] = {
+      description: "페이지",
+      in: 'query',
+      type: 'number',
+      example: 2
+    }
+    #swagger.parameters['limit'] = {
+      description: "한 페이지당 항목 수",
+      in: 'query',
+      type: 'number',
+      example: 10
+    }
+    #swagger.parameters['sort'] = {
+      description: "정렬(내림차순: -1, 오름차순: 1)",
+      in: 'query',
+      type: 'string',
+      example: '{\"createdAt\": 1}',
+      default: '{\"createdAt\": -1}'
+    }
+
+    #swagger.responses[200] = {
+      description: '성공',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/postListRes" }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
   */
 
   try{
     const postModel = req.model.post;
     const sellerId = Number(req.params._id);
+    const productId = Number(req.query.product_id);
     // if(req.user.type === 'seller' && sellerId === req.user._id){
 
       let search = { seller_id: sellerId };
       const keyword = req.query.keyword;
       const custom = req.query.custom;
+
+      if(productId){
+        search.product_id = productId;
+      }
 
       if(keyword){
         const regex = new RegExp(keyword, 'i');
@@ -269,19 +403,50 @@ router.get('/seller/:_id', jwtAuth.auth('user'), async function(req, res, next) 
   }
 });
 
-// 게시물 상세 조회
+// 게시글 상세 조회
 router.get('/:_id', async function(req, res, next) {
 
   /*
     #swagger.tags = ['게시판']
-    #swagger.summary  = '게시물 상세'
-    #swagger.description = '게시물을 상세 조회한다.'
+    #swagger.summary  = '게시글 상세'
+    #swagger.description = '게시글을 상세 조회합니다.'
     
+    #swagger.parameters['_id'] = {
+      description: "게시글 id",
+      in: 'path',
+      type: 'number',
+      example: 1
+    }
+
+    #swagger.responses[200] = {
+      description: '성공',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/postDetailRes" }
+        }
+      }
+    }
+    #swagger.responses[404] = {
+      description: '리소스가 존재하지 않음',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error404" }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
   */
 
   try{
     const postModel = req.model.post;
-    const item = await postModel.findById(Number(req.params._id), Boolean(req.query.incrementView));
+    const item = await postModel.findById(Number(req.params._id));
     if(item){
       res.json({ ok: 1, item });
     }else{
@@ -292,18 +457,70 @@ router.get('/:_id', async function(req, res, next) {
   }
 });
 
-// 게시물 수정
+// 게시글 수정
 router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
 
   /*
     #swagger.tags = ['게시판']
-    #swagger.summary  = '게시물 수정'
-    #swagger.description = '게시물을 수정한다.'
+    #swagger.summary  = '게시글 수정'
+    #swagger.description = '게시글을 수정한다.'
     
     #swagger.security = [{
       "Access Token": []
     }]
     
+    #swagger.parameters['_id'] = {
+      description: "게시글 id",
+      in: 'path',
+      type: 'number',
+      example: 1
+    }
+
+    #swagger.requestBody = {
+      description: "수정할 게시글 정보",
+      required: true,
+      content: {
+        "application/json": {
+          examples: {
+            "샘플": { $ref: "#/components/examples/updatePostBody" },
+          }
+        }
+      }
+    }
+    #swagger.responses[200] = {
+      description: '성공',
+      content: {
+        "application/json": {
+          examples: {
+            "샘플": { $ref: "#/components/examples/updatePostRes" },
+          }
+        }
+      }
+    },
+    #swagger.responses[401] = {
+      description: '인증 실패',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error401" }
+        }
+      }
+    },
+    #swagger.responses[404] = {
+      description: '게시글이 존재하지 않거나 접근 권한이 없음',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error404" }
+        }
+      }
+    },
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
   */
 
   try{
@@ -321,17 +538,59 @@ router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
   }
 });
 
-// 게시물 삭제
+// 게시글 삭제
 router.delete('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
 
   /*
     #swagger.tags = ['게시판']
-    #swagger.summary  = '게시물 삭제'
-    #swagger.description = '게시물을 삭제한다.'
+    #swagger.summary  = '게시글 삭제'
+    #swagger.description = '게시글을 삭제합니다.'
     
     #swagger.security = [{
       "Access Token": []
     }]
+
+    #swagger.parameters['_id'] = {
+      description: '게시글 id',
+      in: 'path',
+      required: true,
+      type: 'number',
+      example: '2'
+    }
+
+    #swagger.responses[200] = {
+      description: '성공',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/simpleOK" }
+          }
+        }
+      }
+    }
+    #swagger.responses[401] = {
+      description: '인증 실패',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error401" }
+        }
+      }
+    }
+    #swagger.responses[404] = {
+      description: '게시글이 존재하지 않거나 접근 권한이 없음',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/error404" }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
     
   */
 
@@ -356,16 +615,62 @@ router.get('/:_id/replies', async function(req, res, next) {
   /*
     #swagger.tags = ['게시판']
     #swagger.summary  = '댓글 목록'
-    #swagger.description = '지정한 게시물의 댓글 목록을 조회한다.'
+    #swagger.description = '지정한 게시글의 댓글 목록을 조회합니다.'
     
+    #swagger.parameters['_id'] = {
+      description: '게시글 id',
+      in: 'path',
+      required: true,
+      type: 'number',
+      example: 1
+    }
+
+    #swagger.parameters['page'] = {
+      description: "페이지",
+      in: 'query',
+      type: 'number',
+      example: 2
+    }
+    #swagger.parameters['limit'] = {
+      description: "한 페이지당 항목 수",
+      in: 'query',
+      type: 'number',
+      example: 10
+    }
+    #swagger.parameters['sort'] = {
+      description: "정렬(내림차순: -1, 오름차순: 1)",
+      in: 'query',
+      type: 'string',
+      example: '{\"createdAt\": 1}',
+      default: '{\"createdAt\": -1}'
+    }
+
+    #swagger.responses[200] = {
+      description: '성공',
+      content: {
+        "application/json": {
+          examples: {
+            "샘플": { $ref: "#/components/examples/listReplyRes" }
+          }
+        }
+      }
+    }
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
   */
 
   try{
     const postModel = req.model.post;
     // 정렬 옵션
     let sortBy = JSON.parse(req.query.sort || '{}');
-    // // 기본 정렬 옵션은 등록일의 올림차순
-    sortBy['createdAt'] = sortBy['createdAt'] || 1; // 올림차순
+    // // 기본 정렬 옵션은 등록일의 오름차순
+    sortBy['createdAt'] = sortBy['createdAt'] || 1; // 오름차순
 
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
@@ -384,7 +689,7 @@ router.post('/:_id/replies', jwtAuth.auth('user'), async function(req, res, next
   /*
     #swagger.tags = ['게시판']
     #swagger.summary  = '댓글 등록'
-    #swagger.description = '게시물에 댓글을 등록한다.'
+    #swagger.description = '게시글에 댓글을 등록한다.'
     
     #swagger.security = [{
       "Access Token": []
@@ -421,7 +726,7 @@ router.patch('/:_id/replies/:reply_id', jwtAuth.auth('user'), async (req, res, n
   /*
     #swagger.tags = ['게시판']
     #swagger.summary  = '댓글 수정'
-    #swagger.description = '게시물의 댓글을 수정한다.'
+    #swagger.description = '게시글의 댓글을 수정한다.'
     
     #swagger.security = [{
       "Access Token": []
@@ -452,7 +757,7 @@ router.delete('/:_id/replies/:reply_id', jwtAuth.auth('user'), async (req, res, 
   /*
     #swagger.tags = ['게시판']
     #swagger.summary  = '댓글 삭제'
-    #swagger.description = '게시물의 댓글을 삭제한다.'
+    #swagger.description = '게시글의 댓글을 삭제한다.'
     
     #swagger.security = [{
       "Access Token": []
