@@ -413,15 +413,15 @@ router.get('/:_id/*', jwtAuth.auth('user'), async function(req, res, next) {
 
   try{
     const userModel = req.model.user;
-    if(req.user.type === 'admin' || req.params._id == req.user._id){
+    // if(req.user.type === 'admin' || req.params._id == req.user._id){
       logger.trace(req.params);
       const attr = req.params[0].replaceAll('/', '.');
       logger.log(attr);
       const item = await userModel.findAttrById(Number(req.params._id), attr);
       res.json({ok: 1, item});
-    }else{
-      next(); // 404
-    }
+    // }else{
+    //   next(); // 404
+    // }
   }catch(err){
     next(err);
   }
@@ -484,7 +484,7 @@ router.get('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
 
   try{
     const userModel = req.model.user;
-    if(req.user.type === 'admin' || req.params._id == req.user._id){
+    // if(req.user.type === 'admin' || req.params._id == req.user._id){
       const result = await userModel.findById(Number(req.params._id));
       
       if(result){
@@ -493,9 +493,9 @@ router.get('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
       }else{
         next();
       }      
-    }else{
-      next(); // 404
-    }
+    // }else{
+    //   next(); // 404
+    // }
   }catch(err){
     next(err);
   }
