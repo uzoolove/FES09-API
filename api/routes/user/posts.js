@@ -610,7 +610,10 @@ router.delete('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
 });
 
 // 댓글 목록 조회
-router.get('/:_id/replies', async function(req, res, next) {
+router.get('/:_id/replies', [
+  query('custom').optional().isJSON().withMessage('custom 값은 JSON 형식의 문자열이어야 합니다.'),
+  query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.')
+], validator.checkResult, async function(req, res, next) {
 
   /*
     #swagger.tags = ['게시판']
@@ -667,10 +670,14 @@ router.get('/:_id/replies', async function(req, res, next) {
 
   try{
     const postModel = req.model.post;
+    let sortBy;
     // 정렬 옵션
-    let sortBy = JSON.parse(req.query.sort || '{}');
-    // // 기본 정렬 옵션은 등록일의 오름차순
-    sortBy['createdAt'] = sortBy['createdAt'] || 1; // 오름차순
+    if(req.query.sort){
+      sortBy = JSON.parse(req.query.sort);
+    }else{
+      // 기본 정렬 옵션은 등록일의 오름차순
+      sortBy['createdAt'] = 1;
+    }
 
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);

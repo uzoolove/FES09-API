@@ -143,11 +143,18 @@ class PostModel{
     const post = await this.findById(_id, true);
 
     let list = post.replies || [];
-    const skip = (page-1) * limit;
-
     const totalCount = list.length;
 
-    list.sort((a, b) => a._id - b._id);
+    const sortKeys = [];
+    const orders = [];
+    for(const key in sortBy){
+      sortKeys.push(key);
+      orders.push(sortBy[key] === 1 ? 'asc' : 'desc');
+    }
+
+    list = _.orderBy(list, sortKeys, orders);
+
+    const skip = (page-1) * limit;
     if(limit > 0){
       list = list.splice(skip, limit);
     }else{
@@ -210,6 +217,6 @@ class PostModel{
     logger.debug(result);
     return result;
   }
-};
+}
 
 export default PostModel;
