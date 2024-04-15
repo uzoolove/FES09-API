@@ -1,5 +1,9 @@
+import qs from 'node:querystring';
+import axios from 'axios';
+
 import express from 'express';
 import { query, body } from 'express-validator';
+
 
 import logger from '#utils/logger.js';
 import validator from '#middlewares/validator.js';
@@ -139,7 +143,9 @@ router.post('/login', [
   /*
     #swagger.tags = ['회원']
     #swagger.summary  = '로그인'
-    #swagger.description = '이메일과 비밀번호를 입력해 로그인을 한다.<br>응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환한다.<br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야 한다.'
+    #swagger.description = `이메일과 비밀번호를 입력해 로그인을 합니다.<br>
+    응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환합니다.<br>
+    이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야 합니다.`
 
     #swagger.requestBody = {
       description: "로그인 정보",
@@ -155,7 +161,10 @@ router.post('/login', [
       description: '로그인 성공',
       content: {
         "application/json": {
-          schema: { $ref: "#/components/schemas/loginRes" }
+          examples: {
+            "이메일 로그인": { $ref: "#/components/examples/loginRes" },
+            "카카오 로그인": { $ref: "#/components/examples/loginKakaoRes" }
+          }
         }
       }
     }
@@ -198,19 +207,27 @@ router.post('/login', [
   }
 });
 
-// 로그인
-router.get('/login/kakao', async function(req, res, next) {
+// 카카오 로그인
+let authcodeList = {};
+router.post('/login/kakao', async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
-    #swagger.summary  = '로그인'
-    #swagger.description = '이메일과 비밀번호를 입력해 로그인을 한다.<br>응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환한다.<br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야 한다.'
+    #swagger.summary  = '카카오 로그인'
+    #swagger.description = `
+      <a href="https://developers.kakao.com/docs/latest/ko/kakaologin/common" target="_blank">카카오 개발 문서 참고</a><br>
+      카카오 로그인 후 받은 인증 코드를 전달하면 카카오 회원 정보를 확인해서 자동으로 회원가입 하거나 로그인 처리를 합니다.<br>      
+      응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환합니다.<br>
+      추가로 kakaoToken 속성으로 카카오 로그인 API에서 받은 토큰을 반환합니다.<br>
+      <br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야합니다.`
 
     #swagger.requestBody = {
-      description: "로그인 정보",
+      description: `로그인 정보<br>
+        code 속성에는 카카오 로그인 후에 받은 인증 코드를 지정합니다.<br>
+        user 속성에는 카카오에서 제공하는 사용자 정보 이외에 회원 가입시 추가할 사용자 정보를 객체로 지정합니다.`,
       required: true,
       content: {
         "application/json": {
-          schema: { $ref: '#components/schemas/login' },
+          schema: { $ref: '#components/schemas/kakaoLogin' },
         }
       }
     }
@@ -219,23 +236,10 @@ router.get('/login/kakao', async function(req, res, next) {
       description: '로그인 성공',
       content: {
         "application/json": {
-          schema: { $ref: "#/components/schemas/loginRes" }
-        }
-      }
-    }
-    #swagger.responses[403] = {
-      description: '로그인 실패',
-      content: {
-        "application/json": {
-          schema: { $ref: "#/components/schemas/error403" }
-        }
-      }
-    }
-    #swagger.responses[422] = {
-      description: '입력값 검증 오류',
-      content: {
-        "application/json": {
-          schema: { $ref: '#/components/schemas/error422' }
+          examples: {
+            "이메일 로그인": { $ref: "#/components/examples/loginRes" },
+            "카카오 로그인": { $ref: "#/components/examples/loginKakaoRes" }
+          }
         }
       }
     }
@@ -250,18 +254,94 @@ router.get('/login/kakao', async function(req, res, next) {
   */
 
   try{
+    logger.info(req.body);
+    const authcode = req.body.code;
+    const userData = req.body.user; // 카카오 회원정보 이외에 추가로 받은 회원 정보
 
-    logger.trace(req.query.code);
+    logger.error(userData)
+
+    // 3초 안에 동일한 authcode로 인증 요청시(리액트의 Strict 모드로 구동시 개발환경에서 두번 요청할 때 회원가입 두번 되는 문제 방지)
+    if(authcodeList[authcode]){
+      return res.status(200).json({ ok: 1, message: '인증 처리중 입니다.' });
+    }
+    authcodeList[authcode] = true;
+    setTimeout(() => {
+      delete authcodeList[authcode];
+    }, 3000);
+    /////////////////////////
+
+    // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-token
+    var getAccessTokenResponse = await axios.post('https://kauth.kakao.com/oauth/token', qs.stringify({
+      grant_type: 'authorization_code', // 고정 값
+      client_id: process.env.KAKAO_RESTAPI_KEY,
+      redirect_uri: `${process.env.APP_HOST}/users/login/kakao`,
+      code: authcode,
+      client_secret: process.env.KAKAO_CLIENT_SECRET,  // 카카오 내 애플리케이션 > 보안 탭에서 발급함
+    }), {
+      headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
+    });
+    logger.info(getAccessTokenResponse.data);
+
+    const accessToken = getAccessTokenResponse.data.access_token;
+    const refreshToken = getAccessTokenResponse.data.refresh_token;
+    const expiresIn = getAccessTokenResponse.data.expires_in;
+
+    // https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#req-user-info
+    var getUserInfoResponse = await axios.post('https://kapi.kakao.com/v2/user/me', {
+      // property_keys: ['kakao_account.profile'] // 사용자 정보중 지정한 데이터만 응답 데이터로 전달 받을 때 사용
+    }, {
+      headers: {
+        Authorization: 'Bearer ' + accessToken,
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      }
+    });
+
+    const kakaoUserInfo = getUserInfoResponse.data;
+    delete kakaoUserInfo.properties; // deplicated된 속성이라서 불필요
+    // kakaoUserInfo.refreshToken = refreshToken;
+
     const userModel = req.model.user;
-    const user = {
-      _id: 111,
+    let user = await userService.loginKakao(userModel, kakaoUserInfo.id);
+    
+    if(!user){
+      // 가입되지 않은 회원일 경우 자동으로 회원 가입
+      const userInfo = {
+        name: kakaoUserInfo.kakao_account.profile.nickname,
+        profileImage: kakaoUserInfo.kakao_account.profile.thumbnail_image_url,
+        type: 'user',
+        kakao: kakaoUserInfo,
+        ...userData
+      };
+
+      // 회원 가입
+      await userService.signupKakao(userModel, userInfo);
+      // 로그인
+      user = await userService.loginKakao(userModel, kakaoUserInfo.id);
+    }
+
+    user.kakaoToken = {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+      expiresIn: expiresIn,
     };
 
-    res.redirect('http://localhost:5173/users/signup');
+    res.json({
+      ok: 1,
+      item: user
+    });
+
   }catch(err){
-    next(err);
+    delete err.response?.request; // 너무 많은 내용이 있어서 제거함
+    logger.error(err.response || err);
+    
+    if(err.response?.data?.error_code){ // 카카오 API에서 보낸 에러
+      res.status(err.response.status).json({ ok: 0, error: err.response?.data });
+    }else{
+      next(err);
+    }
   }
 });
+
 
 // 회원 조회(단일 속성)
 router.get('/:_id/*', jwtAuth.auth('user'), async function(req, res, next) {

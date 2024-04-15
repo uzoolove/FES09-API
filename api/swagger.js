@@ -121,6 +121,22 @@ const doc = {
         required: ['email', 'password']
       },
 
+      kakaoLogin: {
+        type: 'object',
+        properties: {
+          code: {
+            type: 'string',
+            description: '카카오 로그인 후 받은 인증 코드',
+            example: 'dDWZOcbqOCoTyRMLfDvaAhFuPC-NrQipfytgQ6c4wvyuyt-eKUBuyu1yvYkKPXPsAAABjt8XmL1b9Pmr5eg_ZA'
+          },
+          user: {
+            type: 'object',
+            description: '카카오에서 제공하는 사용자 정보 이외에 추가할 사용자 정보를 객체로 전달',
+          }
+        },
+        required: ['code']
+      },
+
       createUser: {
         type: 'object',
         properties: {
@@ -209,6 +225,10 @@ const doc = {
         "ok": 0,
         "message": "이미 등록된 리소스입니다."
       },
+      errorKakao409: {
+        "ok": 0,
+        "message": "인증 처리중 입니다."
+      },
       error422: {
         "ok": 0,
         "message": "잘못된 입력값이 있습니다.",
@@ -237,23 +257,7 @@ const doc = {
         "ok": 1,
         "duplicate": false
       },
-      loginRes: {
-        "ok": 1,
-        "item": {
-          "_id": 5,
-          "email": "gd@market.com",
-          "name": "GD",
-          "type": "user",
-          "phone": "01011112222",
-          "address": "서울시 강남구 역삼동 123",
-          "createdAt": "2023.11.21 16:25:54",
-          "updatedAt": "2023.11.21 16:25:54",
-          "token": {
-            "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInR5cGUiOiJ1c2VyIiwiaWF0IjoxNzAwNTUxNTcyLCJleHAiOjE3MDA1NTIxNzIsImlzcyI6IkZFU1AwMSJ9.TmYTk4w-iQYjPK172AkSuH7587XZPPoFARTdg-fFGgA",
-            "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDA1NTE1NzIsImV4cCI6MTcwMzE0MzU3MiwiaXNzIjoiRkVTUDAxIn0.FSUXGwl3M5xnKpc_gkzdQfJ1FT_9IzwhO_X0iLHzXcE"
-          }
-        }
-      },
+      
       accessTokenRes: {
         "ok": 1,
         "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInR5cGUiOiJ1c2VyIiwiaWF0IjoxNzAwNTU1NjUzLCJleHAiOjE3MDA1NTYyNTMsImlzcyI6IkZFU1AwMSJ9.tBbQZLmwlg0y5juJ_TTkET1buZ4QFGf8RJ0G_IWIyns"
@@ -1330,6 +1334,60 @@ const doc = {
     },
 
     examples: {
+      loginRes: {
+        "ok": 1,
+        "item": {
+          "_id": 5,
+          "email": "gd@market.com",
+          "name": "GD",
+          "type": "user",
+          "loginType": "email",
+          "phone": "01011112222",
+          "address": "서울시 강남구 역삼동 123",
+          "createdAt": "2023.11.21 16:25:54",
+          "updatedAt": "2023.11.21 16:25:54",
+          "token": {
+            "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInR5cGUiOiJ1c2VyIiwiaWF0IjoxNzAwNTUxNTcyLCJleHAiOjE3MDA1NTIxNzIsImlzcyI6IkZFU1AwMSJ9.TmYTk4w-iQYjPK172AkSuH7587XZPPoFARTdg-fFGgA",
+            "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDA1NTE1NzIsImV4cCI6MTcwMzE0MzU3MiwiaXNzIjoiRkVTUDAxIn0.FSUXGwl3M5xnKpc_gkzdQfJ1FT_9IzwhO_X0iLHzXcE"
+          }
+        }
+      },
+      loginKakaoRes: {
+        "ok": 1,
+        "item": {
+          "_id": 5,
+          "name": "GD",
+          "type": "user",
+          "profileImage": "http://k.kakaocdn.net/dn/p4NUj/btsFiuTSVb6/Q4YkWkx4t1AFkFA3rtq6ZK/img_110x110.jpg",
+          "kakao": {
+              "id": 1234567890,
+              "connected_at": "2024-04-13T15:52:13Z",
+              "kakao_account": {
+                  "profile_nickname_needs_agreement": false,
+                  "profile_image_needs_agreement": false,
+                  "profile": {
+                      "nickname": "GD",
+                      "thumbnail_image_url": "http://k.kakaocdn.net/dn/p4NUj/btsFiuTSVb6/Q4YkWkx4t1AFkFA3rtq6ZK/img_110x110.jpg",
+                      "profile_image_url": "http://k.kakaocdn.net/dn/p4NUj/btsFiuTSVb6/Q4YkWkx4t1AFkFA3rtq6ZK/img_640x640.jpg",
+                      "is_default_image": false,
+                      "is_default_nickname": false
+                  }
+              }
+          },
+          "loginType": "kakao",
+          "createdAt": "2023.11.21 16:25:54",
+          "updatedAt": "2023.11.21 16:25:54",
+          "token": {
+            "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInR5cGUiOiJ1c2VyIiwiaWF0IjoxNzAwNTUxNTcyLCJleHAiOjE3MDA1NTIxNzIsImlzcyI6IkZFU1AwMSJ9.TmYTk4w-iQYjPK172AkSuH7587XZPPoFARTdg-fFGgA",
+            "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDA1NTE1NzIsImV4cCI6MTcwMzE0MzU3MiwiaXNzIjoiRkVTUDAxIn0.FSUXGwl3M5xnKpc_gkzdQfJ1FT_9IzwhO_X0iLHzXcE"
+          },
+          "kakaoToken": {
+            "accessToken": "45ycguq3mpI34hxxXgB6OxZTExUoJIN5DksKPXMXAAABjt7xLkvo6jj-qNQmaA",
+            "refreshToken": "UeS298UOXvpQiBwt0B6yWGlJmystIwK3Um4KPXMXAAABjt7xLkbo6jj-qNQmaA",
+            "expiresIn": 21599
+          }
+        }
+      },
       fileUploadFieldError: {
         "ok": 0,
         "message": "첨부 파일 필드명은 attach로 지정해야 합니다."
