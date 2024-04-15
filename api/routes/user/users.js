@@ -197,7 +197,7 @@ router.post('/login', [
   try{
     const userModel = req.model.user;
     const user = await userService.login(userModel, req.body);
-    if(user.extra?.confirm === false){
+    if(user.type === 'seller' && user.extra?.confirm === false){
       res.status(403).json({ ok: 0, message: '관리자의 승인이 필요합니다.' });
     }else{
       res.json({ ok: 1, item: user });
@@ -552,7 +552,7 @@ router.get('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
 });
 
 
-// 회원 수정
+// 회원 정보 수정
 router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
@@ -626,7 +626,7 @@ router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
     if(req.user.type === 'admin' || _id === req.user._id){
       if(req.user.type !== 'admin'){ // 관리자가 아니라면 회원 타입과 회원 승인 정보는 수정 못함
         delete req.body.type;
-        delete (req.body.extra && req.body.extra.confirm);
+        // delete (req.body.extra && req.body.extra.confirm);
         if(req.body['extra.confirm'] === true){ // 일반 유저가 confirm 처리하지 못하도록
           delete req.body['extra.confirm'];
         }
