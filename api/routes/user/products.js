@@ -82,6 +82,13 @@ router.get('/', [
       example: '{\"price\": -1}'
     }
 
+    #swagger.parameters['showSoldOut'] = {
+      description: "매진 상품 포함 여부",
+      in: 'query',
+      type: 'boolean',
+      example: true
+    }
+
     #swagger.responses[200] = {
       description: '성공',
       content: {
@@ -116,6 +123,7 @@ router.get('/', [
     const seller = Number(req.query.seller_id);
     const keyword = req.query.keyword;
     const custom = req.query.custom;
+    const showSoldOut = req.query.showSoldOut === 'true' ? true : false;
 
     if(minPrice >= 0){
       search.price = search.price || {};
@@ -159,7 +167,7 @@ router.get('/', [
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
   
-    const result = await productModel.findBy({ search, sortBy, page, limit });
+    const result = await productModel.findBy({ search, sortBy, page, limit, showSoldOut });
     
     res.json({ ok: 1, ...result });
   }catch(err){
