@@ -381,13 +381,14 @@ const doc = {
           "buyQuantity": 89,
           "mainImages": [
             {
-              "path ": "/files/00-sample/sample-bugatti.png",
-              "name ": "sample-bugatti.png",
+              "path": "/files/00-sample/sample-bugatti.png",
+              "name": "sample-bugatti.png",
               "originalname": "부가티.png"
             }
           ],
-          "createdAt": "2024.03.06 07:50:28",
-          "updatedAt": "2024.03.17 11:50:28",
+          "content": "\n          <div class=\"product-detail\">\n            <p>레고 테크닉 42151 부가티 볼리드 상세 설명</p>\n          </div>",
+          "createdAt": "2024.03.13 16:43:39",
+          "updatedAt": "2024.03.24 20:43:39",
           "extra": {
             "isNew": false,
             "isBest": true,
@@ -397,8 +398,53 @@ const doc = {
             ],
             "sort": 1
           },
-          "replies": 0,
-          "bookmarks": 1
+          "seller": {
+            "_id": 3,
+            "email": "s2@market.com",
+            "name": "어피치",
+            "phone": "01033334444",
+            "address": "서울시 강남구 도곡동 789",
+            "type": "seller",
+            "loginType": "email",
+            "createdAt": "2024.03.06 23:13:39",
+            "updatedAt": "2024.03.16 23:23:39",
+            "extra": {
+              "confirm": false,
+              "birthday": "11-24",
+              "membershipClass": "MC02",
+              "addressBook": [
+                {
+                  "id": 1,
+                  "name": "회사",
+                  "value": "서울시 마포구 연희동 123"
+                },
+                {
+                  "id": 2,
+                  "name": "가게",
+                  "value": "서울시 강남구 학동 234"
+                }
+              ]
+            }
+          },
+          "replies": [],
+          "bookmarks": [
+            {
+              "_id": 2,
+              "user_id": 4,
+              "type": "product",
+              "target_id": 4,
+              "memo": "둘째 생일 선물",
+              "createdAt": "2024.04.14 11:43:39"
+            },
+            {
+              "_id": 5,
+              "user_id": 2,
+              "type": "product",
+              "target_id": 4,
+              "memo": "1순위로 살것!",
+              "createdAt": "2024.04.14 11:43:39"
+            }
+          ]
         }
       },
 

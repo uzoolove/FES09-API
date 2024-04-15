@@ -5195,11 +5195,11 @@
                 "items": {
                   "type": "object",
                   "properties": {
-                    "path ": {
+                    "path": {
                       "type": "string",
                       "example": "/files/00-sample/sample-bugatti.png"
                     },
-                    "name ": {
+                    "name": {
                       "type": "string",
                       "example": "sample-bugatti.png"
                     },
@@ -5210,13 +5210,17 @@
                   }
                 }
               },
+              "content": {
+                "type": "string",
+                "example": "\n          <div class=\"product-detail\">\n            <p>레고 테크닉 42151 부가티 볼리드 상세 설명</p>\n          </div>"
+              },
               "createdAt": {
                 "type": "string",
-                "example": "2024.03.06 07:50:28"
+                "example": "2024.03.13 16:43:39"
               },
               "updatedAt": {
                 "type": "string",
-                "example": "2024.03.17 11:50:28"
+                "example": "2024.03.24 20:43:39"
               },
               "extra": {
                 "type": "object",
@@ -5245,13 +5249,120 @@
                   }
                 }
               },
+              "seller": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "number",
+                    "example": 3
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "s2@market.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "어피치"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "01033334444"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "서울시 강남구 도곡동 789"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "seller"
+                  },
+                  "loginType": {
+                    "type": "string",
+                    "example": "email"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "example": "2024.03.06 23:13:39"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "example": "2024.03.16 23:23:39"
+                  },
+                  "extra": {
+                    "type": "object",
+                    "properties": {
+                      "confirm": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "birthday": {
+                        "type": "string",
+                        "example": "11-24"
+                      },
+                      "membershipClass": {
+                        "type": "string",
+                        "example": "MC02"
+                      },
+                      "addressBook": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number",
+                              "example": 2
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "가게"
+                            },
+                            "value": {
+                              "type": "string",
+                              "example": "서울시 강남구 학동 234"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "replies": {
-                "type": "number",
-                "example": 0
+                "type": "array",
+                "example": [],
+                "items": {}
               },
               "bookmarks": {
-                "type": "number",
-                "example": 1
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "number",
+                      "example": 5
+                    },
+                    "user_id": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "product"
+                    },
+                    "target_id": {
+                      "type": "number",
+                      "example": 4
+                    },
+                    "memo": {
+                      "type": "string",
+                      "example": "1순위로 살것!"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024.04.14 11:43:39"
+                    }
+                  }
+                }
               }
             }
           }
