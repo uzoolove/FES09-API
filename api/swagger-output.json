@@ -203,14 +203,19 @@
           "회원"
         ],
         "summary": "로그인",
-        "description": "이메일과 비밀번호를 입력해 로그인을 한다.<br>응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환한다.<br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야 한다.",
+        "description": "이메일과 비밀번호를 입력해 로그인을 합니다.<br>\r  응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환합니다.<br>\r  이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야 합니다.",
         "responses": {
           "200": {
             "description": "로그인 성공",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/loginRes"
+                "examples": {
+                  "이메일 로그인": {
+                    "$ref": "#/components/examples/loginRes"
+                  },
+                  "카카오 로그인": {
+                    "$ref": "#/components/examples/loginKakaoRes"
+                  }
                 }
               }
             }
@@ -260,48 +265,24 @@
       }
     },
     "/users/login/kakao": {
-      "get": {
+      "post": {
         "tags": [
           "회원"
         ],
-        "summary": "로그인",
-        "description": "이메일과 비밀번호를 입력해 로그인을 한다.<br>응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환한다.<br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야 한다.",
-        "parameters": [
-          {
-            "name": "code",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "summary": "카카오 로그인",
+        "description": "\r  <a href=\"https://developers.kakao.com/docs/latest/ko/kakaologin/common\" target=\"_blank\">카카오 개발 문서 참고</a><br>\r  카카오 로그인 후 받은 인증 코드를 전달하면 카카오 회원 정보를 확인해서 자동으로 회원가입 하거나 로그인 처리를 합니다.<br> \r  응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환합니다.<br>\r  추가로 kakaoToken 속성으로 카카오 로그인 API에서 받은 토큰을 반환합니다.<br>\r  <br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야합니다.",
         "responses": {
           "200": {
             "description": "로그인 성공",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/loginRes"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "로그인 실패",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error403"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "입력값 검증 오류",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/error422"
+                "examples": {
+                  "이메일 로그인": {
+                    "$ref": "#/components/examples/loginRes"
+                  },
+                  "카카오 로그인": {
+                    "$ref": "#/components/examples/loginKakaoRes"
+                  }
                 }
               }
             }
@@ -318,12 +299,12 @@
           }
         },
         "requestBody": {
-          "description": "로그인 정보",
+          "description": "로그인 정보<br>   code 속성에는 카카오 로그인 후에 받은 인증 코드를 지정합니다.<br>   user 속성에는 카카오에서 제공하는 사용자 정보 이외에 회원 가입시 추가할 사용자 정보를 객체로 지정합니다.",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#components/schemas/login"
+                "$ref": "#components/schemas/kakaoLogin"
               }
             }
           }
@@ -4653,6 +4634,19 @@
           }
         }
       },
+      "errorKakao409": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "number",
+            "example": 0
+          },
+          "message": {
+            "type": "string",
+            "example": "인증 처리중 입니다."
+          }
+        }
+      },
       "error422": {
         "type": "object",
         "properties": {
@@ -4739,65 +4733,6 @@
           "duplicate": {
             "type": "boolean",
             "example": false
-          }
-        }
-      },
-      "loginRes": {
-        "type": "object",
-        "properties": {
-          "ok": {
-            "type": "number",
-            "example": 1
-          },
-          "item": {
-            "type": "object",
-            "properties": {
-              "_id": {
-                "type": "number",
-                "example": 5
-              },
-              "email": {
-                "type": "string",
-                "example": "gd@market.com"
-              },
-              "name": {
-                "type": "string",
-                "example": "GD"
-              },
-              "type": {
-                "type": "string",
-                "example": "user"
-              },
-              "phone": {
-                "type": "string",
-                "example": "01011112222"
-              },
-              "address": {
-                "type": "string",
-                "example": "서울시 강남구 역삼동 123"
-              },
-              "createdAt": {
-                "type": "string",
-                "example": "2023.11.21 16:25:54"
-              },
-              "updatedAt": {
-                "type": "string",
-                "example": "2023.11.21 16:25:54"
-              },
-              "token": {
-                "type": "object",
-                "properties": {
-                  "accessToken": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInR5cGUiOiJ1c2VyIiwiaWF0IjoxNzAwNTUxNTcyLCJleHAiOjE3MDA1NTIxNzIsImlzcyI6IkZFU1AwMSJ9.TmYTk4w-iQYjPK172AkSuH7587XZPPoFARTdg-fFGgA"
-                  },
-                  "refreshToken": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDA1NTE1NzIsImV4cCI6MTcwMzE0MzU3MiwiaXNzIjoiRkVTUDAxIn0.FSUXGwl3M5xnKpc_gkzdQfJ1FT_9IzwhO_X0iLHzXcE"
-                  }
-                }
-              }
-            }
           }
         }
       },
@@ -7995,6 +7930,23 @@
           "password"
         ]
       },
+      "kakaoLogin": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "카카오 로그인 후 받은 인증 코드",
+            "example": "dDWZOcbqOCoTyRMLfDvaAhFuPC-NrQipfytgQ6c4wvyuyt-eKUBuyu1yvYkKPXPsAAABjt8XmL1b9Pmr5eg_ZA"
+          },
+          "user": {
+            "type": "object",
+            "description": "카카오에서 제공하는 사용자 정보 이외에 추가할 사용자 정보를 객체로 전달"
+          }
+        },
+        "required": [
+          "code"
+        ]
+      },
       "createUser": {
         "type": "object",
         "properties": {
@@ -8062,6 +8014,64 @@
       }
     },
     "examples": {
+      "loginRes": {
+        "value": {
+          "ok": 1,
+          "item": {
+            "_id": 5,
+            "email": "gd@market.com",
+            "name": "GD",
+            "type": "user",
+            "loginType": "email",
+            "phone": "01011112222",
+            "address": "서울시 강남구 역삼동 123",
+            "createdAt": "2023.11.21 16:25:54",
+            "updatedAt": "2023.11.21 16:25:54",
+            "token": {
+              "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInR5cGUiOiJ1c2VyIiwiaWF0IjoxNzAwNTUxNTcyLCJleHAiOjE3MDA1NTIxNzIsImlzcyI6IkZFU1AwMSJ9.TmYTk4w-iQYjPK172AkSuH7587XZPPoFARTdg-fFGgA",
+              "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDA1NTE1NzIsImV4cCI6MTcwMzE0MzU3MiwiaXNzIjoiRkVTUDAxIn0.FSUXGwl3M5xnKpc_gkzdQfJ1FT_9IzwhO_X0iLHzXcE"
+            }
+          }
+        }
+      },
+      "loginKakaoRes": {
+        "value": {
+          "ok": 1,
+          "item": {
+            "_id": 5,
+            "name": "GD",
+            "type": "user",
+            "profileImage": "http://k.kakaocdn.net/dn/p4NUj/btsFiuTSVb6/Q4YkWkx4t1AFkFA3rtq6ZK/img_110x110.jpg",
+            "kakao": {
+              "id": 1234567890,
+              "connected_at": "2024-04-13T15:52:13Z",
+              "kakao_account": {
+                "profile_nickname_needs_agreement": false,
+                "profile_image_needs_agreement": false,
+                "profile": {
+                  "nickname": "GD",
+                  "thumbnail_image_url": "http://k.kakaocdn.net/dn/p4NUj/btsFiuTSVb6/Q4YkWkx4t1AFkFA3rtq6ZK/img_110x110.jpg",
+                  "profile_image_url": "http://k.kakaocdn.net/dn/p4NUj/btsFiuTSVb6/Q4YkWkx4t1AFkFA3rtq6ZK/img_640x640.jpg",
+                  "is_default_image": false,
+                  "is_default_nickname": false
+                }
+              }
+            },
+            "loginType": "kakao",
+            "createdAt": "2023.11.21 16:25:54",
+            "updatedAt": "2023.11.21 16:25:54",
+            "token": {
+              "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOjUsInR5cGUiOiJ1c2VyIiwiaWF0IjoxNzAwNTUxNTcyLCJleHAiOjE3MDA1NTIxNzIsImlzcyI6IkZFU1AwMSJ9.TmYTk4w-iQYjPK172AkSuH7587XZPPoFARTdg-fFGgA",
+              "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDA1NTE1NzIsImV4cCI6MTcwMzE0MzU3MiwiaXNzIjoiRkVTUDAxIn0.FSUXGwl3M5xnKpc_gkzdQfJ1FT_9IzwhO_X0iLHzXcE"
+            },
+            "kakaoToken": {
+              "accessToken": "45ycguq3mpI34hxxXgB6OxZTExUoJIN5DksKPXMXAAABjt7xLkvo6jj-qNQmaA",
+              "refreshToken": "UeS298UOXvpQiBwt0B6yWGlJmystIwK3Um4KPXMXAAABjt7xLkbo6jj-qNQmaA",
+              "expiresIn": 21599
+            }
+          }
+        }
+      },
       "fileUploadFieldError": {
         "value": {
           "ok": 0,

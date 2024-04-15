@@ -19,6 +19,7 @@ export const initData = async (nextSeq) => {
         phone: '01011112222',
         address: '서울시 강남구 역삼동 123',
         type: 'admin',
+        loginType: 'email',
         createdAt: getTime(-100, -60 * 60 * 3),
         updatedAt: getTime(-100, -60 * 60 * 3),
         extra: {
@@ -46,6 +47,7 @@ export const initData = async (nextSeq) => {
         phone: '01022223333',
         address: '서울시 강남구 삼성동 456',
         type: 'seller',
+        loginType: 'email',
         createdAt: getTime(-50),
         updatedAt: getTime(-30, -60 * 60 * 3),
         extra: {
@@ -73,6 +75,7 @@ export const initData = async (nextSeq) => {
         phone: '01033334444',
         address: '서울시 강남구 도곡동 789',
         type: 'seller',
+        loginType: 'email',
         createdAt: getTime(-40, -60 * 30),
         updatedAt: getTime(-30, -60 * 20),
         extra: {
@@ -101,6 +104,8 @@ export const initData = async (nextSeq) => {
         phone: '01044445555',
         address: '서울시 강남구 논현동 222',
         type: 'user',
+        loginType: 'email',
+        profileImage: 'sample-daisies.jpg',
         createdAt: getTime(-20, -60 * 30),
         updatedAt: getTime(-10, -60 * 60 * 12),
         extra: {
