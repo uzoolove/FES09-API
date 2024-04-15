@@ -1,7 +1,6 @@
 import express from 'express';
-import { param, query, body } from 'express-validator';
+import { param } from 'express-validator';
 
-import logger from '#utils/logger.js';
 import validator from '#middlewares/validator.js';
 
 const router = express.Router();
@@ -22,7 +21,10 @@ router.post('/:type/:target_id', [
     }]
     
     #swagger.parameters['type'] = {
-      description: '북마크 종류 (product | user | post)',
+      description: `북마크 종류<br>
+        product: 상품에 대한 북마크<br>
+        user: 사용자에 대한 북마크<br>
+        post: 게시글에 대한 북마크`,
       in: 'path',
       required: true,
       type: 'string',
@@ -200,7 +202,6 @@ router.get('/:type/:target_id', [
       content: {
         "application/json": {
           schema: { $ref: "#/components/schemas/bookmarkInfoRes" }
-          }
         }
       }
     }
