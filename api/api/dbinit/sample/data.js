@@ -949,6 +949,7 @@ export const initData = async (nextSeq) => {
         type: 'qna',
         product_id: 1,
         seller_id: 2,
+        views: 5,
         user: {
           _id: 4,
           name: '데이지',
@@ -995,6 +996,7 @@ export const initData = async (nextSeq) => {
         type: 'qna',
         product_id: 1,
         seller_id: 2,
+        views: 50,
         user: {
           _id: 4,
           name: '데이지',
@@ -1009,6 +1011,7 @@ export const initData = async (nextSeq) => {
         type: 'qna',
         product_id: 4,
         seller_id: 3,
+        views: 0,
         user: {
           _id: 2,
           name: '네오',
@@ -1021,6 +1024,7 @@ export const initData = async (nextSeq) => {
       {
         _id: await nextSeq('post'),
         type: 'notice',
+        views: 10,
         user: {
           _id: 1,
           name: '무지',
@@ -1033,6 +1037,7 @@ export const initData = async (nextSeq) => {
       {
         _id: await nextSeq('post'),
         type: 'notice',
+        views: 15,
         user: {
           _id: 1,
           name: '무지',
