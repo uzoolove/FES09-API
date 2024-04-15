@@ -27,21 +27,13 @@
 
     <h3>v2.0.0 2024.04.16</h3>
     <ul>
-      <li>카카오 로그인</li>
+
+      <li>[회원] 카카오 로그인</li>
       <ul>
         <li><a href="https://market-lion.koyeb.app/apidocs/#/%ED%9A%8C%EC%9B%90/post_users_login_kakao" target="_blank">API 문서 참고</a></li>
       </ul>
-      <li>상품 목록 조회시 품절 상품도 포함 되도록 showSoldOut 파라미터 추가</li>
-      <ul>
-        <li><a href="https://market-lion.koyeb.app/apidocs/#/%EC%83%81%ED%92%88/get_products_" target="_blank">API 문서 참고</a></li>
-        <li>showSoldOut = true로 파라미터 전달 시 품절 상품도 목록에 포함해서 응답함</li>
-      </ul>
-      <li>상품, 게시글, 사용자에 북마크(찜하기/좋아요/팔로잉) 기능 추가</li>
-      <ul>
-        <li><a href="https://market-lion.koyeb.app/apidocs/#/%EB%B6%81%EB%A7%88%ED%81%AC/post_bookmarks__type___target_id_" target="_blank">API 문서 참고</a></li>
-        <li>사용자간에 팔로잉 기능에도 사용 가능</li>
-      </ul>
-      <li>다른 회원 정보 조회</li>
+
+      <li>[회원] 다른 회원 정보 조회</li>
       <ul>
         <li><a href="https://market-lion.koyeb.app/apidocs/#/%ED%9A%8C%EC%9B%90/get_users___id_" target="_blank">API 문서 참고</a></li>
         <li>회원 정보 조회에 본인 정보만 조회 가능했던 부분을 모든 회원의 정보 조회가 가능하게 수정함</li>
@@ -49,32 +41,49 @@
         <li>판매자가 구매자 정보를 확인할 때 API가 기본으로 제공하는 속성이외에 추가로 확인할 속성이 있을 때 사용</li>
         <li>회원간 정보 조회시 사용</li>
       </ul>
-      <li>상품 상세 정보 조회시 판매자 id 뿐만 아니라 판매자 나머지 정보도 같이 조회</li>
-      <ul>
-        <li><a href="https://market-lion.koyeb.app/apidocs/#/%EC%83%81%ED%92%88/get_products___id_" target="_blank">API 문서 참고</a></li>
-        <li>상품 상세 정보 조회 API의 응답에 판매자의 상세 정보를 가지고 있는 seller 속성이 추가됨</li>
-      </ul>
-      <li>글을 몇개 이상 등록하거나 좋아요가 몇개 이상 있으면 셀러 등록 요청하는 기능</li>
+
+      <li>[회원] 판매자로 승급 요청</li>
       <ul>
         <li><a href="https://market-lion.koyeb.app/apidocs/#/%ED%9A%8C%EC%9B%90/patch_users___id_" target="_blank">API 문서 참고</a></li>
         <li>이전의 회원 승인 방법은 extra.confirm 값을 false로 지정했을 때 비승인 상태로 로그인을 못하게 제약할 수 있는데 관리자가 true로 변경하면 승인 처리가 되면서 로그인이 가능</li>
         <li>이를 판매 회원에만(type=seller) 적용해서 로그인을 못하게 하고 일반 회원에는(type=user) extra.confirm 값이 false일 경우에도 로그인이 가능하게 수정함</li>
         <li>일반 회원이 판매 회원으로 승급(?)하기 위해서 클라이언트 측에서 구현할 작업으로, 승급 조건이 맞으면 승급 요청시 extra.confirm 값을 false로 수정하고 이를 승인하기 위해서 관리자는 extra.confirm이 false 회원을 검색해서 이 값을 true로 변경하고 type을 "seller"로 수정하도록 개발해야 함</li>
       </ul>
-      <li>게시물의 댓글 목록 정렬</li>
+
+      <li>[상품] 상품 목록 조회시 품절 상품도 포함 되도록 showSoldOut 파라미터 추가</li>
+      <ul>
+        <li><a href="https://market-lion.koyeb.app/apidocs/#/%EC%83%81%ED%92%88/get_products_" target="_blank">API 문서 참고</a></li>
+        <li>showSoldOut = true로 파라미터 전달 시 품절 상품도 목록에 포함해서 응답함</li>
+      </ul>
+
+      <li>[상품] 상품 목록 조회시 북마크/리뷰 순으로 졍렬</li>
+      <ul>
+        <li><a href="https://market-lion.koyeb.app/apidocs/#/%EC%83%81%ED%92%88/get_products_" target="_blank">API 문서 참고</a></li>
+      </ul>
+
+      <li>[상품] 상품 상세 정보 조회시 판매자 상세 정보도 같이 조회</li>
+      <ul>
+        <li><a href="https://market-lion.koyeb.app/apidocs/#/%EC%83%81%ED%92%88/get_products___id_" target="_blank">API 문서 참고</a></li>
+        <li>상품 상세 정보 조회 API의 응답에 판매자의 상세 정보를 가지고 있는 seller 속성이 추가됨</li>
+      </ul>
+
+      <li>[게시판] 게시물의 댓글 목록 정렬</li>
       <ul>
         <li><a href="https://market-lion.koyeb.app/apidocs/#/%EA%B2%8C%EC%8B%9C%ED%8C%90/get_posts___id__replies" target="_blank">API 문서 참고</a></li>
         <li>게시물의 댓글 목록 조회시 sort 속성으로 정렬하는 기능 추가</li>
       </ul>
-      <li>상품 목록 조회시 북마크/리뷰 순으로 졍렬</li>
-      <ul>
-        <li><a href="https://market-lion.koyeb.app/apidocs/#/%EC%83%81%ED%92%88/get_products_" target="_blank">API 문서 참고</a></li>
-      </ul>
-      <li>게시물 목록 조회시 댓글수 순으로 정렬</li>
+      
+      <li>[게시판] 게시물 목록 조회시 댓글수 순으로 정렬</li>
       <ul>
         <li><a href="https://market-lion.koyeb.app/apidocs/#/%EA%B2%8C%EC%8B%9C%ED%8C%90/get_posts_" target="_blank">API 문서 참고</a></li>
       </ul>
 
+      <li>[기타] 상품, 게시글, 사용자에 북마크(찜하기/좋아요/팔로잉) 기능 추가</li>
+      <ul>
+        <li><a href="https://market-lion.koyeb.app/apidocs/#/%EB%B6%81%EB%A7%88%ED%81%AC/post_bookmarks__type___target_id_" target="_blank">API 문서 참고</a></li>
+        <li>사용자간에 팔로잉 기능에도 사용 가능</li>
+      </ul>
+      
     </ul>
 
     <h3>v1.0.0 2024.01.15</h3>
