@@ -2,7 +2,7 @@ import qs from 'node:querystring';
 import axios from 'axios';
 
 import express from 'express';
-import { query, body, param } from 'express-validator';
+import { query, body } from 'express-validator';
 
 
 import logger from '#utils/logger.js';
