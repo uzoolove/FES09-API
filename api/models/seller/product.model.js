@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import moment from 'moment';
 
 import logger from '#utils/logger.js';
@@ -58,6 +57,6 @@ class SellerProductModel {
     return result;
   }
   
-};
+}
   
 export default SellerProductModel;
