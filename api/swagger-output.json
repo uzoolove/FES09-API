@@ -655,6 +655,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "showSoldOut",
+            "description": "매진 상품 포함 여부",
+            "in": "query",
+            "example": true,
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
