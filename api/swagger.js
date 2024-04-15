@@ -999,6 +999,50 @@ const doc = {
         }
       },
 
+      userBookmarkListRes: {
+        "ok": 1,
+        "item": {
+          "user": [
+            {
+              "_id": 3,
+              "user_id": 4,
+              "type": "user",
+              "target_id": 2,
+              "memo": "단골 셀러",
+              "createdAt": "2024.04.13 01:26:20"
+            }
+          ],
+          "post": [
+            {
+              "_id": 4,
+              "user_id": 4,
+              "type": "post",
+              "target_id": 1,
+              "memo": "크기 문의글 북마크",
+              "createdAt": "2024.04.14 09:26:20"
+            }
+          ],
+          "product": [
+            {
+              "_id": 1,
+              "user_id": 4,
+              "type": "product",
+              "target_id": 2,
+              "memo": "첫째 크리스마스 선물.",
+              "createdAt": "2024.04.12 19:26:20"
+            },
+            {
+              "_id": 2,
+              "user_id": 4,
+              "type": "product",
+              "target_id": 4,
+              "memo": "둘째 생일 선물",
+              "createdAt": "2024.04.14 09:26:20"
+            }
+          ]
+        }
+      },
+
       bookmarkListRes: {
         "ok": 1,
         "item": [

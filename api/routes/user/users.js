@@ -2,7 +2,7 @@ import qs from 'node:querystring';
 import axios from 'axios';
 
 import express from 'express';
-import { query, body } from 'express-validator';
+import { query, body, param } from 'express-validator';
 
 
 import logger from '#utils/logger.js';
@@ -343,6 +343,56 @@ router.post('/login/kakao', async function(req, res, next) {
 });
 
 
+// 지정한 사용자의 북마크 목록 조회
+router.get('/:_id/bookmarks', async function(req, res, next) {
+
+  /*
+    #swagger.tags = ['회원']
+    #swagger.summary  = '사용자의 모든 북마크 목록 조회'
+    #swagger.description = `지정한 사용자의 모든 북마크 목록(상품, 사용자, 게시글)을 조회합니다.<br>
+      응답 데이터의 user 속성에 사용자에 대한 북마크 목록이,<br>
+      product 속성에 상품에 대한 북마크 목록이,<br>
+      post 속성에 게시글에 대한 북마크 목록이 저장되어 있습니다.`
+    
+    #swagger.parameters['_id'] = {
+      description: "조회할 회원 id",
+      in: 'path',
+      type: 'number',
+      example: '4'
+    }
+
+    #swagger.responses[200] = {
+      description: '성공',
+      content: {
+        "application/json": {
+          schema: { $ref: "#/components/schemas/userBookmarkListRes" }
+        }
+      }
+    }
+
+    #swagger.responses[500] = {
+      description: '서버 에러',
+      content: {
+        "application/json": {
+          schema: { $ref: '#/components/schemas/error500' }
+        }
+      }
+    }
+    
+  */
+ 
+  try{
+    const user_id = Number(req.params._id);
+    const bookmarkModel = req.model.bookmark;
+    const item = await bookmarkModel.findByUser(user_id);
+    res.json({ ok: 1, item });
+
+  }catch(err){
+    next(err);
+  }
+});
+
+
 // 회원 조회(단일 속성)
 router.get('/:_id/*', jwtAuth.auth('user'), async function(req, res, next) {
   /*  
@@ -500,6 +550,7 @@ router.get('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
     next(err);
   }
 });
+
 
 // 회원 수정
 router.patch('/:_id', jwtAuth.auth('user'), async function(req, res, next) {

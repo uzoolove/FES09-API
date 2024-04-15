@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import moment from 'moment-timezone';
 
 import logger from '#utils/logger.js';
@@ -61,6 +60,37 @@ class BookmarkModel {
     return list;
   }
 
+  // 사용자의 북마크 목록 조회
+  async findByUser(user_id){
+    logger.trace(arguments);
+    const list = await this.db.bookmark.aggregate([
+      { $match: { user_id } },
+      {
+        $group: {
+          _id: "$type",
+          bookmarks: { $push: "$$ROOT" }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          type: "$_id",
+          bookmarks: 1
+        }
+      }
+    ]).toArray();
+    
+    const finalResult = {};
+    list.forEach(item => {
+      finalResult[item.type] = item.bookmarks;
+    });
+    
+    logger.debug(finalResult);
+    return finalResult;
+  }
+
+
+
   // 북마크 목록 조회
   async findByProduct(product_id){
     logger.trace(arguments);
@@ -85,6 +115,6 @@ class BookmarkModel {
     logger.debug(result);
     return result;
   }
-};
+}
 
 export default BookmarkModel;
