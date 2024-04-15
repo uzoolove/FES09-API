@@ -1,5 +1,4 @@
 import _ from 'lodash';
-
 import logger from '#utils/logger.js';
 
 class ProductModel {
@@ -9,7 +8,7 @@ class ProductModel {
   }
   
   // 상품 검색
-  async findBy({ sellerId, search={}, sortBy={}, page=1, limit=0, depth }){
+  async findBy({ sellerId, search={}, sortBy={}, page=1, limit=0, depth, showSoldOut }){
     logger.trace(arguments);
     const query = { active: true, ...search };
     if(sellerId){
@@ -18,7 +17,7 @@ class ProductModel {
     }else{
       // 일반 회원이 조회할 경우
       query['show'] = true;
-      if(depth !== 2){ // 옵션 목록 조회가 아닐 경우에만 수량 체크
+      if(depth !== 2 && !showSoldOut){ // 옵션 목록 조회가 아니고 showSoldOut이 true로 전달되지 않는 경우 품절된 상품 제외
         query['$expr'] = {
           '$gt': ['$quantity', '$buyQuantity']
         };
@@ -29,7 +28,7 @@ class ProductModel {
     
     logger.debug(query);
     const totalCount = await this.db.product.countDocuments(query);
-    const list = await this.db.product.find(query).project({ content: 0 }).skip(skip).limit(limit).sort(sortBy).toArray();
+    let list = await this.db.product.find(query).project({ content: 0 }).skip(skip).limit(limit).toArray();
     // const list = await this.db.product.find(query).project({ content: 0 }).skip(skip).limit(limit).sort(sortBy).toArray();
     for(const item of list){
       if(item.extra?.depth === 2){
@@ -42,6 +41,16 @@ class ProductModel {
         item.options = (await this.findBy({ search: { 'extra.parent': item._id }, depth: 2 })).length;
       }
     }
+
+    const sortKeys = [];
+    const orders = [];
+    for(const key in sortBy){
+      sortKeys.push(key);
+      orders.push(sortBy[key] === 1 ? 'asc' : 'desc');
+    }
+
+    list = _.orderBy(list, sortKeys, orders);
+
     const result = { item: list };
     if(depth !== 2){  // 옵션 목록 조회가 아닐 경우에만 pagination 필요
       result.pagination = {
@@ -63,8 +72,27 @@ class ProductModel {
     if(!seller_id){
       query.show = true;
     }
-    const item = await this.db.product.findOne(query);
+
+    // const item = await this.db.product.findOne(query);
+    // seller 정보 자세히 조인
+    const item = await this.db.product.aggregate([
+      { $match: query },
+      {
+        $lookup: {
+          from: 'user',
+          localField: 'seller_id',
+          foreignField: '_id',
+          as: 'seller'
+        }
+      },
+      {
+        $unwind: "$seller"
+      }
+    ]).next();
+
     if(item){
+      delete item.seller?.password;
+      delete item.seller?.refreshToken;
       item.replies = await this.model.reply.findBy({ product_id: _id });
       item.bookmarks = await this.model.bookmark.findByProduct(_id);
       if(item.extra?.depth === 1){ // 옵션이 있는 상품일 경우
@@ -75,7 +103,7 @@ class ProductModel {
     return item;
   }
 
-};
+}
   
 
 export default ProductModel;

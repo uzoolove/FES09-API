@@ -311,6 +311,49 @@
         }
       }
     },
+    "/users/{_id}/bookmarks": {
+      "get": {
+        "tags": [
+          "회원"
+        ],
+        "summary": "사용자의 모든 북마크 목록 조회",
+        "description": "지정한 사용자의 모든 북마크 목록(상품, 사용자, 게시글)을 조회합니다.<br>\r  응답 데이터의 user 속성에 사용자에 대한 북마크 목록이,<br>\r  product 속성에 상품에 대한 북마크 목록이,<br>\r  post 속성에 게시글에 대한 북마크 목록이 저장되어 있습니다.",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "조회할 회원 id",
+            "example": "4"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userBookmarkListRes"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "서버 에러",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/{_id}/{*}": {
       "get": {
         "tags": [
@@ -654,6 +697,15 @@
             "example": "{'price': -1}",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "showSoldOut",
+            "description": "매진 상품 포함 여부",
+            "in": "query",
+            "example": true,
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
@@ -2019,7 +2071,7 @@
             "schema": {
               "type": "string"
             },
-            "description": "북마크 종류 (product | user | post)",
+            "description": "북마크 종류<br>   product: 상품에 대한 북마크<br>   user: 사용자에 대한 북마크<br>   post: 게시글에 대한 북마크",
             "example": "product"
           },
           {
@@ -6967,6 +7019,116 @@
               "createdAt": {
                 "type": "string",
                 "example": "2024.04.08 16:47:46"
+              }
+            }
+          }
+        }
+      },
+      "userBookmarkListRes": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "number",
+            "example": 1
+          },
+          "item": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "number",
+                      "example": 3
+                    },
+                    "user_id": {
+                      "type": "number",
+                      "example": 4
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "user"
+                    },
+                    "target_id": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "memo": {
+                      "type": "string",
+                      "example": "단골 셀러"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024.04.13 01:26:20"
+                    }
+                  }
+                }
+              },
+              "post": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "number",
+                      "example": 4
+                    },
+                    "user_id": {
+                      "type": "number",
+                      "example": 4
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "post"
+                    },
+                    "target_id": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "memo": {
+                      "type": "string",
+                      "example": "크기 문의글 북마크"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024.04.14 09:26:20"
+                    }
+                  }
+                }
+              },
+              "product": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "user_id": {
+                      "type": "number",
+                      "example": 4
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "product"
+                    },
+                    "target_id": {
+                      "type": "number",
+                      "example": 4
+                    },
+                    "memo": {
+                      "type": "string",
+                      "example": "둘째 생일 선물"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2024.04.14 09:26:20"
+                    }
+                  }
+                }
               }
             }
           }
