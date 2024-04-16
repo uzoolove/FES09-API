@@ -2,19 +2,22 @@ import swaggerAutogen from 'swagger-autogen';
 
 const doc = {
   info: {
-    version: '1.0.0',
+    version: '2.0.0',
     title: '오픈마켓 API',
     description: `오픈마켓 API Server입니다.<br>
-      <a href="/">버전별 변경사항 확인</a><br><br>
-      <h2>공통 사항</h2>
-      <details><summary>검색</summary>자세한 내용</details>
-      <details><summary>페이지네이션</summary>자세한 내용</details>
-      <details><summary>정렬</summary>자세한 내용</details>
-      <details><summary>dryRun</summary>자세한 내용</details>
-      <details><summary>custom 파라미터</summary>자세한 내용</details>
-      <details><summary>주문 상태</summary>자세한 내용</details>
-      <details><summary>공통 에러 메세지</summary>자세한 내용</details>
-    `
+      <a href="/">버전별 변경사항 확인</a>`,
+    // description: `오픈마켓 API Server입니다.<br>
+    //   <a href="/">버전별 변경사항 확인</a>
+    //   <br><br>
+    //   <h2>공통 사항</h2>
+    //   <details><summary>검색</summary>자세한 내용</details>
+    //   <details><summary>페이지네이션</summary>자세한 내용</details>
+    //   <details><summary>정렬</summary>자세한 내용</details>
+    //   <details><summary>dryRun</summary>자세한 내용</details>
+    //   <details><summary>custom 파라미터</summary>자세한 내용</details>
+    //   <details><summary>주문 상태</summary>자세한 내용</details>
+    //   <details><summary>공통 에러 메세지</summary>자세한 내용</details>
+    // `
   },
   servers: [
     {
