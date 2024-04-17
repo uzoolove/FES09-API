@@ -40,6 +40,8 @@ class ProductModel {
       if(item.extra?.depth === 1){ // 옵션이 있는 상품일 경우
         item.options = (await this.findBy({ search: { 'extra.parent': item._id }, depth: 2 })).length;
       }
+      // 셀러 정보 조회
+      item.seller = await this.model.user.findById(item.seller_id);
     }
 
     const sortKeys = [];
