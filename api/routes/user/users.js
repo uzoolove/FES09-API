@@ -538,7 +538,6 @@ router.get('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
       const result = await userModel.findById(Number(req.params._id));
       
       if(result){
-        delete result.refreshToken;
         res.json({ok: 1, item: result});
       }else{
         next();

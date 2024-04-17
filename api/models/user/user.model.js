@@ -48,11 +48,8 @@ class UserModel{
   // 회원 정보 조회(모든 속성)
   async findById(_id){
     logger.trace(arguments);
-    const item = await this.db.user.findOne({_id});
+    const item = await this.db.user.findOne({ _id }, { projection: { password: 0, refreshToken: 0, }});
     logger.debug(item);
-    if(item){
-      delete item.password;
-    }
     return item;
   }
 

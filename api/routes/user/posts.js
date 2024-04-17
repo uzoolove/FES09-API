@@ -676,7 +676,7 @@ router.get('/:_id/replies', [
       sortBy = JSON.parse(req.query.sort);
     }else{
       // 기본 정렬 옵션은 등록일의 오름차순
-      sortBy['createdAt'] = 1;
+      sortBy = { createdAt: 1 };
     }
 
     const page = Number(req.query.page || 1);
