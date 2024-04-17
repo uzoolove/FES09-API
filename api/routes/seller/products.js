@@ -252,7 +252,7 @@ router.post('/', [
   body('name').trim().isLength({ min: 2 }).withMessage('상품명은 2글자 이상 입력해야 합니다.'),
   body('content').trim().isLength({ min: 10 }).withMessage('상품 설명은 10글자 이상 입력해야 합니다.'),
   body('shippingFees').optional().isInt().withMessage('배송비는 정수만 입력 가능합니다.'),
-  body('mainImages').optional().isArray().withMessage('메인 이미지는 배열로 전달해야 합니다.'),
+  // body('mainImages').optional().isArray().withMessage('메인 이미지는 배열로 전달해야 합니다.'),
   body('extra').optional().isObject().withMessage('extra 데이터는 객체로 전달해야 합니다.'),
 ], validator.checkResult, async function(req, res, next) {
 
@@ -335,7 +335,7 @@ router.patch('/:_id', [
   body('quantity').optional().isInt().withMessage('상품 수량은 정수만 입력 가능합니다.'),
   body('shippingFees').optional().isInt().withMessage('배송비는 정수만 입력 가능합니다.'),
   body('name').optional().trim().isLength({ min: 2 }).withMessage('상품명은 2글자 이상 입력해야 합니다.'),
-  body('mainImages').optional().isArray().withMessage('메인 이미지는 배열로 전달해야 합니다.'),
+  // body('mainImages').optional().isArray().withMessage('메인 이미지는 배열로 전달해야 합니다.'),
   body('content').optional().trim().isLength({ min: 10 }).withMessage('상품 설명은 10글자 이상 입력해야 합니다.'),
 ], validator.checkResult, async function(req, res, next) {
 

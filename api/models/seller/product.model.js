@@ -15,6 +15,10 @@ class SellerProductModel {
     // 상품 삭제시 false로 지정됨. false로 지정되면 판매 회원의 상품 목록에도 노출되지 않음
     newProduct.active = true;
     newProduct.buyQuantity = 0;
+    if(newProduct.mainImages && !Array.isArray(newProduct.mainImages)){
+      newProduct.mainImages = [newProduct.mainImages];
+    }
+
     newProduct.updatedAt = newProduct.createdAt = moment().format('YYYY.MM.DD HH:mm:ss');
     if(!newProduct.dryRun){
       await this.db.product.insertOne(newProduct);
@@ -37,6 +41,9 @@ class SellerProductModel {
   // 상품 수정
   async update(_id, updateProduct){
     logger.trace(arguments);
+    if(updateProduct.mainImages && !Array.isArray(updateProduct.mainImages)){
+      updateProduct.mainImages = [updateProduct.mainImages];
+    }
     updateProduct.updatedAt = moment().format('YYYY.MM.DD HH:mm:ss');
     const result = await this.db.product.updateOne({ _id, active: true }, { $set: updateProduct });
     logger.debug(result);
