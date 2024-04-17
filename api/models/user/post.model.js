@@ -62,6 +62,7 @@ class PostModel{
           createdAt: 1,
           updatedAt: 1,
           views: 1,
+          tag: 1,
           repliesCount: { $cond: { if: { $isArray: '$replies' }, then: { $size: '$replies' }, else: 0 } },
           'product.name': '$product.name',
           // 'product.image': { $cond: { if: { $isArray: '$product.mainImages' }, then: { $arrayElemAt: ['$product.mainImages', 0] }, else: undefined } }

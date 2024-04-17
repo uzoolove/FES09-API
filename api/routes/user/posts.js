@@ -12,23 +12,31 @@ const router = express.Router();
 router.post('/', jwtAuth.auth('user'), [
   body('title').optional().trim().isLength({ min: 2 }).withMessage('제목은 2글자 이상 입력해야 합니다.'),
   body('content').optional().trim().isLength({ min: 2 }).withMessage('내용은 2글자 이상 입력해야 합니다.'),
+  body('tag').optional().trim().isLength({ min: 2 }).withMessage('태그는 2글자 이상 입력해야 합니다.'),
 ], validator.checkResult, async function(req, res, next) {
 
   /*
     #swagger.tags = ['게시판']
     #swagger.summary  = '게시글 등록'
-    #swagger.description = '게시글을 등록한다.'
+    #swagger.description = '게시글을 등록합니다.'
     
     #swagger.security = [{
       "Access Token": []
     }]
 
     #swagger.requestBody = {
-      description: "게시글 정보가 저장된 객체입니다.<br>모든 속성은 선택사항이고 필요에 맞게 아무 속성이나 추가하면 됩니다.<br>title, content는 게시글 키워드 검색에 사용되는 속성입니다.<br>type: 게시판 종류(선택, 생략시 post). 게시판을 구분할 수 있는 이름<br>product_id: 상품 id(선택). 상품과 관련된 게시글일 경우 필요<br>title: 제목(선택)<br>content: 내용(선택)",
+      description: `게시글 정보가 저장된 객체입니다.<br>
+        모든 속성은 선택사항입니다.<br>
+        type, title, content, tag 속성은 목록 조회에서 확인할 수 있습니다.<br>
+        이외에 지정된 속성은 상세 조회에서만 확인할 수 있습니다.<br>
+        type: 게시판 종류를 나타내고 게시판을 구분할 수 있는 이름이며 자유롭게 지정할 수 있고 게시물 목록 조회시 전달해야 합니다.(생략시 post)<br>
+        title: 제목(키워드 검색에 사용)<br>
+        content: 내용(키워드 검색에 사용)<br>
+        tag: 태그(키워드 검색에 사용)<br>
+        product_id: 상품 id를 나타내고 상품과 관련된 게시글일 경우에 어떤 상품에 대한 게시글인지 식별하기 위해 필요합니다.`,
       required: true,
       content: {
         "application/json": {
-          schema: { $ref: '#components/schemas/postCreateBody' },
           examples: {
             "일반 게시판": { $ref: "#/components/examples/createPostExample" },
             "상품 Q&A 게시판": { $ref: "#/components/examples/createPostQnAExample" },            
@@ -100,7 +108,7 @@ router.get('/', [
       example: 'qna'
     }
     #swagger.parameters['keyword'] = {
-      description: "검색어<br>제목과 내용 검색에 사용되는 키워드",
+      description: "검색어<br>제목, 내용, 태그 검색에 사용되는 키워드",
       in: 'query',
       type: 'string',
       example: '배송'
@@ -157,7 +165,7 @@ router.get('/', [
 
     if(keyword){
       const regex = new RegExp(keyword, 'i');
-      search['$or'] = [{ title: regex }, { content: regex }];
+      search['$or'] = [{ title: regex }, { content: regex }, { tag: regex }];
     }
 
     if(custom){

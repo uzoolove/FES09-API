@@ -1201,13 +1201,6 @@ const doc = {
         }
       },
 
-      postCreateBody: {
-        "type": "community",
-        "title": "여행 후기 입니다.",
-        "content": "주말에 다녀온 여행지 입니다. 날씨가 맑아서 좋았어요.",
-        "image": "sample-bugatti.png"
-      },
-
       postCreateRes: {
         "ok": 1,
         "item": {
@@ -1215,6 +1208,7 @@ const doc = {
           "title": "여행 후기 입니다.",
           "content": "주말에 다녀온 여행지 입니다. 날씨가 맑아서 좋았어요.",
           "image": "sample-bugatti.png",
+          "tag": "혼자,떠나요,제주도",
           "views": 0,
           "user": {
             "_id": 4,
@@ -2013,7 +2007,8 @@ const doc = {
         "type": "community",
         "title": "여행 후기 입니다.",
         "content": "주말에 다녀온 여행지 입니다. 날씨가 맑아서 좋았어요.",
-        "image": "sample-bugatti.png"
+        "image": "sample-bugatti.png",
+        "tag": "혼자,떠나요,제주도",
       },
 
       createPostQnAExample: {
