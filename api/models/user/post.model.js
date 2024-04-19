@@ -58,6 +58,7 @@ class PostModel{
           user: 1,
           title: 1,
           content: 1,
+          image: 1,
           extra: 1,
           createdAt: 1,
           updatedAt: 1,
