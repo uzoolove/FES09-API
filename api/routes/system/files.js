@@ -61,7 +61,9 @@ router.post('/', multerUpload, handleError, async function(req, res, next) {
   /*
     #swagger.tags = ['파일']
     #swagger.summary  = '파일 업로드'
-    #swagger.description = '한번에 최대 10개 까지 파일을 업로드 합니다.<br>회원 가입시 프로필 이미지를 첨부하거나 상품의 이미지를 미리 업로드 한 후 응답 받은 파일 경로를 사용하면 업로드한 파일에 접근이 가능합니다.<br>파일 업로드 완료 후 파일명과 경로를 반환합니다.'
+    #swagger.description = `한번에 최대 10개 까지 파일을 업로드 합니다.<br>
+      회원 가입시 프로필 이미지를 첨부하거나 상품의 이미지를 미리 업로드 한 후 응답 받은 파일 경로를 사용하면 업로드한 파일에 접근이 가능합니다.<br>
+      파일 업로드 완료 후 수정된 파일명, 경로, 원본 파일명을 가진 객체 배열을 반환합니다.`
     
     #swagger.requestBody = {
       required: true,
