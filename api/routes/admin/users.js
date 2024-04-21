@@ -37,7 +37,7 @@ router.get('/', [
       description: "회원 이름<br>정확히 일치하는 이름을 찾습니다.",
       in: 'query',
       type: 'string',
-      example: '데이지'
+      example: '제이지'
     }
     #swagger.parameters['phone'] = {
       description: "회원 전화번호",

@@ -1212,7 +1212,7 @@ const doc = {
           "views": 0,
           "user": {
             "_id": 4,
-            "name": "데이지"
+            "name": "제이지"
           },
           "_id": 6,
           "createdAt": "2024.04.09 08:13:00",
@@ -1230,7 +1230,7 @@ const doc = {
             "seller_id": 2,
             "user": {
               "_id": 4,
-              "name": "데이지"
+              "name": "제이지"
             },
             "title": "크기가 얼만만한가요?",
             "content": "아이가 6살인데 가지고 놀기 적당한 크기인가요?",
@@ -1264,7 +1264,7 @@ const doc = {
           "seller_id": 2,
           "user": {
             "_id": 4,
-            "name": "데이지"
+            "name": "제이지"
           },
           "title": "크기가 얼만만한가요?",
           "content": "아이가 6살인데 가지고 놀기 적당한 크기인가요?",
@@ -1283,7 +1283,7 @@ const doc = {
               "_id": 2,
               "user": {
                 "_id": 4,
-                "name": "데이지"
+                "name": "제이지"
               },
               "content": "어디있나 모르겠어요.",
               "createdAt": "2024.04.09 13:08:10",
@@ -1311,7 +1311,7 @@ const doc = {
           {
             "_id": 4,
             "email": "u1@market.com",
-            "name": "데이지",
+            "name": "제이지",
             "phone": "01044445555",
             "address": "서울시 강남구 논현동 222",
             "type": "user",

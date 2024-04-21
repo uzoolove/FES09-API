@@ -838,7 +838,11 @@ export const initData = async (nextSeq) => {
     reply: [
       {
         _id: await nextSeq('reply'),
-        user_id: 4,
+        user: {
+          _id: 4,
+          name: '제이지',
+          profile: 'user-jayg.webp'
+        },
         order_id: 1,
         product_id: 2,
         rating: 5,
@@ -847,7 +851,11 @@ export const initData = async (nextSeq) => {
       },
       {
         _id: await nextSeq('reply'),
-        user_id: 2,
+        user: {
+          _id: 2,
+          name: '네오',
+          profile: 'user-neo.webp'
+        },
         order_id: 4,
         product_id: 2,
         rating: 4,
@@ -856,7 +864,11 @@ export const initData = async (nextSeq) => {
       },
       {
         _id: await nextSeq('reply'),
-        user_id: 4,
+        user: {
+          _id: 4,
+          name: '제이지',
+          profile: 'user-jayg.webp'
+        },
         order_id: 2,
         product_id: 3,
         rating: 1,
@@ -906,7 +918,11 @@ export const initData = async (nextSeq) => {
     bookmark: [
       {
         _id: await nextSeq('bookmark'),
-        user_id: 4,
+        user: {
+          _id: 4,
+          name: '제이지',
+          profile: 'user-jayg.webp'
+        },
         type: 'product',
         target_id: 2,
         memo: '첫째 크리스마스 선물.',
@@ -914,7 +930,11 @@ export const initData = async (nextSeq) => {
       },
       {
         _id: await nextSeq('bookmark'),
-        user_id: 4,
+        user: {
+          _id: 4,
+          name: '제이지',
+          profile: 'user-jayg.webp'
+        },
         type: 'product',
         target_id: 4,
         memo: '둘째 생일 선물',
@@ -922,7 +942,11 @@ export const initData = async (nextSeq) => {
       },
       {
         _id: await nextSeq('bookmark'),
-        user_id: 4,
+        user: {
+          _id: 4,
+          name: '제이지',
+          profile: 'user-jayg.webp'
+        },
         type: 'user',
         target_id: 2,
         memo: '단골 셀러',
@@ -930,7 +954,11 @@ export const initData = async (nextSeq) => {
       },
       {
         _id: await nextSeq('bookmark'),
-        user_id: 4,
+        user: {
+          _id: 4,
+          name: '제이지',
+          profile: 'user-jayg.webp'
+        },
         type: 'post',
         target_id: 1,
         memo: '크기 문의글 북마크',
@@ -938,7 +966,11 @@ export const initData = async (nextSeq) => {
       },
       {
         _id: await nextSeq('bookmark'),
-        user_id: 2,
+        user: {
+          _id: 4,
+          name: '네오',
+          profile: 'user-neo.webp'
+        },
         type: 'product',
         target_id: 4,
         memo: '1순위로 살것!',
