@@ -4,6 +4,8 @@ import { query } from 'express-validator';
 import logger from '#utils/logger.js';
 import validator from '#middlewares/validator.js';
 
+import jwtAuth from '#middlewares/jwtAuth.js';
+
 const router = express.Router();
 
 // 상품 목록 조회
@@ -166,8 +168,11 @@ router.get('/', [
 
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
+
+    // 자신의 북마크 여부 확인을 위해서 회원 정보 조회
+    (await jwtAuth.auth('user'))(req, res, ()=>{});
   
-    const result = await productModel.findBy({ search, sortBy, page, limit, showSoldOut });
+    const result = await productModel.findBy({ search, sortBy, page, limit, showSoldOut, userId: req.user?._id });
     
     res.json({ ok: 1, ...result });
   }catch(err){

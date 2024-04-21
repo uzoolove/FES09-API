@@ -170,7 +170,7 @@ router.get('/', [
     const page = Number(req.query.page || 1);
     const limit = Number(req.query.limit || 0);
   
-    const result = await productModel.findBy({ sellerId: req.user._id, search, sortBy, page, limit });
+    const result = await productModel.findBy({ sellerId: req.user._id, search, sortBy, page, limit, userId: req.user._id });
     
     for(const item of result.item){
       const orders = await sellerOrderModel.findByProductId(item._id, req.user._id);
