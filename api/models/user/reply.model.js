@@ -23,8 +23,10 @@ class ReplyModel {
   }
 
   // 조건에 맞는 후기 목록 조회
-  async findBy( query={} ){
-    const list = await this.db.reply.aggregate([
+  async findBy( query={}, sortBy ){
+    logger.trace(arguments);
+
+    const pipeline = [
       { $match: query },
       {
         $lookup: {
@@ -38,7 +40,7 @@ class ReplyModel {
       {
         $lookup: {
           from: 'user',
-          localField: 'user_id',
+          localField: 'user._id',
           foreignField: '_id',
           as: 'user'
         }
@@ -72,7 +74,13 @@ class ReplyModel {
           }
         }
       }
-    ]).sort({ _id: -1 }).toArray();
+    ];
+
+    if(sortBy){
+      pipeline.push({ $sort: sortBy });
+    }
+
+    let list = await this.db.reply.aggregate(pipeline).toArray();
 
     logger.debug(list);
     return list;

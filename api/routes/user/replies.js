@@ -1,5 +1,5 @@
 import express from 'express';
-import { query, body } from 'express-validator';
+import { param, body } from 'express-validator';
 
 import logger from '#utils/logger.js';
 import jwtAuth from '#middlewares/jwtAuth.js';
@@ -70,9 +70,15 @@ router.post('/', jwtAuth.auth('user'), [
 
 
   try{
-    logger.trace(req.body);
     const replyModel = req.model.reply;
-    const item = await replyModel.create({ ...req.body, user_id: req.user._id });
+
+    const reply = req.body;
+    reply.user = {
+      _id: req.user._id,
+      name: req.user.name,
+      profile: req.user.profile
+    };
+    const item = await replyModel.create(reply);
     res.status(201).json({ok: 1, item});
   }catch(err){
     next(err);
@@ -80,7 +86,9 @@ router.post('/', jwtAuth.auth('user'), [
 });
 
 // 지정한 상품의 후기 목록 조회
-router.get('/products/:_id', async function(req, res, next) {
+router.get('/products/:_id', [
+  param('rating').optional().isInt().withMessage('후기 점수는 정수만 입력 가능합니다.'),
+], validator.checkResult, async function(req, res, next) {
 
   /*
     #swagger.tags = ['구매 후기']
@@ -115,7 +123,23 @@ router.get('/products/:_id', async function(req, res, next) {
 
   try{
     const replyModel = req.model.reply;
-    const item = await replyModel.findBy({ product_id: Number(req.params._id) });
+    let search = {
+      product_id: Number(req.params._id)
+    };
+    const rating = Number(req.query.rating);
+
+    if(rating){
+      search.rating = rating;
+    }
+
+
+    // 정렬 옵션
+    let sortBy = JSON.parse(req.query.sort || '{}');
+
+    // 기본 정렬 옵션은 등록일의 내림차순
+    sortBy['createdAt'] = sortBy['createdAt'] || -1; // 내림차순
+
+    const item = await replyModel.findBy(search, sortBy);
     res.json({ok: 1, item});
   }catch(err){
     next(err);
