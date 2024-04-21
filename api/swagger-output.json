@@ -1369,6 +1369,20 @@
             },
             "description": "상품 id",
             "example": 3
+          },
+          {
+            "name": "rating",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -4118,7 +4132,7 @@
             "name": "name",
             "description": "회원 이름<br>정확히 일치하는 이름을 찾습니다.",
             "in": "query",
-            "example": "데이지",
+            "example": "제이지",
             "schema": {
               "type": "string"
             }
@@ -7631,7 +7645,7 @@
                   },
                   "name": {
                     "type": "string",
-                    "example": "데이지"
+                    "example": "제이지"
                   }
                 }
               },
@@ -7688,7 +7702,7 @@
                     },
                     "name": {
                       "type": "string",
-                      "example": "데이지"
+                      "example": "제이지"
                     }
                   }
                 },
@@ -7799,7 +7813,7 @@
                   },
                   "name": {
                     "type": "string",
-                    "example": "데이지"
+                    "example": "제이지"
                   }
                 }
               },
@@ -7882,7 +7896,7 @@
                 },
                 "name": {
                   "type": "string",
-                  "example": "데이지"
+                  "example": "제이지"
                 },
                 "phone": {
                   "type": "string",
