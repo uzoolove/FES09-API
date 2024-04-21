@@ -1,5 +1,5 @@
 import express from 'express';
-import { param, body } from 'express-validator';
+import { query, body } from 'express-validator';
 
 import logger from '#utils/logger.js';
 import jwtAuth from '#middlewares/jwtAuth.js';
@@ -87,7 +87,8 @@ router.post('/', jwtAuth.auth('user'), [
 
 // 지정한 상품의 후기 목록 조회
 router.get('/products/:_id', [
-  param('rating').optional().isInt().withMessage('후기 점수는 정수만 입력 가능합니다.'),
+  query('rating').optional().isInt().withMessage('후기 점수는 정수만 입력 가능합니다.'),
+  query('sort').optional().isJSON().withMessage('sort 값은 JSON 형식의 문자열이어야 합니다.')
 ], validator.checkResult, async function(req, res, next) {
 
   /*
@@ -100,6 +101,18 @@ router.get('/products/:_id', [
       in: 'path',
       type: 'number',
       example: 3
+    }
+    #swagger.parameters['rating'] = {
+      description: "후기 점수",
+      in: 'query',
+      type: 'number',
+      example: 5
+    }
+    #swagger.parameters['sort'] = {
+      description: "정렬(내림차순: -1, 오름차순: 1)",
+      in: 'query',
+      type: 'string',
+      example: '{\"replies\": -1}'
     }
 
     #swagger.responses[200] = {

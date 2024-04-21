@@ -72,7 +72,9 @@ router.get('/', [
       example: 2
     }
     #swagger.parameters['limit'] = {
-      description: "한 페이지당 항목 수",
+      description: `한 페이지당 항목 수<br>
+        지정하지 않으면 최대 100개 까지 응답  
+      `,
       in: 'query',
       type: 'number',
       example: 10

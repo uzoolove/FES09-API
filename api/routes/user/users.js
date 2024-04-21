@@ -482,7 +482,14 @@ router.get('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
   /*
     #swagger.tags = ['회원']
     #swagger.summary  = '회원 정보 조회(모든 속성)'
-    #swagger.description = '회원 정보의 모든 속성을 조회한다.'
+    #swagger.description = `회원 정보의 모든 속성을 조회합니다.<br>
+      등록한 속성 이외에 다음의 정보가 추가됩니다.<br>
+      posts: 지정한 사용자가 작성한 게시글 수
+      postViews: 지정한 사용자가 작성한 모든 게시글 조회수
+      bookmark.products: 지정한 사용자가 북마크 한 상품 수
+      bookmark.users: 지정한 사용자가 북마크 한 사용자 수
+      bookmark.posts: 지정한 사용자가 북마크 한 게시글 수
+    `
 
     #swagger.security = [{
       "Access Token": []
@@ -500,8 +507,8 @@ router.get('/:_id', jwtAuth.auth('user'), async function(req, res, next) {
       content: {
         "application/json": {
           examples: {
-            "기본 속성": { $ref: "#/components/examples/createUserRes" },
-            "extra 속성": { $ref: "#/components/examples/createUserResWithExtra" }
+            "기본 속성": { $ref: "#/components/examples/userInfoRes" },
+            "extra 속성": { $ref: "#/components/examples/userInfoResWithExtra" }
           }
         }
       }

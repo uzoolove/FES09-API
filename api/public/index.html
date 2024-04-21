@@ -25,6 +25,43 @@
   <div>
     <h2>변경 사항</h2>
 
+
+    <h3>v3.0.0 2024.04.21</h3>
+    <ul>
+      <li>[게시판] 게시물 목록 조회에 image 속성 추가</li>
+
+      <li>[상품] 상품 목록 조회시 응답 데이터 변경</li>
+      <ul>
+        <li><a href="https://market-lion.koyeb.app/apidocs/#/" target="_blank">API 문서 참고</a></li>
+        <li>limit를 지정하지 않으면 최대 100개 까지 응답</li>
+        <li>limit가 지정되면 전체 상품 정렬 후 limit가 적용되도록 수정</li>
+        <li>bookmarked 속성으로 내가 북마크 한 상품인지 여부 포함(bookmarked: true)</li>
+      </ul>
+
+      <li>[상품] 게시물, 상품 후기, 북마크 등록/조회 시 작성자 정보를 user_id 대신 user 속성으로 변경</li>
+      <ul>
+        <li><a href="https://market-lion.koyeb.app/apidocs/#/%EA%B5%AC%EB%A7%A4%20%ED%9B%84%EA%B8%B0/get_replies_products___id_" target="_blank">API 문서 참고</a></li>
+        <li>user._id: 작성자 id</li>
+        <li>user.name: 작성자 이름</li>
+        <li>user.profile: 작성자 프로필 이미지</li>
+      </ul>
+
+      <li>[구매후기] 구매 후기 목록 조회시 별점별 필터링/정렬 기능 추가</li>
+      <ul>
+        <li><a href="https://market-lion.koyeb.app/apidocs/#/%EA%B5%AC%EB%A7%A4%20%ED%9B%84%EA%B8%B0/get_replies_products___id_" target="_blank">API 문서 참고</a></li>
+      </ul>
+
+      <li>[사용자] 지정한 사용자의 게시글 작성수, 작성한 게시글의 조회수, 북마크 수 조회 기능</li>
+      <ul>
+        <li><a href="https://market-lion.koyeb.app/apidocs/#/%ED%9A%8C%EC%9B%90/get_users___id_" target="_blank">API 문서 참고</a></li>
+        <li>posts: 지정한 사용자가 작성한 게시글 수</li>
+        <li>postViews: 지정한 사용자가 작성한 모든 게시글 조회수</li>
+        <li>bookmark.products: 지정한 사용자가 북마크 한 상품 수</li>
+        <li>bookmark.users: 지정한 사용자가 북마크 한 사용자 수</li>
+        <li>bookmark.posts: 지정한 사용자가 북마크 한 게시글 수</li>
+      </ul>
+    </ul>
+
     <h3>v2.0.1 2024.04.17</h3>
     <ul>
 

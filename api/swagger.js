@@ -2,7 +2,7 @@ import swaggerAutogen from 'swagger-autogen';
 
 const doc = {
   info: {
-    version: '2.0.1',
+    version: '3.0.0',
     title: '오픈마켓 API',
     description: `오픈마켓 API Server입니다.<br>
       <a href="/">버전별 변경사항 확인</a>`,
@@ -342,13 +342,13 @@ const doc = {
             "buyQuantity": 89,
             "mainImages": [
               {
-                "path ": "/files/00-sample/sample-bugatti.png",
-                "name ": "sample-bugatti.png",
+                "path": "/files/00-sample/sample-bugatti.png",
+                "name": "sample-bugatti.png",
                 "originalname": "부가티.png"
               }
             ],
-            "createdAt": "2024.03.06 07:50:28",
-            "updatedAt": "2024.03.17 11:50:28",
+            "createdAt": "2024.03.18 13:59:44",
+            "updatedAt": "2024.03.29 17:59:44",
             "extra": {
               "isNew": false,
               "isBest": true,
@@ -358,8 +358,35 @@ const doc = {
               ],
               "sort": 1
             },
+            "seller": {
+              "_id": 3,
+              "email": "s2@market.com",
+              "name": "어피치",
+              "phone": "01033334444",
+              "address": "서울시 강남구 도곡동 789",
+              "profileImage": "user-apeach.webp",
+              "extra": {
+                "confirm": false,
+                "birthday": "11-24",
+                "membershipClass": "MC02",
+                "addressBook": [
+                  {
+                    "id": 1,
+                    "name": "회사",
+                    "value": "서울시 마포구 연희동 123"
+                  },
+                  {
+                    "id": 2,
+                    "name": "가게",
+                    "value": "서울시 강남구 학동 234"
+                  }
+                ]
+              }
+            },
             "replies": 0,
-            "bookmarks": 1
+            "bookmarks": 2,
+            "bookmarked": true,
+            "options": 0
           }
         ],
         "pagination": {
@@ -783,25 +810,23 @@ const doc = {
         "ok": 1,
         "item": [
           {
-            "_id": 5,
-            "rating": 3,
-            "content": "배송이 너무 느려요.",
-            "extra": {
-              "title": "배송 불만"
-            },
-            "createdAt": "2024.04.08 09:15:38",
-            "product": {
-              "_id": 3,
-              "image": {
-                "url": "/files/sample-classic.jpg",
-                "fileName": "sample-classic.jpg",
-                "orgName": "레고 클래식.jpg"
-              },
-              "name": "레고 클래식 라지 조립 박스 10698"
-            },
+            "_id": 1,
             "user": {
               "_id": 4,
-              "name": "데**"
+              "profileImage": "user-jayg.webp",
+              "name": "제**"
+            },
+            "rating": 5,
+            "content": "아이가 좋아해요.",
+            "createdAt": "2024.04.16 08:59:44",
+            "product": {
+              "_id": 2,
+              "image": {
+                "path": "/files/00-sample/sample-diver.jpg",
+                "name": "sample-diver.jpg",
+                "originalname": "헬로카봇.jpg"
+              },
+              "name": "헬로카봇 스톰다이버"
             }
           }
         ]
@@ -1234,6 +1259,7 @@ const doc = {
             },
             "title": "크기가 얼만만한가요?",
             "content": "아이가 6살인데 가지고 놀기 적당한 크기인가요?",
+            "image": "robot.png",
             "createdAt": "2024.04.08 21:08:10",
             "updatedAt": "2024.04.08 21:08:10",
             "product": {
@@ -1761,6 +1787,68 @@ const doc = {
           "_id": 5,
           "createdAt": "2023.11.21 14:33:41",
           "updatedAt": "2023.11.21 14:33:41"
+        }
+      },
+
+      userInfoRes: {
+        "ok": 1,
+        "item": {
+          "_id": 4,
+          "email": "u1@market.com",
+          "name": "제이지",
+          "phone": "01044445555",
+          "address": "서울시 강남구 논현동 222",
+          "type": "user",
+          "loginType": "email",
+          "profileImage": "user-jayg.webp",
+          "createdAt": "2024.03.31 20:29:44",
+          "updatedAt": "2024.04.10 08:59:44",
+          "posts": 2,
+          "bookmark": {
+            "products": 0,
+            "users": 0,
+            "posts": 0
+          },
+          "postViews": 55
+        }
+      },
+
+      userInfoResWithRes: {
+        "ok": 1,
+        "item": {
+          "_id": 4,
+          "email": "u1@market.com",
+          "name": "제이지",
+          "phone": "01044445555",
+          "address": "서울시 강남구 논현동 222",
+          "type": "user",
+          "loginType": "email",
+          "profileImage": "user-jayg.webp",
+          "createdAt": "2024.03.31 20:29:44",
+          "updatedAt": "2024.04.10 08:59:44",
+          "extra": {
+            "birthday": "11-30",
+            "membershipClass": "MC02",
+            "address": [
+              {
+                "id": 1,
+                "name": "회사",
+                "value": "서울시 강동구 천호동 123"
+              },
+              {
+                "id": 2,
+                "name": "집",
+                "value": "서울시 강동구 성내동 234"
+              }
+            ]
+          },
+          "posts": 2,
+          "bookmark": {
+            "products": 0,
+            "users": 0,
+            "posts": 0
+          },
+          "postViews": 55
         }
       },
 

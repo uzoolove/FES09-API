@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "2.0.1",
+    "version": "3.0.0",
     "title": "오픈마켓 API",
     "description": "오픈마켓 API Server입니다.<br>\n      <a href=\"/\">버전별 변경사항 확인</a>"
   },
@@ -443,7 +443,7 @@
           "회원"
         ],
         "summary": "회원 정보 조회(모든 속성)",
-        "description": "회원 정보의 모든 속성을 조회한다.",
+        "description": "회원 정보의 모든 속성을 조회합니다.<br>\r  등록한 속성 이외에 다음의 정보가 추가됩니다.<br>\r  posts: 지정한 사용자가 작성한 게시글 수\r  postViews: 지정한 사용자가 작성한 모든 게시글 조회수\r  bookmark.products: 지정한 사용자가 북마크 한 상품 수\r  bookmark.users: 지정한 사용자가 북마크 한 사용자 수\r  bookmark.posts: 지정한 사용자가 북마크 한 게시글 수\r  ",
         "parameters": [
           {
             "name": "_id",
@@ -463,10 +463,10 @@
               "application/json": {
                 "examples": {
                   "기본 속성": {
-                    "$ref": "#/components/examples/createUserRes"
+                    "$ref": "#/components/examples/userInfoRes"
                   },
                   "extra 속성": {
-                    "$ref": "#/components/examples/createUserResWithExtra"
+                    "$ref": "#/components/examples/userInfoResWithExtra"
                   }
                 }
               }
@@ -683,7 +683,7 @@
           },
           {
             "name": "limit",
-            "description": "한 페이지당 항목 수",
+            "description": "한 페이지당 항목 수<br>   지정하지 않으면 최대 100개 까지 응답    ",
             "in": "query",
             "example": 10,
             "schema": {
@@ -1372,14 +1372,18 @@
           },
           {
             "name": "rating",
+            "description": "후기 점수",
             "in": "query",
+            "example": 5,
             "schema": {
-              "type": "string"
+              "type": "number"
             }
           },
           {
             "name": "sort",
+            "description": "정렬(내림차순: -1, 오름차순: 1)",
             "in": "query",
+            "example": "{'replies': -1}",
             "schema": {
               "type": "string"
             }
@@ -5071,11 +5075,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "path ": {
+                      "path": {
                         "type": "string",
                         "example": "/files/00-sample/sample-bugatti.png"
                       },
-                      "name ": {
+                      "name": {
                         "type": "string",
                         "example": "sample-bugatti.png"
                       },
@@ -5088,11 +5092,11 @@
                 },
                 "createdAt": {
                   "type": "string",
-                  "example": "2024.03.06 07:50:28"
+                  "example": "2024.03.18 13:59:44"
                 },
                 "updatedAt": {
                   "type": "string",
-                  "example": "2024.03.17 11:50:28"
+                  "example": "2024.03.29 17:59:44"
                 },
                 "extra": {
                   "type": "object",
@@ -5121,13 +5125,87 @@
                     }
                   }
                 },
+                "seller": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "number",
+                      "example": 3
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "s2@market.com"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "어피치"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "example": "01033334444"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "서울시 강남구 도곡동 789"
+                    },
+                    "profileImage": {
+                      "type": "string",
+                      "example": "user-apeach.webp"
+                    },
+                    "extra": {
+                      "type": "object",
+                      "properties": {
+                        "confirm": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "birthday": {
+                          "type": "string",
+                          "example": "11-24"
+                        },
+                        "membershipClass": {
+                          "type": "string",
+                          "example": "MC02"
+                        },
+                        "addressBook": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number",
+                                "example": 2
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "가게"
+                              },
+                              "value": {
+                                "type": "string",
+                                "example": "서울시 강남구 학동 234"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
                 "replies": {
                   "type": "number",
                   "example": 0
                 },
                 "bookmarks": {
                   "type": "number",
-                  "example": 1
+                  "example": 2
+                },
+                "bookmarked": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "options": {
+                  "type": "number",
+                  "example": 0
                 }
               }
             }
@@ -6393,58 +6471,7 @@
               "properties": {
                 "_id": {
                   "type": "number",
-                  "example": 5
-                },
-                "rating": {
-                  "type": "number",
-                  "example": 3
-                },
-                "content": {
-                  "type": "string",
-                  "example": "배송이 너무 느려요."
-                },
-                "extra": {
-                  "type": "object",
-                  "properties": {
-                    "title": {
-                      "type": "string",
-                      "example": "배송 불만"
-                    }
-                  }
-                },
-                "createdAt": {
-                  "type": "string",
-                  "example": "2024.04.08 09:15:38"
-                },
-                "product": {
-                  "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "number",
-                      "example": 3
-                    },
-                    "image": {
-                      "type": "object",
-                      "properties": {
-                        "url": {
-                          "type": "string",
-                          "example": "/files/sample-classic.jpg"
-                        },
-                        "fileName": {
-                          "type": "string",
-                          "example": "sample-classic.jpg"
-                        },
-                        "orgName": {
-                          "type": "string",
-                          "example": "레고 클래식.jpg"
-                        }
-                      }
-                    },
-                    "name": {
-                      "type": "string",
-                      "example": "레고 클래식 라지 조립 박스 10698"
-                    }
-                  }
+                  "example": 1
                 },
                 "user": {
                   "type": "object",
@@ -6453,9 +6480,55 @@
                       "type": "number",
                       "example": 4
                     },
+                    "profileImage": {
+                      "type": "string",
+                      "example": "user-jayg.webp"
+                    },
                     "name": {
                       "type": "string",
-                      "example": "데**"
+                      "example": "제**"
+                    }
+                  }
+                },
+                "rating": {
+                  "type": "number",
+                  "example": 5
+                },
+                "content": {
+                  "type": "string",
+                  "example": "아이가 좋아해요."
+                },
+                "createdAt": {
+                  "type": "string",
+                  "example": "2024.04.16 08:59:44"
+                },
+                "product": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "image": {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "example": "/files/00-sample/sample-diver.jpg"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "sample-diver.jpg"
+                        },
+                        "originalname": {
+                          "type": "string",
+                          "example": "헬로카봇.jpg"
+                        }
+                      }
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "헬로카봇 스톰다이버"
                     }
                   }
                 }
@@ -7714,6 +7787,10 @@
                   "type": "string",
                   "example": "아이가 6살인데 가지고 놀기 적당한 크기인가요?"
                 },
+                "image": {
+                  "type": "string",
+                  "example": "robot.png"
+                },
                 "createdAt": {
                   "type": "string",
                   "example": "2024.04.08 21:08:10"
@@ -8661,6 +8738,70 @@
             "_id": 5,
             "createdAt": "2023.11.21 14:33:41",
             "updatedAt": "2023.11.21 14:33:41"
+          }
+        }
+      },
+      "userInfoRes": {
+        "value": {
+          "ok": 1,
+          "item": {
+            "_id": 4,
+            "email": "u1@market.com",
+            "name": "제이지",
+            "phone": "01044445555",
+            "address": "서울시 강남구 논현동 222",
+            "type": "user",
+            "loginType": "email",
+            "profileImage": "user-jayg.webp",
+            "createdAt": "2024.03.31 20:29:44",
+            "updatedAt": "2024.04.10 08:59:44",
+            "posts": 2,
+            "bookmark": {
+              "products": 0,
+              "users": 0,
+              "posts": 0
+            },
+            "postViews": 55
+          }
+        }
+      },
+      "userInfoResWithRes": {
+        "value": {
+          "ok": 1,
+          "item": {
+            "_id": 4,
+            "email": "u1@market.com",
+            "name": "제이지",
+            "phone": "01044445555",
+            "address": "서울시 강남구 논현동 222",
+            "type": "user",
+            "loginType": "email",
+            "profileImage": "user-jayg.webp",
+            "createdAt": "2024.03.31 20:29:44",
+            "updatedAt": "2024.04.10 08:59:44",
+            "extra": {
+              "birthday": "11-30",
+              "membershipClass": "MC02",
+              "address": [
+                {
+                  "id": 1,
+                  "name": "회사",
+                  "value": "서울시 강동구 천호동 123"
+                },
+                {
+                  "id": 2,
+                  "name": "집",
+                  "value": "서울시 강동구 성내동 234"
+                }
+              ]
+            },
+            "posts": 2,
+            "bookmark": {
+              "products": 0,
+              "users": 0,
+              "posts": 0
+            },
+            "postViews": 55
           }
         }
       },
