@@ -84,15 +84,36 @@ class ProductModel {
       {
         $addFields: {
           bookmarks: { $size: "$bookmarkItems" }, // 북마크 목록 수
-          bookmarked: { // 내가 북마크한 상품인지 여부
-            $cond: {
-              if: { $in: [userId, "$bookmarkItems.user._id"] },
-              then: true,
-              else: false
+          // bookmarked: { // 내가 북마크한 상품인지 여부
+          //   $cond: {
+          //     if: { $in: [userId, "$bookmarkItems.user._id"] },
+          //     then: true,
+          //     else: false
+          //   }
+          // }
+          myBookmarkId: { // 내가 북마크한 상품일때 북마크 id
+            $map: {
+              input: {
+                $filter: {
+                  input: "$bookmarkItems",
+                  as: "bookmark",
+                  cond: { $eq: ["$$bookmark.user._id", userId] } // userId가 북마크한 항목 필터링
+                }
+              },
+              as: "bookmark",
+              in: "$$bookmark._id"
             }
           }
         }
       },
+
+      { 
+        $unwind: {
+          path: "$myBookmarkId",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+
       {
         $lookup: {
           from: "product",
@@ -236,13 +257,33 @@ class ProductModel {
       {
         $addFields: {
           bookmarks: { $size: "$bookmarkItems" },
-          bookmarked: { // 내가 북마크한 상품인지 여부
-            $cond: {
-              if: { $in: [userId, "$bookmarkItems.user._id"] },
-              then: true,
-              else: false
+          // bookmarked: { // 내가 북마크한 상품인지 여부
+          //   $cond: {
+          //     if: { $in: [userId, "$bookmarkItems.user._id"] },
+          //     then: true,
+          //     else: false
+          //   }
+          // },
+          myBookmarkId: { // 내가 북마크한 상품일때 북마크 id
+            $map: {
+              input: {
+                $filter: {
+                  input: "$bookmarkItems",
+                  as: "bookmark",
+                  cond: { $eq: ["$$bookmark.user._id", userId] } // userId가 북마크한 항목 필터링
+                }
+              },
+              as: "bookmark",
+              in: "$$bookmark._id"
             }
           }
+        }
+      },
+
+      { 
+        $unwind: {
+          path: "$myBookmarkId",
+          preserveNullAndEmptyArrays: true
         }
       },
 
