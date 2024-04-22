@@ -838,6 +838,7 @@ export const initData = async (nextSeq) => {
     reply: [
       {
         _id: await nextSeq('reply'),
+        user_id: 4,
         user: {
           _id: 4,
           name: '제이지',
@@ -851,6 +852,7 @@ export const initData = async (nextSeq) => {
       },
       {
         _id: await nextSeq('reply'),
+        user_id: 2,
         user: {
           _id: 2,
           name: '네오',
@@ -864,6 +866,7 @@ export const initData = async (nextSeq) => {
       },
       {
         _id: await nextSeq('reply'),
+        user_id: 4,
         user: {
           _id: 4,
           name: '제이지',
