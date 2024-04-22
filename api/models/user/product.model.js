@@ -310,7 +310,7 @@ class ProductModel {
 
       { 
         $project: { 
-          // bookmarkItems: 0,
+          bookmarkItems: 0,
           'seller.password': 0,
           'seller.refreshToken': 0,
           'seller.type': 0,
