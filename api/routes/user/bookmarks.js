@@ -100,6 +100,11 @@ router.post('/:type/:target_id', [
     if(bookmark){
       res.status(409).json({ ok: 0, message: '이미 등록되어 있습니다.' });
     }else{
+      bookmarkInfo.user = {
+        _id: req.user._id,
+        name: req.user.name,
+        profile: req.user.profile
+      }
       Object.assign(bookmarkInfo, req.body);
       const item = await bookmarkModel.create(bookmarkInfo);
       res.status(201).json({ ok: 1, item });
