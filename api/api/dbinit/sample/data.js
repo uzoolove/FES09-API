@@ -921,6 +921,7 @@ export const initData = async (nextSeq) => {
     bookmark: [
       {
         _id: await nextSeq('bookmark'),
+        user_id: 4,
         user: {
           _id: 4,
           name: '제이지',
@@ -933,6 +934,7 @@ export const initData = async (nextSeq) => {
       },
       {
         _id: await nextSeq('bookmark'),
+        user_id: 4,
         user: {
           _id: 4,
           name: '제이지',
@@ -945,6 +947,7 @@ export const initData = async (nextSeq) => {
       },
       {
         _id: await nextSeq('bookmark'),
+        user_id: 4,
         user: {
           _id: 4,
           name: '제이지',
@@ -957,6 +960,7 @@ export const initData = async (nextSeq) => {
       },
       {
         _id: await nextSeq('bookmark'),
+        user_id: 4,
         user: {
           _id: 4,
           name: '제이지',
@@ -969,8 +973,9 @@ export const initData = async (nextSeq) => {
       },
       {
         _id: await nextSeq('bookmark'),
+        user_id: 2,
         user: {
-          _id: 4,
+          _id: 2,
           name: '네오',
           profile: 'user-neo.webp'
         },
@@ -998,6 +1003,7 @@ export const initData = async (nextSeq) => {
         replies: [
           {
             _id: 1,
+            user_id: 2,
             user: {
               _id: 2,
               name: '네오',
@@ -1010,6 +1016,7 @@ export const initData = async (nextSeq) => {
           },
           {
             _id: 2,
+            user_id: 4,
             user: {
               _id: 4,
               name: '제이지',
@@ -1022,6 +1029,7 @@ export const initData = async (nextSeq) => {
           },
           {
             _id: 3,
+            user_id: 2,
             user: {
               _id: 2,
               name: '네오',
