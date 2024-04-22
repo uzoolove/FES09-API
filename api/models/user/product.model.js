@@ -42,7 +42,15 @@ class ProductModel {
           as: "seller"
         }
       },
-      { $unwind: "$seller" },
+      // { $unwind: "$seller" },
+
+      { 
+        $unwind: {
+          path: "$seller",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+
       
       // 후기 목록
       {
