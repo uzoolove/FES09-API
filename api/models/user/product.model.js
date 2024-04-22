@@ -187,7 +187,7 @@ class ProductModel {
   }
 
   // 상품 상세 조회
-  async findById({ _id }){
+  async findById({ _id, userId }){
     logger.trace(arguments);
 
     const item = await this.db.product.aggregate([
@@ -213,7 +213,7 @@ class ProductModel {
         }
       },
 
-      // 북마크 수
+      // 북마크 목록
       {
         $lookup: {
           from: "bookmark",
@@ -236,6 +236,13 @@ class ProductModel {
       {
         $addFields: {
           bookmarks: { $size: "$bookmarkItems" },
+          bookmarked: { // 내가 북마크한 상품인지 여부
+            $cond: {
+              if: { $in: [userId, "$bookmarkItems.user._id"] },
+              then: true,
+              else: false
+            }
+          }
         }
       },
 
@@ -262,7 +269,7 @@ class ProductModel {
 
       { 
         $project: { 
-          // bookmarkItems: 0,
+          bookmarkItems: 0,
           'seller.password': 0,
           'seller.refreshToken': 0,
           'seller.type': 0,

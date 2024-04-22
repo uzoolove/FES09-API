@@ -225,7 +225,11 @@ router.get('/:_id', async function(req, res, next) {
 
   try{
     const productModel = req.model.product;
-    const item = await productModel.findById({ _id: Number(req.params._id) });
+
+    // 자신의 북마크 여부 확인을 위해서 회원 정보 조회
+    (await jwtAuth.auth('user'))(req, res, ()=>{});
+
+    const item = await productModel.findById({ _id: Number(req.params._id), userId: req.user?._id });
     if(item){
       res.json({ ok: 1, item });
     }else{
