@@ -73,6 +73,7 @@ router.post('/', jwtAuth.auth('user'), [
     const replyModel = req.model.reply;
 
     const reply = req.body;
+    reply.user_id = req.user._id;
     reply.user = {
       _id: req.user._id,
       name: req.user.name,
