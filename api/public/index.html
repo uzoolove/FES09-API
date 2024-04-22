@@ -25,6 +25,16 @@
   <div>
     <h2>변경 사항</h2>
 
+    <h3>v4.0.0 2024.04.22</h3>
+    <ul>
+      <li>[북마크] 상품 목록/상세 조회시 myBookmarkId 속성 추가</li>
+      <ul>
+        <li><a href="https://market-lion.koyeb.app/apidocs/#/%EC%83%81%ED%92%88/get_products_" target="_blank">API 문서 참고</a></li>
+        <li><a href="https://market-lion.koyeb.app/apidocs/#/%EC%83%81%ED%92%88/get_products___id_" target="_blank">API 문서 참고</a></li>
+        <li>상품 목록, 상세 조회시 로그인한 사용자가 북마크 한 상품에 대해서 bookmarked 값을 true로 지정했는데 이를 제거하고, 대신 로그인한 사용자가 북마크 한 상품의 북마크 id를 myBookmarkId 속성으로 추가</li>
+        <li>상품 상세 조회시 북마크 목록을 지정한 bookmarkItems 속성 제거. 사용자의 북마크 정보는 myBookmarkId 속성에 저장된 북마크 id로 확인 가능</li>
+      </ul>
+    </ul>
 
     <h3>v3.0.0 2024.04.21</h3>
     <ul>

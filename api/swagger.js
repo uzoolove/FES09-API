@@ -385,7 +385,7 @@ const doc = {
             },
             "replies": 0,
             "bookmarks": 2,
-            "bookmarked": true,
+            "myBookmarkId": 2,
             "options": 0
           }
         ],
@@ -457,24 +457,9 @@ const doc = {
             }
           },
           "replies": [],
-          "bookmarks": [
-            {
-              "_id": 2,
-              "user_id": 4,
-              "type": "product",
-              "target_id": 4,
-              "memo": "둘째 생일 선물",
-              "createdAt": "2024.04.14 11:43:39"
-            },
-            {
-              "_id": 5,
-              "user_id": 2,
-              "type": "product",
-              "target_id": 4,
-              "memo": "1순위로 살것!",
-              "createdAt": "2024.04.14 11:43:39"
-            }
-          ]
+          "bookmarks": 2,
+          "myBookmarkId": 2,
+          "options": [],
         }
       },
 

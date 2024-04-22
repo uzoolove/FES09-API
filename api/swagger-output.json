@@ -5199,9 +5199,9 @@
                   "type": "number",
                   "example": 2
                 },
-                "bookmarked": {
-                  "type": "boolean",
-                  "example": true
+                "myBookmarkId": {
+                  "type": "number",
+                  "example": 2
                 },
                 "options": {
                   "type": "number",
@@ -5422,36 +5422,17 @@
                 "items": {}
               },
               "bookmarks": {
+                "type": "number",
+                "example": 2
+              },
+              "myBookmarkId": {
+                "type": "number",
+                "example": 2
+              },
+              "options": {
                 "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "_id": {
-                      "type": "number",
-                      "example": 5
-                    },
-                    "user_id": {
-                      "type": "number",
-                      "example": 2
-                    },
-                    "type": {
-                      "type": "string",
-                      "example": "product"
-                    },
-                    "target_id": {
-                      "type": "number",
-                      "example": 4
-                    },
-                    "memo": {
-                      "type": "string",
-                      "example": "1순위로 살것!"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "example": "2024.04.14 11:43:39"
-                    }
-                  }
-                }
+                "example": [],
+                "items": {}
               }
             }
           }
