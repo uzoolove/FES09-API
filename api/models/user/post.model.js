@@ -190,14 +190,22 @@ class PostModel{
   async updateReply(_id, reply_id, reply){
     logger.trace(arguments);
     reply.updatedAt = moment().tz('Asia/Seoul').format('YYYY.MM.DD HH:mm:ss');
+
+    const setData = {};
+    for(let prop in reply){
+      setData[`replies.$[elementKey].${prop}`] = reply[prop];
+    }
     const result = await this.db.post.findOneAndUpdate(
       { _id },
       { 
-        $set: { 
-          'replies.$[elementKey].comment': reply.comment,
-          'replies.$[elementKey].updatedAt': reply.updatedAt
-        } 
+        $set: setData
       },
+      // { 
+      //   $set: { 
+      //     'replies.$[elementKey].comment': reply.comment,
+      //     'replies.$[elementKey].updatedAt': reply.updatedAt
+      //   } 
+      // },
       { 
         arrayFilters: [{ 'elementKey._id': reply_id }],
         returnDocument: 'after' // 업데이트된 문서 반환
