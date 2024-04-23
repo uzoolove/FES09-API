@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "4.0.2",
+    "version": "4.1.0",
     "title": "오픈마켓 API",
     "description": "오픈마켓 API Server입니다.<br>\n      <a href=\"/\">버전별 변경사항 확인</a>"
   },
@@ -270,7 +270,7 @@
           "회원"
         ],
         "summary": "카카오 로그인",
-        "description": "\r  <a href=\"https://developers.kakao.com/docs/latest/ko/kakaologin/common\" target=\"_blank\">카카오 개발 문서 참고</a><br>\r  카카오 로그인 후 받은 인증 코드를 전달하면 카카오 회원 정보를 확인해서 자동으로 회원가입 하거나 로그인 처리를 합니다.<br> \r  응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환합니다.<br>\r  추가로 kakaoToken 속성으로 카카오 로그인 API에서 받은 토큰을 반환합니다.<br>\r  <br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야합니다.",
+        "description": "\r  <a href=\"https://developers.kakao.com/docs/latest/ko/kakaologin/common\" target=\"_blank\">카카오 개발 문서 참고</a><br>\r  카카오 인가 코드 받기 API를 이용해 로그인 후 받은 인증 코드를 전달하면 카카오 회원 정보를 확인해서 자동으로 회원가입 하거나 로그인 처리를 합니다.<br> \r  응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환합니다.<br>\r  추가로 kakaoToken 속성으로 카카오 로그인 API에서 받은 토큰을 반환합니다.<br>\r  <br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야합니다.",
         "responses": {
           "200": {
             "description": "로그인 성공",
