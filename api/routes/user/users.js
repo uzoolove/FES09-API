@@ -215,7 +215,8 @@ router.post('/login/kakao', async function(req, res, next) {
     #swagger.summary  = '카카오 로그인'
     #swagger.description = `
       <a href="https://developers.kakao.com/docs/latest/ko/kakaologin/common" target="_blank">카카오 개발 문서 참고</a><br>
-      카카오 인가 코드 받기 API를 이용해 로그인 후 받은 인증 코드를 전달하면 카카오 회원 정보를 확인해서 자동으로 회원가입 하거나 로그인 처리를 합니다.<br>      
+      카카오 인가 코드 받기 API를 이용해 로그인 후 받은 인증 코드를 전달하면 카카오 회원 정보를 확인해서 자동으로 회원가입을 하거나 로그인 처리를 합니다.<br>
+      카카오 로그인 API를 사용하기 위해서는 카카오에서 발급한 자바스크립트 Key나 REST API Key가 필요하므로 필요한 팀은 문의하시기 바랍니다.<br>
       응답 데이터에 token 속성으로 JWT 기반의 Access Token과 Refresh Token을 반환합니다.<br>
       추가로 kakaoToken 속성으로 카카오 로그인 API에서 받은 토큰을 반환합니다.<br>
       <br>이후 로그인이 필요한 모든 요청에는 Authorization 헤더에 Bearer 방식의 Access Token을 보내야합니다.`
