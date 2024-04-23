@@ -270,7 +270,7 @@ router.get('/users/:_id', [
     let search = { 'user._id': _id };
     const keyword = req.query.keyword;
     const custom = req.query.custom;
-
+    
     if(keyword){
       const regex = new RegExp(keyword, 'i');
       search['$or'] = [{ title: regex }, { content: regex }];
@@ -285,7 +285,10 @@ router.get('/users/:_id', [
     // 기본 정렬 옵션은 등록일의 내림차순
     sortBy['createdAt'] = sortBy['createdAt'] || -1; // 내림차순
 
-    const item = await postModel.find({ type: req.query.type, search, sortBy });
+    const page = Number(req.query.page || 1);
+    const limit = Number(req.query.limit || 0);
+
+    const item = await postModel.find({ type: req.query.type, search, sortBy, page, limit });
     res.json({ ok: 1, item });
 
   }catch(err){
@@ -401,7 +404,10 @@ router.get('/seller/:_id', [
       // 기본 정렬 옵션은 등록일의 내림차순
       sortBy['createdAt'] = sortBy['createdAt'] || -1; // 내림차순
 
-      const item = await postModel.find({ type: req.query.type, search, sortBy });
+      const page = Number(req.query.page || 1);
+      const limit = Number(req.query.limit || 0);
+
+      const item = await postModel.find({ type: req.query.type, search, sortBy, page, limit });
       res.json({ ok: 1, item });
     // }else{
     //   next();
