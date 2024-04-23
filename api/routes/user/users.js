@@ -257,6 +257,7 @@ router.post('/login/kakao', async function(req, res, next) {
     logger.info(req.body);
     const authcode = req.body.code;
     const userData = req.body.user; // 카카오 회원정보 이외에 추가로 받은 회원 정보
+    const redirect_uri = req.body.redirect_uri;
 
     logger.error(userData)
 
@@ -274,7 +275,8 @@ router.post('/login/kakao', async function(req, res, next) {
     var getAccessTokenResponse = await axios.post('https://kauth.kakao.com/oauth/token', qs.stringify({
       grant_type: 'authorization_code', // 고정 값
       client_id: process.env.KAKAO_RESTAPI_KEY,
-      redirect_uri: `${process.env.APP_HOST}/users/login/kakao`,
+      redirect_uri,
+      // redirect_uri: `${process.env.APP_HOST}/users/login/kakao`,
       code: authcode,
       client_secret: process.env.KAKAO_CLIENT_SECRET,  // 카카오 내 애플리케이션 > 보안 탭에서 발급함
     }), {
