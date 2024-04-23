@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "4.0.0",
+    "version": "4.0.1",
     "title": "오픈마켓 API",
     "description": "오픈마켓 API Server입니다.<br>\n      <a href=\"/\">버전별 변경사항 확인</a>"
   },
