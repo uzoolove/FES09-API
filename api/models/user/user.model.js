@@ -141,7 +141,12 @@ class UserModel{
       },
 
       // 게시글 전체 조회수
-      { $unwind: "$postItems" },
+      { 
+        $unwind: {
+          path: "$postItems",
+          preserveNullAndEmptyArrays: true
+        }
+      },
       {
         $group: {
           _id: null,
