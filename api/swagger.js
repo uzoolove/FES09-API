@@ -132,12 +132,18 @@ const doc = {
             description: '카카오 로그인 후 받은 인증 코드',
             example: 'dDWZOcbqOCoTyRMLfDvaAhFuPC-NrQipfytgQ6c4wvyuyt-eKUBuyu1yvYkKPXPsAAABjt8XmL1b9Pmr5eg_ZA'
           },
+          redirect_uri: {
+            type: 'string',
+            description: `카카오 인가 코드 받기 API에 전달한 redirect_uri<br>
+              <a href="https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-code" target="_blank">카카오 인가 코드 받기 API</a>`,
+            example: 'https://gdboard.netlify.app/user/login/kakao'
+          },
           user: {
             type: 'object',
             description: '카카오에서 제공하는 사용자 정보 이외에 추가할 사용자 정보를 객체로 전달',
           }
         },
-        required: ['code']
+        required: ['code', 'redirect_uri']
       },
 
       createUser: {

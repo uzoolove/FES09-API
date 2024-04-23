@@ -223,6 +223,7 @@ router.post('/login/kakao', async function(req, res, next) {
     #swagger.requestBody = {
       description: `로그인 정보<br>
         code 속성에는 카카오 로그인 후에 받은 인증 코드를 지정합니다.<br>
+        redirect_uri: 속성에는 카카오 인가 코드 받기 API에 사용한 redirect_uri 값을 지정합니다.<br>
         user 속성에는 카카오에서 제공하는 사용자 정보 이외에 회원 가입시 추가할 사용자 정보를 객체로 지정합니다.`,
       required: true,
       content: {
