@@ -14,16 +14,16 @@ const priceUtil = {
       const beforeShippingFees = sellerBaseShippingFees[product.seller_id];
       product.price = product.price * _.find(products, {_id: product._id}).quantity;
       if(beforeShippingFees === undefined){
-        sellerBaseShippingFees[product.seller_id] = product.shippingFees === undefined ? global[clientId].config.shippingFees?.value : 0;
+        sellerBaseShippingFees[product.seller_id] = product.shippingFees === undefined ? global[clientId].config.shippingFees?.value : product.shippingFees;
       }else{
-        sellerBaseShippingFees[product.seller_id] = Math.max(beforeShippingFees, product.shippingFees === undefined ? global[clientId].config.shippingFees?.value : 0);
+        sellerBaseShippingFees[product.seller_id] = Math.max(beforeShippingFees, product.shippingFees === undefined ? global[clientId].config.shippingFees?.value : product.shippingFees);
       }
     });
 
     // 할인 전 금액
     const cost = {
       products: _.sumBy(dbProducts, 'price'),
-      shippingFees: _.sum(Object.values(sellerBaseShippingFees)),
+      shippingFees: _.sum(Object.values(sellerBaseShippingFees)) || 0, // config.shippingFees와 상품의 shippingFees가 없는 경우 0원으로 지정
     };
 
     // 회원 등급별 할인율
