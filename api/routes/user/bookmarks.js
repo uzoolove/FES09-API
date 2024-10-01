@@ -5,7 +5,7 @@ import validator from '#middlewares/validator.js';
 
 const router = express.Router();
 
-// 북마크 추가
+// 북마크 추가 
 router.post('/:type/:target_id', [
   param('type').matches(/^(product|post|user)$/).withMessage('북마크 종류는 product, post, user 중 하나로 전달해야 합니다.'),
   param('target_id').isInt().withMessage('북마크 대상 id는 정수만 입력 가능합니다.'),
