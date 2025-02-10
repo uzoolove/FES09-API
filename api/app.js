@@ -3,11 +3,11 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
-import swaggerFile from './swagger-output.json' assert {type: 'json'};
 import logger from './utils/logger.js';
 import indexRouter from './routes/index.js';
 import timer from 'node:timers/promises';
 import config from './config/index.js';
+import { readFile } from 'fs/promises';
 
 var app = express();
 
@@ -16,7 +16,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static('public'));
-app.use('/apidocs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+async function loadSwaggerFile() {
+  try {
+    const fileContent = await readFile('./swagger-output.json', 'utf8');
+    const swaggerFile = JSON.parse(fileContent);
+
+    // Swagger UI 설정
+    app.use('/apidocs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+  } catch (error) {
+    console.error('Error loading swagger file:', error);
+  }
+}
+
+await loadSwaggerFile();
+
 
 app.use(
   cors({
