@@ -51,6 +51,7 @@ export const cors = {
     /codepen.io$/,
     /stackblitz.com$/,
     /webcontainer.io$/,
+    /bbangradise.com$/,
     new RegExp(process.env.APP_HOST)
   ]
 };
